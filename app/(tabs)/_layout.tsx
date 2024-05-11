@@ -4,6 +4,7 @@ import { AntDesign } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
+import colors from '~/constants/colors';
 
 interface TabIconProps {
   icon: ImageSourcePropType;
@@ -17,14 +18,14 @@ const TabsLayout = () => {
     <>
       <Tabs
         screenOptions={{
-          tabBarActiveTintColor: '#05b9b9',
+          tabBarActiveTintColor: colors.primary,
           tabBarLabelStyle: {
-            //fontFamily: "mon-sb",
+            fontFamily: 'Poppins-Regular',
           },
           tabBarStyle: {
             backgroundColor: '#fff',
             borderTopWidth: 1,
-            borderTopColor: '#232533',
+            borderTopColor: colors.gray.C5,
           },
         }}>
         <Tabs.Screen

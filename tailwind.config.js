@@ -6,11 +6,11 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: '#161622',
+        primary: '#4AB7B6',
+        buttonTextPrimary: '#fff',
+        textPrimary: '#110F1C',
         secondary: {
-          DEFAULT: '#FF9C01',
-          100: '#FF9001',
-          200: '#FF8E01',
+          DEFAULT: '#FDAA5D',
         },
         black: {
           DEFAULT: '#000',
@@ -18,7 +18,9 @@ module.exports = {
           200: '#232533',
         },
         gray: {
-          100: '#CDCDE0',
+          DEFAULT: '#F7F7F7',
+          Text: '#7D8FAB',
+          C5: '#C5C5C5',
         },
       },
       fontFamily: {

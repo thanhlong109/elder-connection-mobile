@@ -9,7 +9,7 @@ SplashScreen.preventAutoHideAsync();
 const theme = createTheme({});
 export default function Layout() {
   const [fontsLoaded, error] = useFonts({
-    'Poppins-Thin': require('../assets/fonts/Poppins-Black.ttf'),
+    'Poppins-Thin': require('../assets/fonts/Poppins-Thin.ttf'),
     'Poppins-ExtraLight': require('../assets/fonts/Poppins-ExtraLight.ttf'),
     'Poppins-Light': require('../assets/fonts/Poppins-Light.ttf'),
     'Poppins-Regular': require('../assets/fonts/Poppins-Regular.ttf'),
@@ -30,8 +30,8 @@ export default function Layout() {
   return (
     <ThemeProvider theme={theme}>
       <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+        <Stack.Screen name="(tabs)" options={{ headerShown: false, animation: 'ios' }} />
+        <Stack.Screen name="(auth)" options={{ headerShown: false, animation: 'ios' }} />
         <Stack.Screen name="index" options={{ headerShown: false }} />
       </Stack>
     </ThemeProvider>
