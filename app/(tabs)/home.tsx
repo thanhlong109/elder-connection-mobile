@@ -46,8 +46,9 @@ const home = () => {
       <View className="px-6">
         <Text className="font-psemibold">Tiện ích</Text>
         <View style={{ flexDirection: 'row', flexWrap: 'wrap' }} className="mt-6 flex-row gap-3">
-          {UtilListItems.map((e) => (
+          {UtilListItems.map((e, index) => (
             <CustomIconButton
+              key={index}
               containerStyle="w-[30%] max-w-[30%]"
               title={e.title}
               extend={e?.extend}

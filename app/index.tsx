@@ -1,6 +1,6 @@
-import { Button, Icon } from '@rneui/base';
-import { Stack, Link, router } from 'expo-router';
-import { Image, ScrollView, Text, View } from 'react-native';
+import { Button } from '@rneui/base';
+import { Link, router } from 'expo-router';
+import { Image, Text, View } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import { Container } from '~/components/Container';
 import images from '~/constants/images';

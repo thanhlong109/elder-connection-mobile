@@ -9,6 +9,14 @@ import homeImg1 from '../assets/images/homeImg1.png';
 import favorite from '../assets/images/Icons/Favorite.png';
 import sendMoney from '../assets/images/Icons/SendMoney.png';
 import support from '../assets/images/Icons/Support.png';
+import onlineSupport from '../assets/images/Icons/OnlineSupport.png';
+import trust from '../assets/images/Icons/Trust.png';
+import findUser from '../assets/images/Icons/FindUser.png';
+import denied from '../assets/images/Icons/Denied.png';
+import forwardArrow from '../assets/images/Icons/ForwardArrow.png';
+import creditCard from '../assets/images/Icons/CreditCard.png';
+import voucher from '../assets/images/Icons/Voucher.png';
+import actionIcon from '../assets/images/Icons/ActionIcon.png';
 
 export default {
   bannerStart,
@@ -24,6 +32,14 @@ export default {
     favorite,
     sendMoney,
     support,
+    onlineSupport,
+    denied,
+    findUser,
+    forwardArrow,
+    trust,
+    creditCard,
+    voucher,
+    actionIcon,
   },
   home: {
     homeImg1,
