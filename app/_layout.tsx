@@ -32,6 +32,7 @@ export default function Layout() {
       <Stack>
         <Stack.Screen name="(tabs)" options={{ headerShown: false, animation: 'ios' }} />
         <Stack.Screen name="(auth)" options={{ headerShown: false, animation: 'ios' }} />
+        <Stack.Screen name="(services)" options={{ headerShown: false, animation: 'ios' }} />
         <Stack.Screen name="index" options={{ headerShown: false }} />
       </Stack>
     </ThemeProvider>

@@ -1,10 +1,11 @@
 import { Tabs } from 'expo-router';
-import { ImageSourcePropType, View } from 'react-native';
+import { ImageSourcePropType, Platform, View } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
 import colors from '~/constants/colors';
+import { MaterialIcons } from '@expo/vector-icons';
 
 interface TabIconProps {
   icon: ImageSourcePropType;
@@ -42,6 +43,27 @@ const TabsLayout = () => {
             tabBarLabel: 'Hoạt động',
             tabBarIcon: ({ color, size }) => (
               <MaterialCommunityIcons name="clipboard-list-outline" size={size} color={color} />
+            ),
+            headerShown: false,
+          }}
+        />
+        <Tabs.Screen
+          name="selectService"
+          options={{
+            tabBarLabel: 'Dịch vụ',
+            tabBarIcon: ({ color, focused }) => (
+              <View
+                style={{
+                  top: Platform.OS === 'ios' ? -10 : -20,
+                  width: Platform.OS === 'ios' ? 50 : 60,
+                  height: Platform.OS === 'ios' ? 50 : 60,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  backgroundColor: focused ? color : colors.secondary.DEFAULT,
+                }}
+                className={`rounded-full border-[4px] border-white bg-white shadow-lg`}>
+                <MaterialIcons name="elderly" size={24} color="#fff" />
+              </View>
             ),
             headerShown: false,
           }}

@@ -11,6 +11,7 @@ module.exports = {
         textPrimary: '#110F1C',
         secondary: {
           DEFAULT: '#FDAA5D',
+          BG: '#FEF5EE',
         },
         black: {
           DEFAULT: '#000',
@@ -21,6 +22,9 @@ module.exports = {
           DEFAULT: '#F7F7F7',
           Text: '#7D8FAB',
           C5: '#C5C5C5',
+        },
+        green: {
+          Text: '#005F74',
         },
       },
       fontFamily: {

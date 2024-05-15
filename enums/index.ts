@@ -8,3 +8,8 @@ export enum MenuStatus {
   SELECTED,
   UN_SELECT,
 }
+
+export enum ServiceType {
+  SERVICE_4,
+  SERVICE_8,
+}
