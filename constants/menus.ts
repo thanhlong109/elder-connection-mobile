@@ -68,3 +68,21 @@ export const profileList = [
     },
   ],
 ];
+
+export const workList = [
+  'Trông nom, trò chuyện, bầu bạn, đi dạo với người già.',
+  'Chuẩn bị bữa ăn cho người già.',
+  'Nâng trở hỗ trợ người già di chuyển.',
+  'Hỗ trợ, giám sát người già uống thuốc thoe đơn.',
+  'Thông báo tình trạng bệnh lý cho người thân và gọi hỗ trợ khi cần thiết.',
+];
+
+export const unWorkList = [
+  'Nấu nướng, chế biến đồ ăn cho người già.',
+  'dọn dẹp, vệ sinh nhà cửa.',
+  'chăm sóc người già, bệnh nhân không còn nhận thức.',
+  'Vệ sinh cho người già.',
+  'Xoa bóp, massage, châm cứu, bấm huyệt.',
+  'Hút rửa đờm đãi hồi phục chức năng hô hấp cho người già.',
+  'Thực hiện chăm sóc y tế cho người già ( tiêm thuốc, truyền dịch, thay băng cắt chỉ,... ).',
+];

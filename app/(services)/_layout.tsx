@@ -17,6 +17,17 @@ const ServiceLayout = () => {
           },
         }}
       />
+      <Stack.Screen
+        name="pamentConfirm"
+        options={{
+          headerShown: true,
+          animation: 'ios',
+          title: 'Xác nhận và thanh toán',
+          contentStyle: {
+            backgroundColor: '#fff',
+          },
+        }}
+      />
     </Stack>
   );
 };

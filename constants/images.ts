@@ -17,6 +17,7 @@ import denied from '../assets/images/Icons/Denied.png';
 import forwardArrow from '../assets/images/Icons/ForwardArrow.png';
 import creditCard from '../assets/images/Icons/CreditCard.png';
 import voucher from '../assets/images/Icons/Voucher.png';
+import connectorFavorite from '../assets/images/Icons/ConnectorFavorite.png';
 import actionIcon from '../assets/images/Icons/ActionIcon.png';
 import service1 from '../assets/images/serviceImg/service1.png';
 import service2 from '../assets/images/serviceImg/service2.png';
@@ -47,6 +48,7 @@ export default {
     creditCard,
     voucher,
     actionIcon,
+    connectorFavorite,
   },
   home: {
     homeImg1,
