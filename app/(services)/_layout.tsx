@@ -18,11 +18,22 @@ const ServiceLayout = () => {
         }}
       />
       <Stack.Screen
-        name="pamentConfirm"
+        name="paymentConfirm"
         options={{
           headerShown: true,
           animation: 'ios',
           title: 'Xác nhận và thanh toán',
+          contentStyle: {
+            backgroundColor: '#fff',
+          },
+        }}
+      />
+      <Stack.Screen
+        name="addAddress"
+        options={{
+          headerShown: true,
+          animation: 'ios',
+          title: 'Thêm địa chỉ mới',
           contentStyle: {
             backgroundColor: '#fff',
           },

@@ -4,6 +4,9 @@ import { SplashScreen, Stack } from 'expo-router';
 import { createTheme, ThemeProvider } from '@rneui/themed';
 import { useFonts } from 'expo-font';
 import { useEffect } from 'react';
+import { store } from '~/store';
+import { Provider } from 'react-redux';
+
 SplashScreen.preventAutoHideAsync();
 
 const theme = createTheme({});
@@ -28,13 +31,15 @@ export default function Layout() {
   if (!fontsLoaded && !error) return null;
   SplashScreen.hideAsync();
   return (
-    <ThemeProvider theme={theme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false, animation: 'ios' }} />
-        <Stack.Screen name="(auth)" options={{ headerShown: false, animation: 'ios' }} />
-        <Stack.Screen name="(services)" options={{ headerShown: false, animation: 'ios' }} />
-        <Stack.Screen name="index" options={{ headerShown: false }} />
-      </Stack>
-    </ThemeProvider>
+    <Provider store={store}>
+      <ThemeProvider theme={theme}>
+        <Stack>
+          <Stack.Screen name="(tabs)" options={{ headerShown: false, animation: 'ios' }} />
+          <Stack.Screen name="(auth)" options={{ headerShown: false, animation: 'ios' }} />
+          <Stack.Screen name="(services)" options={{ headerShown: false, animation: 'ios' }} />
+          <Stack.Screen name="index" options={{ headerShown: false }} />
+        </Stack>
+      </ThemeProvider>
+    </Provider>
   );
 }

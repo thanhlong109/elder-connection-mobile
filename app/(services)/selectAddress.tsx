@@ -4,6 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Entypo } from '@expo/vector-icons';
 import colors from '~/constants/colors';
 import { router } from 'expo-router';
+import CustomButton from '~/components/CustomButton';
 
 const selectAddress = () => {
   return (
@@ -28,6 +29,7 @@ const selectAddress = () => {
             <Entypo name="edit" size={20} color="#fff" />
           </TouchableOpacity>
         </View>
+        <CustomButton handlePress={() => router.push('addAddress')} title="Thêm địa chỉ mới" />
       </View>
     </SafeAreaView>
   );

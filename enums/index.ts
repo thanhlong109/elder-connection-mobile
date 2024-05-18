@@ -13,3 +13,8 @@ export enum ServiceType {
   SERVICE_4,
   SERVICE_8,
 }
+
+export enum ServicePackageType {
+  MONTHLY,
+  DAILY,
+}

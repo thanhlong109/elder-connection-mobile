@@ -4,9 +4,14 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import images from '~/constants/images';
 import { AntDesign } from '@expo/vector-icons';
 import { router } from 'expo-router';
+import { ServicePackageType } from '~/enums';
+import { useDispatch } from 'react-redux';
+import { setServicePackage } from '~/slices/serviceBookingSlice';
 
 const selectService = () => {
-  const goToSelectAdress = () => {
+  const dispatch = useDispatch();
+  const goToSelectAdress = (packageType: ServicePackageType) => {
+    dispatch(setServicePackage(packageType));
     router.push('selectAddress');
   };
 
@@ -50,7 +55,7 @@ const selectService = () => {
                 </Text>
               </View>
               <TouchableOpacity
-                onPress={goToSelectAdress}
+                onPress={() => goToSelectAdress(ServicePackageType.DAILY)}
                 className="self-end rounded-full bg-[#5C7FE1] p-3">
                 <AntDesign name="right" size={20} color="white" />
               </TouchableOpacity>
@@ -90,7 +95,7 @@ const selectService = () => {
                 </Text>
               </View>
               <TouchableOpacity
-                onPress={goToSelectAdress}
+                onPress={() => goToSelectAdress(ServicePackageType.MONTHLY)}
                 className="self-end rounded-full bg-[#5C7FE1] p-3">
                 <AntDesign name="right" size={20} color="white" />
               </TouchableOpacity>

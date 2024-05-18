@@ -2,8 +2,8 @@ import { View, Text, ScrollView, TouchableOpacity, FlatList, Pressable } from 'r
 import React, { useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ServiceType } from '~/enums';
-import { getDateString } from '~/utils/date';
-import { SelectableDate } from '~/types/time.type';
+import { getDateString, isDate } from '~/utils/date';
+import { SelectableDate, SelectableDateString } from '~/types/time.type';
 import { AntDesign } from '@expo/vector-icons';
 import colors from '~/constants/colors';
 import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
@@ -16,6 +16,14 @@ import { unWorkList, workList } from '~/constants/menus';
 import { Image } from 'react-native';
 import images from '~/constants/images';
 import CustomConfirmBottomSheet from '~/components/CustomConfirmBottomSheet';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '~/store';
+import {
+  setIsPriorityFavoriteConnector,
+  setServiceType,
+  setWokingDates,
+  setWokingStartTime,
+} from '~/slices/serviceBookingSlice';
 
 const dateData = [
   {
@@ -30,40 +38,39 @@ const dateData = [
   },
 ];
 
-const getNextSevenDays = () => {
-  const data: SelectableDate[] = [];
-  const today = new Date();
-
-  for (let i = 0; i < 7; i++) {
-    const nextDate = new Date();
-    nextDate.setDate(today.getDate() + i);
-    data.push({ date: nextDate, isSelected: false });
-  }
-
-  return data;
-};
-
 const workTime = () => {
-  const [typeSelected, setTypeSelected] = useState<ServiceType | null>(null);
-  const [dateList, setDateList] = useState(getNextSevenDays());
-  const [timeSelected, setTimeSelected] = useState<Date>(new Date());
+  //const [typeSelected, setTypeSelected] = useState<ServiceType | null>(null);
   const [isChangeTime, setIsChangeTime] = useState(false);
-  const [isEnabled, setIsEnabled] = useState(false);
+  const dispatch = useDispatch();
 
-  const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
+  const toggleSwitch = () => {
+    dispatch(setIsPriorityFavoriteConnector(!isPriorityFavoriteConnector));
+  };
+
+  //slices
+  const serviceBooking = useSelector((state: RootState) => state.serviceBooking);
+  const dateList: SelectableDate[] = serviceBooking.workingDates.map((d) => {
+    return { date: new Date(d.date), isSelected: d.isSelected };
+  });
+  const timeSelected: Date = new Date(serviceBooking.workingStartTime);
+  const isPriorityFavoriteConnector = serviceBooking.isPriorityFavoriteConnector;
+  const typeSelected = serviceBooking.serviceType;
 
   const toggleSelectDate = (index: number) => {
     var tempList = [...dateList];
     var temp = tempList[index];
     tempList.splice(index, 1, { ...temp, isSelected: !temp.isSelected });
-    setDateList(tempList);
+    var dates: SelectableDateString[] = tempList.map((d) => {
+      return { date: d.date.toISOString(), isSelected: d.isSelected };
+    });
+    dispatch(setWokingDates(dates));
   };
 
   const onTimeChange = (e: DateTimePickerEvent, date?: Date) => {
     setIsChangeTime(false);
     if (e.type === 'set') {
       if (date) {
-        setTimeSelected(date);
+        dispatch(setWokingStartTime(date.toISOString()));
       }
     }
   };
@@ -77,7 +84,7 @@ const workTime = () => {
             <TouchableOpacity
               key={index}
               activeOpacity={0.7}
-              onPress={() => setTypeSelected(d.type)}
+              onPress={() => dispatch(setServiceType(d.type))}
               className={`my-2 gap-1 rounded-md border-[1px] border-[#fff] p-4 shadow-sm ${typeSelected === d.type ? 'border-secondary bg-secondary-BG' : ''}`}>
               <Text
                 className={`font-psemibold text-lg ${typeSelected === d.type ? 'text-secondary' : ''}`}>
@@ -160,10 +167,10 @@ const workTime = () => {
             </View>
             <Switch
               trackColor={{ false: '#767577', true: colors.green.B2 }}
-              thumbColor={isEnabled ? colors.green.B3 : '#f4f3f4'}
+              thumbColor={isPriorityFavoriteConnector ? colors.green.B3 : '#f4f3f4'}
               ios_backgroundColor="#3e3e3e"
               onValueChange={toggleSwitch}
-              value={isEnabled}
+              value={isPriorityFavoriteConnector}
             />
           </View>
           <CustomBottomSheet
