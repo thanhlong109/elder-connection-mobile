@@ -31,16 +31,19 @@ export const profileList = [
       img: images.Icons.creditCard,
       title: 'Ví của tôi',
       href: '',
+      id: 0,
     },
     {
       img: images.Icons.findUser,
       title: 'Thông tin thành viên',
       href: '',
+      id: 1,
     },
     {
       img: images.Icons.voucher,
       title: 'Gói ưu đãi',
       href: '',
+      id: 2,
     },
   ],
   [
@@ -48,11 +51,13 @@ export const profileList = [
       img: images.Icons.trust,
       title: 'Connector yêu thích',
       href: '',
+      id: 3,
     },
     {
       img: images.Icons.denied,
       title: 'Danh sách connector chặn',
       href: '',
+      id: 4,
     },
   ],
   [
@@ -60,11 +65,13 @@ export const profileList = [
       img: images.Icons.forwardArrow,
       title: 'Săn quà giới thiệu',
       href: '',
+      id: 5,
     },
     {
       img: images.Icons.onlineSupport,
       title: 'Trợ giúp',
       href: '',
+      id: 6,
     },
   ],
 ];

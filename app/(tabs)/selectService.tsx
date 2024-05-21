@@ -7,6 +7,7 @@ import { router } from 'expo-router';
 import { ServicePackageType } from '~/enums';
 import { useDispatch } from 'react-redux';
 import { setServicePackage } from '~/slices/serviceBookingSlice';
+import Animated, { FadeInRight, FadeInUp } from 'react-native-reanimated';
 
 const selectService = () => {
   const dispatch = useDispatch();
@@ -26,9 +27,15 @@ const selectService = () => {
 
         <ScrollView>
           <View className="p-6 pb-10">
-            <Text className="font-pmedium text-2xl text-[#333]">Chọn dịch vụ</Text>
+            <Animated.Text
+              entering={FadeInUp.duration(1000).springify()}
+              className="font-pmedium text-2xl text-[#333]">
+              Chọn dịch vụ
+            </Animated.Text>
             {/* first */}
-            <View className="mt-6 gap-4 rounded-lg bg-white p-6 shadow-md">
+            <Animated.View
+              entering={FadeInRight.duration(1000).springify()}
+              className="mt-6 gap-4 rounded-lg bg-white p-6 shadow-md">
               <View className="flex-row gap-4">
                 <View className="flex-1 gap-1">
                   <Text className="font-pbold text-primary">Dịch vụ theo Buổi/Ngày</Text>
@@ -59,10 +66,12 @@ const selectService = () => {
                 className="self-end rounded-full bg-[#5C7FE1] p-3">
                 <AntDesign name="right" size={20} color="white" />
               </TouchableOpacity>
-            </View>
+            </Animated.View>
 
             {/* second */}
-            <View className="mt-6 gap-6 rounded-lg bg-white p-6 shadow-md">
+            <Animated.View
+              entering={FadeInRight.delay(200).duration(1000).springify()}
+              className="mt-6 gap-6 rounded-lg bg-white p-6 shadow-md">
               <View className="flex-row gap-4">
                 <View className="flex-1 gap-1">
                   <Text className="font-pbold text-primary">Dịch vụ theo gói tháng</Text>
@@ -99,7 +108,7 @@ const selectService = () => {
                 className="self-end rounded-full bg-[#5C7FE1] p-3">
                 <AntDesign name="right" size={20} color="white" />
               </TouchableOpacity>
-            </View>
+            </Animated.View>
           </View>
         </ScrollView>
       </View>

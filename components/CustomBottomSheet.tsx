@@ -8,9 +8,16 @@ export interface CustomBottomSheetProps {
   endIcon: React.ReactNode;
   showItems: React.ReactNode;
   title: string;
+  bottomSheetTitle: string;
 }
 
-const CustomBottomSheet = ({ endIcon, startIcon, title, showItems }: CustomBottomSheetProps) => {
+const CustomBottomSheet = ({
+  endIcon,
+  startIcon,
+  title,
+  showItems,
+  bottomSheetTitle,
+}: CustomBottomSheetProps) => {
   const [isVisible, setIsVisible] = useState(false);
 
   return (
@@ -18,7 +25,7 @@ const CustomBottomSheet = ({ endIcon, startIcon, title, showItems }: CustomBotto
       <TouchableOpacity
         onPress={() => setIsVisible(true)}
         className="mt-4 flex-row gap-3 rounded-lg bg-gray-F6 p-4">
-        <View className="bg-green-B1 h-[40px] w-[40px] items-center justify-center rounded-full">
+        <View className="h-[40px] w-[40px] items-center justify-center rounded-full bg-green-B1">
           {startIcon}
         </View>
         <Text className="flex-1 align-middle font-bold text-textPrimary">{title}</Text>
@@ -28,7 +35,7 @@ const CustomBottomSheet = ({ endIcon, startIcon, title, showItems }: CustomBotto
         <View className=" bg-white p-6 pb-10">
           <View className="mb-4 flex-row gap-2 align-middle">
             <Text className="flex-1 justify-center p-2 text-center font-psemibold text-lg">
-              Những công việc làm
+              {bottomSheetTitle}
             </Text>
             <TouchableOpacity onPress={() => setIsVisible(false)} className="p-2">
               <AntDesign name="close" size={24} color="black" />

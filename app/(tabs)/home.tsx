@@ -1,4 +1,4 @@
-import { View, Text, ImageBackground, Image } from 'react-native';
+import { View, Text, ImageBackground, Image, TouchableOpacity } from 'react-native';
 import React from 'react';
 import { Container } from '~/components/Container';
 import images from '~/constants/images';
@@ -6,6 +6,8 @@ import { Divider } from '@rneui/themed';
 import { AntDesign } from '@expo/vector-icons';
 import CustomIconButton from '~/components/CustomIconButton';
 import { UtilListItems } from '~/constants/menus';
+import { router } from 'expo-router';
+import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
 
 const home = () => {
   return (
@@ -16,9 +18,17 @@ const home = () => {
         resizeMode="contain"
       />
       <View className="p-6">
-        <Text className="mt-4 font-psemibold text-lg text-white">Xin Chào Thắng Nguyễn</Text>
-        <View className="mt-4 w-full  rounded-lg bg-white shadow-md">
-          <Text className="px-6 py-4">Khám phá và trải nghiệm dịch vụ chăm sóc ngay hôm nay.</Text>
+        <Animated.Text
+          entering={FadeInDown.delay(200).duration(1000).springify()}
+          className="mt-4 font-psemibold text-lg text-white">
+          Xin Chào Thắng Nguyễn
+        </Animated.Text>
+        <Animated.View
+          entering={FadeInUp.duration(1000).springify()}
+          className="mt-4 w-full  rounded-lg bg-white shadow-md">
+          <Text className="px-6 py-4 font-pregular">
+            Khám phá và trải nghiệm dịch vụ chăm sóc ngay hôm nay.
+          </Text>
           <Divider />
           <View className="w-full flex-row">
             <View className="flex-1 flex-row justify-around py-4">
@@ -27,7 +37,7 @@ const home = () => {
                 className="h-[25px] w-[25px]"
                 resizeMode="contain"
               />
-              <Text>10.000.000đ</Text>
+              <Text className="font-pregular">10.000.000đ</Text>
               <AntDesign name="right" size={24} color="#37474F" />
             </View>
             <Divider orientation="vertical" />
@@ -37,15 +47,20 @@ const home = () => {
                 className="h-[25px] w-[25px]"
                 resizeMode="contain"
               />
-              <Text>1.000 ePoints</Text>
+              <Text className="font-pregular">1.000 ePoints</Text>
               <AntDesign name="right" size={24} color="#37474F" />
             </View>
           </View>
-        </View>
+        </Animated.View>
       </View>
       <View className="px-6">
-        <Text className="font-psemibold">Tiện ích</Text>
-        <View style={{ flexDirection: 'row', flexWrap: 'wrap' }} className="mt-6 flex-row gap-3">
+        <Animated.Text entering={FadeInDown.duration(1000).springify()} className="font-psemibold">
+          Tiện ích
+        </Animated.Text>
+        <Animated.View
+          entering={FadeInDown.delay(200).duration(1000).springify()}
+          style={{ flexDirection: 'row', flexWrap: 'wrap' }}
+          className="mt-6 flex-row gap-3">
           {UtilListItems.map((e, index) => (
             <CustomIconButton
               key={index}
@@ -55,8 +70,11 @@ const home = () => {
               icon={<Image tintColor={'#fff'} source={e.img} className="h-full w-full" />}
             />
           ))}
-        </View>
+        </Animated.View>
       </View>
+      <TouchableOpacity onPress={() => router.push('paymentConfirm')}>
+        <Text>bgn</Text>
+      </TouchableOpacity>
     </Container>
   );
 };

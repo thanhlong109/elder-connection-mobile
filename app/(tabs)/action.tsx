@@ -4,6 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { ActionStatus, MenuStatus } from '~/enums';
 import images from '~/constants/images';
 import CustomButton from '~/components/CustomButton';
+import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
 
 const data1 = [
   {
@@ -69,7 +70,12 @@ const action = () => {
         <FlatList
           data={data.datalist}
           renderItem={({ item, index }) => (
-            <View key={index} className="mx-4 my-4 mt-8 rounded-3xl bg-white  p-4 shadow-md">
+            <Animated.View
+              entering={FadeInDown.delay(index * 200)
+                .duration(1000)
+                .springify()}
+              key={index}
+              className="mx-4 my-4 mt-8 rounded-3xl bg-white  p-4 shadow-md">
               <View className="flex-row items-center justify-between ">
                 <Image source={item.img} className="h-[60px] w-[60px]" resizeMode="contain" />
                 <View>
@@ -86,7 +92,7 @@ const action = () => {
               <Text className="w-full text-right font-pthin text-sm italic">
                 Ngày đăng: {item.postDate}
               </Text>
-            </View>
+            </Animated.View>
           )}
           ListHeaderComponent={() => (
             <View>
@@ -100,7 +106,7 @@ const action = () => {
                         selected: n.title,
                       });
                     }}
-                    containerStyles={`${n.title === data.selected ? 'bg-primary' : 'bg-gray-C5'} flex-1 rounded-none`}
+                    containerStyles={`${n.title === data.selected ? '!bg-primary' : '!bg-gray-C5'} flex-1 rounded-none`}
                     title={n.title}
                   />
                 ))}

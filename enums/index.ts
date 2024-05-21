@@ -18,3 +18,8 @@ export enum ServicePackageType {
   MONTHLY,
   DAILY,
 }
+
+export enum DateStringType {
+  SHORT,
+  FULL,
+}

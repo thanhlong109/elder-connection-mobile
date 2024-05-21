@@ -6,8 +6,8 @@ export interface CustomConfirmBottomSheetProp {
   buttonContent: React.ReactNode;
   title: string;
   body: React.ReactNode;
-  onCancelPressed?: () => {};
-  onAgreePressed?: () => {};
+  onCancelPressed?: () => void;
+  onAgreePressed?: () => void;
 }
 
 const CustomConfirmBottomSheet = ({
@@ -46,7 +46,7 @@ const CustomConfirmBottomSheet = ({
             </TouchableOpacity>
             <TouchableOpacity
               onPress={handleOnAgreePressed}
-              className="bg-green-B1 flex-1 rounded-lg py-3  shadow-md">
+              className="flex-1 rounded-lg bg-green-B1 py-3  shadow-md">
               <Text className="w-full text-center font-psemibold text-base text-white">Đồng ý</Text>
             </TouchableOpacity>
           </View>
