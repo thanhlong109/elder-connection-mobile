@@ -3,6 +3,7 @@ import bgShapes1 from '../assets/images/bg-shapes/shape1.png';
 import bgShapes2 from '../assets/images/bg-shapes/shape2.png';
 import bgShapes3 from '../assets/images/bg-shapes/shape3.png';
 import bgShapes4 from '../assets/images/bg-shapes/shape4.png';
+import bgShapes5 from '../assets/images/bg-shapes/shape5.png';
 import Eicon from '../assets/images/Icons/Eicon.png';
 import Medal from '../assets/images/Icons/Medal.png';
 import ElderCare from '../assets/images/Icons/ElderCare.png';
@@ -32,6 +33,7 @@ export default {
     bgShapes2,
     bgShapes3,
     bgShapes4,
+    bgShapes5,
   },
   Icons: {
     Eicon,

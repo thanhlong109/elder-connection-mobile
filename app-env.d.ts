@@ -15,3 +15,8 @@ declare module '*.ttf' {
   const value: ImageSourcePropType;
   export default value;
 }
+declare module '*.json' {
+  import { ImageSourcePropType } from 'react-native';
+  const value: ImageSourcePropType;
+  export default value;
+}

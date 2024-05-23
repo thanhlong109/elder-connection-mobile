@@ -5,13 +5,7 @@ import { AntDesign } from '@expo/vector-icons';
 import { Container } from '~/components/Container';
 import images from '~/constants/images';
 import colors from '~/constants/colors';
-import Animated, {
-  FadeInDown,
-  FadeInLeft,
-  FadeInRight,
-  FadeInUp,
-  RotateInDownLeft,
-} from 'react-native-reanimated';
+import Animated, { FadeInDown, FadeInLeft, FadeInRight, FadeInUp } from 'react-native-reanimated';
 
 export default function Home() {
   return (

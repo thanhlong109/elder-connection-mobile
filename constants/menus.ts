@@ -30,7 +30,7 @@ export const profileList = [
     {
       img: images.Icons.creditCard,
       title: 'Ví của tôi',
-      href: '',
+      href: '(profiles)/myWallet',
       id: 0,
     },
     {

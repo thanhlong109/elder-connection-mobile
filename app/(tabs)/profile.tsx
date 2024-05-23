@@ -1,8 +1,8 @@
-import { View, Text, FlatList, Image, Button } from 'react-native';
+import { View, Text, FlatList, Image, Button, TouchableOpacity } from 'react-native';
 import React from 'react';
 import { AntDesign } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Link } from 'expo-router';
+import { Link, router } from 'expo-router';
 import colors from '~/constants/colors';
 import { profileList } from '~/constants/menus';
 import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
@@ -21,13 +21,16 @@ const profile = () => {
                     entering={FadeInDown.delay(e.id * 100)
                       .duration(1000)
                       .springify()}
-                    key={index}
-                    className="my-[2px] flex-row items-center justify-between bg-white p-6">
-                    <View className="flex-row items-center">
-                      <Image source={e.img} className="h-[25px] w-[25px]" resizeMode="contain" />
-                      <Text className="ml-4">{e.title}</Text>
-                    </View>
-                    <AntDesign name="right" size={24} color="#2D2D2D" />
+                    key={index}>
+                    <TouchableOpacity
+                      onPress={() => router.push(e.href)}
+                      className="my-[2px] flex-row items-center justify-between bg-white p-6">
+                      <View className="flex-row items-center">
+                        <Image source={e.img} className="h-[25px] w-[25px]" resizeMode="contain" />
+                        <Text className="ml-4">{e.title}</Text>
+                      </View>
+                      <AntDesign name="right" size={24} color="#2D2D2D" />
+                    </TouchableOpacity>
                   </Animated.View>
                 );
               })}

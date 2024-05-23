@@ -26,28 +26,22 @@ const home = () => {
         <Animated.View
           entering={FadeInUp.duration(1000).springify()}
           className="mt-4 w-full  rounded-lg bg-white shadow-md">
-          <Text className="px-6 py-4 font-pregular">
+          <Text className="px-6 py-4 font-pregular text-primary">
             Khám phá và trải nghiệm dịch vụ chăm sóc ngay hôm nay.
           </Text>
           <Divider />
           <View className="w-full flex-row">
-            <View className="flex-1 flex-row justify-around py-4">
+            <View className="flex-1 flex-row justify-around px-4 py-4">
               <Image
                 source={images.Icons.Eicon}
                 className="h-[25px] w-[25px]"
                 resizeMode="contain"
               />
               <Text className="font-pregular">10.000.000đ</Text>
-              <AntDesign name="right" size={24} color="#37474F" />
             </View>
             <Divider orientation="vertical" />
-            <View className="flex-1 flex-row justify-around py-4">
-              <Image
-                source={images.Icons.Medal}
-                className="h-[25px] w-[25px]"
-                resizeMode="contain"
-              />
-              <Text className="font-pregular">1.000 ePoints</Text>
+            <View className="flex-1 flex-row justify-around px-4 py-4">
+              <Text className="font-pregular">Nạp tiền</Text>
               <AntDesign name="right" size={24} color="#37474F" />
             </View>
           </View>
@@ -72,9 +66,6 @@ const home = () => {
           ))}
         </Animated.View>
       </View>
-      <TouchableOpacity onPress={() => router.push('paymentConfirm')}>
-        <Text>bgn</Text>
-      </TouchableOpacity>
     </Container>
   );
 };
