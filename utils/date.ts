@@ -51,3 +51,15 @@ export const isDate = (date: string | Date): date is Date => {
 export const isString = (date: string | Date): date is string => {
   return typeof date === 'string';
 };
+
+export const formatDateTime = (date: Date) => {
+  // Format the date
+  const formattedDate = date.toLocaleDateString('en-GB'); // This will format the date to DD/MM/YYYY
+
+  // Format the time
+  const formattedTime = date.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }); // This will format the time to HH:MM
+
+  // Combine the formatted date and time
+  const formattedDateTime = `${formattedTime} - ${formattedDate}`;
+  return formattedDateTime;
+};

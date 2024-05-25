@@ -31,17 +31,17 @@ const home = () => {
           </Text>
           <Divider />
           <View className="w-full flex-row">
-            <View className="flex-1 flex-row justify-around px-4 py-4">
+            <View className="flex-1 flex-row items-center justify-around px-4 py-4">
               <Image
                 source={images.Icons.Eicon}
                 className="h-[25px] w-[25px]"
                 resizeMode="contain"
               />
-              <Text className="font-pregular">10.000.000đ</Text>
+              <Text className="h-full align-middle font-pregular">10.000.000đ</Text>
             </View>
             <Divider orientation="vertical" />
-            <View className="flex-1 flex-row justify-around px-4 py-4">
-              <Text className="font-pregular">Nạp tiền</Text>
+            <View className="flex-1 flex-row items-center justify-around px-4 py-4">
+              <Text className="h-full align-middle font-pregular">Nạp tiền</Text>
               <AntDesign name="right" size={24} color="#37474F" />
             </View>
           </View>

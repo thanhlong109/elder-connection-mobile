@@ -19,6 +19,8 @@ import forwardArrow from '../assets/images/Icons/ForwardArrow.png';
 import creditCard from '../assets/images/Icons/CreditCard.png';
 import voucher from '../assets/images/Icons/Voucher.png';
 import connectorFavorite from '../assets/images/Icons/ConnectorFavorite.png';
+import sendMoney2 from '../assets/images/Icons/SendMoney2.png';
+import recevieMoney from '../assets/images/Icons/RecevieMoney.png';
 import actionIcon from '../assets/images/Icons/ActionIcon.png';
 import service1 from '../assets/images/serviceImg/service1.png';
 import service2 from '../assets/images/serviceImg/service2.png';
@@ -51,6 +53,8 @@ export default {
     voucher,
     actionIcon,
     connectorFavorite,
+    sendMoney2,
+    recevieMoney,
   },
   home: {
     homeImg1,
