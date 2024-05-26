@@ -1,17 +1,16 @@
 import { View, Text, ScrollView, TouchableOpacity, FlatList, Pressable } from 'react-native';
-import React, { useState } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ServiceType } from '~/enums';
-import { getDateString, isDate } from '~/utils/date';
+import { getDateString } from '~/utils/date';
 import { SelectableDate, SelectableDateString } from '~/types/time.type';
 import { AntDesign } from '@expo/vector-icons';
 import colors from '~/constants/colors';
 import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
-import { Divider } from '@rneui/themed';
+//import { Divider } from '@rneui/themed';
 import { Switch } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { FontAwesome6 } from '@expo/vector-icons';
-import CustomBottomSheet from '~/components/CustomBottomSheet';
 import { unWorkList, workList } from '~/constants/menus';
 import { Image } from 'react-native';
 import images from '~/constants/images';
@@ -26,6 +25,7 @@ import {
 } from '~/slices/serviceBookingSlice';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { router } from 'expo-router';
+import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
 
 const dateData = [
   {
@@ -44,6 +44,10 @@ const workTime = () => {
   //const [typeSelected, setTypeSelected] = useState<ServiceType | null>(null);
   const [isChangeTime, setIsChangeTime] = useState(false);
   const dispatch = useDispatch();
+  const snapPoints = useMemo(() => ['25%', '50%', '75%', '100%'], []);
+  const bottomSheetRef1 = useRef<BottomSheet>(null);
+  const bottomSheetRef2 = useRef<BottomSheet>(null);
+  const bottomSheetRef3 = useRef<BottomSheet>(null);
 
   const toggleSwitch = () => {
     dispatch(setIsPriorityFavoriteConnector(!isPriorityFavoriteConnector));
@@ -83,7 +87,7 @@ const workTime = () => {
         <View className="m-4 pb-8">
           <Animated.Text
             entering={FadeInDown.duration(1000).springify()}
-            className="mb-4 font-psemibold text-xl">
+            className="font-psemibold mb-4 text-xl">
             Thời lượng
           </Animated.Text>
           {dateData.map((d, index) => (
@@ -107,14 +111,14 @@ const workTime = () => {
 
           <Animated.Text
             entering={FadeInDown.delay(400).duration(1000).springify()}
-            className="mb-4 mt-6 font-psemibold text-xl">
+            className="font-psemibold mb-4 mt-6 text-xl">
             Thời gian làm việc
           </Animated.Text>
           <Animated.View
             entering={FadeInDown.delay(600).duration(1000).springify()}
             className="flex-row justify-between">
             <Text className="font-plight">Chọn ngày làm</Text>
-            <Text className="text-right font-pbold">
+            <Text className="font-pbold text-right">
               Tháng{` ${dateList[0].date.getMonth() + 1}/${dateList[0].date.getFullYear()}`}
             </Text>
           </Animated.View>
@@ -132,14 +136,14 @@ const workTime = () => {
                   className={`relative mx-3 my-4 gap-2 rounded-lg border-[1px] border-gray-300 p-4 ${item.isSelected ? 'border-secondary !bg-secondary' : ''}`}
                   onPress={() => toggleSelectDate(index)}>
                   {index === 0 && (
-                    <View className="absolute left-[50%] top-0 h-4 w-4 translate-x-1/2 translate-y-[-8px] rounded-full bg-green-B2"></View>
+                    <View className="bg-green-B2 absolute left-[50%] top-0 h-4 w-4 translate-x-1/2 translate-y-[-8px] rounded-full"></View>
                   )}
                   <Text
-                    className={`text-center font-pbold ${index === 0 ? 'text-secondary' : ''} ${item.isSelected ? 'text-white' : ''}`}>
+                    className={`font-pbold text-center ${index === 0 ? 'text-secondary' : ''} ${item.isSelected ? 'text-white' : ''}`}>
                     {getDateString(item.date.getDay())}
                   </Text>
                   <Text
-                    className={`text-center font-pregular ${index === 0 ? 'text-secondary' : ''}  ${item.isSelected ? 'text-white' : ''}`}>
+                    className={`font-pregular text-center ${index === 0 ? 'text-secondary' : ''}  ${item.isSelected ? 'text-white' : ''}`}>
                     {item.date.getDate()}
                   </Text>
                 </TouchableOpacity>
@@ -148,19 +152,19 @@ const workTime = () => {
           />
           <Animated.View
             entering={FadeInDown.delay(1000).duration(1000).springify()}
-            className="mt-4 flex-row items-center justify-between rounded-lg border-[1px] border-gray-C5 p-4">
+            className="border-gray-C5 mt-4 flex-row items-center justify-between rounded-lg border-[1px] p-4">
             <View className="flex-row gap-2">
               <AntDesign name="clockcircle" size={24} color={colors.secondary.DEFAULT} />
-              <Text className="font-psemibold text-lg text-textPrimary">Thời gian bắt đầu</Text>
+              <Text className="font-psemibold text-textPrimary text-lg">Thời gian bắt đầu</Text>
             </View>
             <TouchableOpacity
               onPress={() => setIsChangeTime(true)}
-              className="flex-row items-center justify-center rounded-md bg-gray-F6">
-              <Text className="h-[48px] w-[64px] text-center align-middle font-psemibold text-lg">
+              className="bg-gray-F6 flex-row items-center justify-center rounded-md">
+              <Text className="font-psemibold h-[48px] w-[64px] text-center align-middle text-lg">
                 {timeSelected.getHours()}
               </Text>
-              <Divider orientation="vertical" />
-              <Text className="h-[48px] w-[64px] text-center align-middle font-psemibold text-lg">
+              {/* <Divider orientation="vertical" /> */}
+              <Text className="font-psemibold h-[48px] w-[64px] text-center align-middle text-lg">
                 {timeSelected.getMinutes()}
               </Text>
             </TouchableOpacity>
@@ -183,7 +187,7 @@ const workTime = () => {
                 resizeMode="contain"
                 source={images.Icons.connectorFavorite}
               />
-              <Text className="align-middle font-pregular text-lg text-textPrimary">
+              <Text className="font-pregular text-textPrimary align-middle text-lg">
                 Ưu tiên tasker yêu thích
               </Text>
             </View>
@@ -196,64 +200,133 @@ const workTime = () => {
             />
           </Animated.View>
           <Animated.View entering={FadeInDown.delay(1400).duration(1000).springify()}>
-            <CustomBottomSheet
-              endIcon={<FontAwesome6 name="angle-right" size={24} color={colors.green.B1} />}
-              startIcon={<MaterialIcons name="playlist-add-check" size={30} color="white" />}
-              title="Nhân viên của Elderconnection sẽ thực hiện các công việc gì?"
-              bottomSheetTitle="Các công việc sẽ thực hiện"
-              showItems={
-                <View className="gap-4">
-                  {workList.map((item, index) => (
-                    <View key={index} className="flex-row items-center gap-4">
-                      <View className="h-3 w-3 rounded-full bg-secondary" />
-                      <Text className="flex-1 font-pregular text-base">{item}</Text>
-                    </View>
-                  ))}
-                </View>
-              }
-            />
+            {/* control bottom Sheet 1 */}
+            <TouchableOpacity
+              onPress={() => bottomSheetRef1.current?.snapToIndex(2)}
+              className="bg-gray-F6 mt-4 flex-row gap-3 rounded-lg p-4">
+              <View className="bg-green-B1 h-[40px] w-[40px] items-center justify-center rounded-full">
+                <MaterialIcons name="playlist-add-check" size={30} color="white" />
+              </View>
+              <Text className="text-textPrimary flex-1 align-middle font-bold">
+                Nhân viên của Elderconnection sẽ thực hiện các công việc gì?
+              </Text>
+              <View className="items-center justify-center">
+                <FontAwesome6 name="angle-right" size={24} color={colors.green.B1} />
+              </View>
+            </TouchableOpacity>
 
-            <CustomBottomSheet
-              bottomSheetTitle="Các công việc sẽ không thực hiện"
-              endIcon={<FontAwesome6 name="angle-right" size={24} color={colors.green.B1} />}
-              startIcon={<MaterialIcons name="playlist-remove" size={30} color="white" />}
-              title="Các công việc mà nhân viên Elderconnection không thực hiện"
-              showItems={
-                <View className="gap-4">
-                  {unWorkList.map((item, index) => (
-                    <View key={index} className="flex-row items-center gap-4">
-                      <View className="h-3 w-3 rounded-full bg-secondary" />
-                      <Text className="flex-1 font-pregular text-base">{item}</Text>
-                    </View>
-                  ))}
-                </View>
-              }
-            />
+            {/* control bottom Sheet 2 */}
+            <TouchableOpacity
+              onPress={() => bottomSheetRef2.current?.snapToIndex(2)}
+              className="bg-gray-F6 mt-4 flex-row gap-3 rounded-lg p-4">
+              <View className="bg-green-B1 h-[40px] w-[40px] items-center justify-center rounded-full">
+                <MaterialIcons name="playlist-remove" size={30} color="white" />
+              </View>
+              <Text className="text-textPrimary flex-1 align-middle font-bold">
+                Các công việc mà nhân viên Elderconnection không thực hiện
+              </Text>
+              <View className="items-center justify-center">
+                <FontAwesome6 name="angle-right" size={24} color={colors.green.B1} />
+              </View>
+            </TouchableOpacity>
           </Animated.View>
 
           <Animated.View entering={FadeInDown.delay(1600).duration(1000).springify()}>
-            <CustomConfirmBottomSheet
-              onAgreePressed={() => router.push('paymentConfirm')}
-              buttonContent={
-                <View className="mx-6 mt-8 flex-row justify-between rounded-lg bg-green-B2 p-4">
-                  <Text className="font-pbold text-lg text-white">520,000 VND/8h</Text>
-                  <Text className="font-pregular text-lg text-white">tiếp theo</Text>
-                </View>
-              }
-              title="Xác nhận đăng kí"
-              body={
-                <View>
-                  <Text className="font-pregular text-base text-textPrimary">
-                    Bằng cách ấn <Text className="font-psemibold">đồng ý</Text> bạn đã xác nhận đã
-                    đọc đầy đủ những công việc mà Connector sẽ làm hoặc không làm và{' '}
-                    <Text className="font-psemibold">đăng ký dịch vụ của chúng tôi.</Text>
-                  </Text>
-                </View>
-              }
-            />
+            <TouchableOpacity onPress={() => bottomSheetRef3.current?.snapToIndex(2)}>
+              <View className="bg-green-B2 mx-6 mt-8 flex-row justify-between rounded-lg p-4">
+                <Text className="font-pbold text-lg text-white">520,000 VND/8h</Text>
+                <Text className="font-pregular text-lg text-white">tiếp theo</Text>
+              </View>
+            </TouchableOpacity>
           </Animated.View>
         </View>
       </ScrollView>
+
+      <BottomSheet enablePanDownToClose index={-1} snapPoints={snapPoints} ref={bottomSheetRef2}>
+        <BottomSheetView>
+          <View className=" bg-white p-6 pb-10">
+            <View className="mb-4 flex-row gap-2 align-middle">
+              <Text className="font-psemibold flex-1 justify-center p-2 text-center text-lg">
+                Các công việc sẽ không thực hiện
+              </Text>
+              <TouchableOpacity onPress={() => bottomSheetRef2.current?.close()} className="p-2">
+                <AntDesign name="close" size={24} color="black" />
+              </TouchableOpacity>
+            </View>
+            <View>
+              <View className="gap-4">
+                {unWorkList.map((item, index) => (
+                  <View key={index} className="flex-row items-center gap-4">
+                    <View className="bg-secondary h-3 w-3 rounded-full" />
+                    <Text className="font-pregular flex-1 text-base">{item}</Text>
+                  </View>
+                ))}
+              </View>
+            </View>
+          </View>
+        </BottomSheetView>
+      </BottomSheet>
+
+      <BottomSheet enablePanDownToClose index={-1} snapPoints={snapPoints} ref={bottomSheetRef1}>
+        <BottomSheetView>
+          <View className=" bg-white p-6 pb-10">
+            <View className="mb-4 flex-row gap-2 align-middle">
+              <Text className="font-psemibold flex-1 justify-center p-2 text-center text-lg">
+                Các công việc sẽ thực hiện
+              </Text>
+              <TouchableOpacity onPress={() => bottomSheetRef1.current?.close()} className="p-2">
+                <AntDesign name="close" size={24} color="black" />
+              </TouchableOpacity>
+            </View>
+            <View>
+              <View className="gap-4">
+                {workList.map((item, index) => (
+                  <View key={index} className="flex-row items-center gap-4">
+                    <View className="bg-secondary h-3 w-3 rounded-full" />
+                    <Text className="font-pregular flex-1 text-base">{item}</Text>
+                  </View>
+                ))}
+              </View>
+            </View>
+          </View>
+        </BottomSheetView>
+      </BottomSheet>
+
+      <BottomSheet index={-1} snapPoints={snapPoints} ref={bottomSheetRef3}>
+        <BottomSheetView>
+          <View className="bg-white p-6 pb-10">
+            <Text className="font-pmedium w-full text-center text-lg">Xác nhận đăng kí</Text>
+            <View className="mt-4">
+              <View>
+                <Text className="font-pregular text-textPrimary text-base">
+                  Bằng cách ấn <Text className="font-psemibold">đồng ý</Text> bạn đã xác nhận đã đọc
+                  đầy đủ những công việc mà Connector sẽ làm hoặc không làm và{' '}
+                  <Text className="font-psemibold">đăng ký dịch vụ của chúng tôi.</Text>
+                </Text>
+              </View>
+            </View>
+            <View className="mt-6 flex-row justify-center gap-6">
+              <TouchableOpacity
+                onPress={() => bottomSheetRef3.current?.close()}
+                className="bg-gray-F6 flex-1 rounded-lg  py-3  shadow-md">
+                <Text className="font-psemibold w-full text-center text-base text-gray-600">
+                  Hủy
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  bottomSheetRef3.current?.close();
+                  router.push('paymentConfirm');
+                }}
+                className="bg-green-B1 flex-1 rounded-lg py-3  shadow-md">
+                <Text className="font-psemibold w-full text-center text-base text-white">
+                  Đồng ý
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </BottomSheetView>
+      </BottomSheet>
     </SafeAreaView>
   );
 };

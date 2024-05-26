@@ -1,24 +1,28 @@
 {
-  "name": "elder-connection-mobile",
+  "name": "elder-connection-mobile-v2",
   "version": "1.0.0",
   "main": "expo-router/entry",
   "scripts": {
+    "start": "expo start --dev-client",
+    "ios": "expo run:ios",
     "android": "expo run:android",
+    "build:dev": "eas build --profile development",
+    "build:preview": "eas build --profile preview",
+    "build:prod": "eas build --profile production",
+    "prebuild": "expo prebuild",
     "lint": "eslint \"**/*.{js,jsx,ts,tsx}\" && prettier -c \"**/*.{js,jsx,ts,tsx,json}\"",
     "format": "eslint \"**/*.{js,jsx,ts,tsx}\" --fix && prettier \"**/*.{js,jsx,ts,tsx,json}\" --write",
-    "ios": "expo run:ios",
-    "start": "expo start",
     "web": "expo start --web"
   },
   "dependencies": {
-    "@expo/metro-runtime": "~3.2.1",
     "@expo/vector-icons": "^14.0.0",
+    "@gorhom/bottom-sheet": "^4.6.3",
     "@react-native-community/datetimepicker": "8.0.1",
     "@react-navigation/native": "^6.1.7",
     "@reduxjs/toolkit": "^2.2.5",
-    "expo": "^51.0.2",
+    "expo": "^51.0.8",
     "expo-constants": "~16.0.1",
-    "expo-font": "~12.0.5",
+    "expo-dev-client": "~4.0.14",
     "expo-linear-gradient": "~13.0.2",
     "expo-linking": "~6.3.1",
     "expo-router": "~3.5.14",
@@ -37,13 +41,12 @@
     "react-native-safe-area-context": "4.10.1",
     "react-native-screens": "3.31.1",
     "react-native-url-polyfill": "^2.0.0",
-    "react-native-vector-icons": "^10.1.0",
     "react-native-web": "~0.19.10",
     "react-redux": "^9.1.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.24.0",
-    "@types/react": "~18.2.79",
+    "@babel/core": "^7.20.0",
+    "@types/react": "~18.2.45",
     "@typescript-eslint/eslint-plugin": "^7.7.0",
     "@typescript-eslint/parser": "^7.7.0",
     "eslint": "^8.57.0",
@@ -56,17 +59,12 @@
   "eslintConfig": {
     "extends": "universe/native"
   },
-  "resolutions": {
-    "expo-modules-core": "~1.11.0"
-  },
-  "overrides": {
-    "expo-modules-core": "~1.11.0"
-  },
   "expo": {
     "install": {
       "exclude": [
         "react-native-safe-area-context"
       ]
     }
-  }
+  },
+  "private": true
 }

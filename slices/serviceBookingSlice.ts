@@ -1,8 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { ServicePackageType, ServiceType } from '~/enums';
-import { SelectableDate, SelectableDateString } from '~/types/time.type';
-import { isDate } from '~/utils/date';
+import { SelectableDateString } from '~/types/time.type';
 
 const getNextSevenDays = () => {
   const data: SelectableDateString[] = [];

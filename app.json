@@ -1,16 +1,22 @@
 {
   "expo": {
-    "name": "elder-connection-mobile",
-    "slug": "elder-connection-mobile",
+    "name": "elder-connection-mobile-v2",
+    "slug": "elder-connection-mobile-v2",
     "version": "1.0.0",
-    "scheme": "elder-connection-mobile",
+    "scheme": "elder-connection-mobile-v2",
     "web": {
       "bundler": "metro",
       "output": "static",
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
-      "expo-router"
+      "expo-router",
+      [
+        "expo-dev-launcher",
+        {
+          "launchModeExperimental": "most-recent"
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true,
@@ -35,14 +41,14 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.thanhlong109.elderconnectionmobile"
+      "package": "com.thanhlong109.elderconnectionmobilev2"
     },
     "extra": {
       "router": {
         "origin": false
       },
       "eas": {
-        "projectId": "01133eee-798a-457a-8ba2-51b7fedd5ae7"
+        "projectId": "286400cc-8053-4959-bfb0-42e92533ab84"
       }
     }
   }

@@ -1,15 +1,16 @@
 import '../global.css';
 
 import { SplashScreen, Stack } from 'expo-router';
-import { createTheme, ThemeProvider } from '@rneui/themed';
+//import { createTheme, ThemeProvider } from '@rneui/themed';
 import { useFonts } from 'expo-font';
 import { useEffect } from 'react';
 import { store } from '~/store';
 import { Provider } from 'react-redux';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 SplashScreen.preventAutoHideAsync();
 
-const theme = createTheme({});
+//const theme = createTheme({});
 export default function Layout() {
   const [fontsLoaded, error] = useFonts({
     'Poppins-Thin': require('../assets/fonts/Poppins-Thin.ttf'),
@@ -31,8 +32,8 @@ export default function Layout() {
   if (!fontsLoaded && !error) return null;
   SplashScreen.hideAsync();
   return (
-    <Provider store={store}>
-      <ThemeProvider theme={theme}>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <Provider store={store}>
         <Stack>
           <Stack.Screen name="(tabs)" options={{ headerShown: false, animation: 'ios' }} />
           <Stack.Screen name="(auth)" options={{ headerShown: false, animation: 'ios' }} />
@@ -40,7 +41,7 @@ export default function Layout() {
           <Stack.Screen name="(profiles)" options={{ headerShown: false, animation: 'ios' }} />
           <Stack.Screen name="index" options={{ headerShown: false }} />
         </Stack>
-      </ThemeProvider>
-    </Provider>
+      </Provider>
+    </GestureHandlerRootView>
   );
 }

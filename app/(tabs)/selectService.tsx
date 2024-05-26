@@ -56,7 +56,7 @@ const selectService = () => {
                   className="h-[90px] w-[123px]"
                   resizeMode="contain"
                 />
-                <Text className="flex-1 font-pregular">
+                <Text className="font-pregular flex-1">
                   Giúp khách hàng được đăng việc chỉ với 2 phút đặt lịch. Linh hoạt 4 tiếng hoặc 8
                   tiếng.
                 </Text>
@@ -98,7 +98,7 @@ const selectService = () => {
                   className="h-[114px] w-[124px]"
                   resizeMode="contain"
                 />
-                <Text className="flex-1 font-pregular">
+                <Text className="font-pregular flex-1">
                   Linh hoạt xếp lịch làm việc cố định theo thời gian mong muốn. Tiết kiệm thời gian
                   đăng việc, tránh thanh toán nhiều lần.
                 </Text>
