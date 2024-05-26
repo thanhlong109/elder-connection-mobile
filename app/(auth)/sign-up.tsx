@@ -1,4 +1,4 @@
-import { View, Text, Image, ScrollView } from 'react-native';
+import { View, Text, ScrollView } from 'react-native';
 import React, { useState } from 'react';
 import { Container } from '~/components/Container';
 import { Link, router } from 'expo-router';
@@ -6,7 +6,6 @@ import FormField from '~/components/FormField';
 import { SignInForm } from '~/types/auth.type';
 import { AntDesign } from '@expo/vector-icons';
 import CustomButton from '~/components/CustomButton';
-import images from '~/constants/images';
 import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
 
 const SignUp = () => {

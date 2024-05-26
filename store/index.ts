@@ -1,8 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
+import { accountApi } from '~/services/accountApi';
 import serviceBookingSlice from '~/slices/serviceBookingSlice';
 
 export const store = configureStore({
-  reducer: { serviceBooking: serviceBookingSlice },
+  reducer: { serviceBooking: serviceBookingSlice, [accountApi.reducerPath]: accountApi.reducer },
+  middleware: (getDefaultMiddleWare) => getDefaultMiddleWare().concat(accountApi.middleware),
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

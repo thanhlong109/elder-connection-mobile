@@ -1,4 +1,4 @@
-import { View, Text, ImageBackground, Image, TouchableOpacity } from 'react-native';
+import { View, Text, ImageBackground, Image } from 'react-native';
 import React from 'react';
 import { Container } from '~/components/Container';
 import images from '~/constants/images';
@@ -6,7 +6,6 @@ import { Divider } from '@rneui/themed';
 import { AntDesign } from '@expo/vector-icons';
 import CustomIconButton from '~/components/CustomIconButton';
 import { UtilListItems } from '~/constants/menus';
-import { router } from 'expo-router';
 import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
 
 const home = () => {

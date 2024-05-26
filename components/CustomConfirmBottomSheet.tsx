@@ -1,6 +1,6 @@
 import { View, Text, TouchableOpacity } from 'react-native';
 import React, { useState } from 'react';
-import { BottomSheet } from '@rneui/themed';
+//import { BottomSheet } from '@rneui/themed';
 
 export interface CustomConfirmBottomSheetProp {
   buttonContent: React.ReactNode;
@@ -32,7 +32,7 @@ const CustomConfirmBottomSheet = ({
   return (
     <View>
       <TouchableOpacity onPress={() => setIsVisible(true)}>{buttonContent}</TouchableOpacity>
-      <BottomSheet isVisible={isVisible}>
+      {/* <BottomSheet isVisible={isVisible}>
         <View className="bg-white p-6 pb-10">
           <Text className="flex-1 p-2 text-center align-middle font-psemibold text-lg">
             {title}
@@ -51,7 +51,7 @@ const CustomConfirmBottomSheet = ({
             </TouchableOpacity>
           </View>
         </View>
-      </BottomSheet>
+      </BottomSheet> */}
     </View>
   );
 };

@@ -1,6 +1,6 @@
 import { View, Text, TouchableOpacity } from 'react-native';
 import React, { useState } from 'react';
-import { BottomSheet } from '@rneui/themed';
+//import { BottomSheet } from '@rneui/themed';
 import { AntDesign } from '@expo/vector-icons';
 
 export interface CustomBottomSheetProps {
@@ -31,7 +31,7 @@ const CustomBottomSheet = ({
         <Text className="flex-1 align-middle font-bold text-textPrimary">{title}</Text>
         <View className="items-center justify-center">{endIcon}</View>
       </TouchableOpacity>
-      <BottomSheet isVisible={isVisible}>
+      {/* <BottomSheet isVisible={isVisible}>
         <View className=" bg-white p-6 pb-10">
           <View className="mb-4 flex-row gap-2 align-middle">
             <Text className="flex-1 justify-center p-2 text-center font-psemibold text-lg">
@@ -43,7 +43,7 @@ const CustomBottomSheet = ({
           </View>
           <View>{showItems}</View>
         </View>
-      </BottomSheet>
+      </BottomSheet> */}
     </View>
   );
 };

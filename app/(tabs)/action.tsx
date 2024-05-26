@@ -1,10 +1,10 @@
-import { View, Text, FlatList, Image, Button } from 'react-native';
+import { View, Text, FlatList, Image } from 'react-native';
 import React, { useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { ActionStatus, MenuStatus } from '~/enums';
+import { ActionStatus } from '~/enums';
 import images from '~/constants/images';
 import CustomButton from '~/components/CustomButton';
-import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
+import Animated, { FadeInDown } from 'react-native-reanimated';
 
 const data1 = [
   {

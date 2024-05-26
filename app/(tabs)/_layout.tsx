@@ -1,18 +1,11 @@
 import { Tabs } from 'expo-router';
-import { ImageSourcePropType, Platform, View } from 'react-native';
+import { Platform, View } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
 import colors from '~/constants/colors';
 import { MaterialIcons } from '@expo/vector-icons';
-
-interface TabIconProps {
-  icon: ImageSourcePropType;
-  color: string;
-  name: string;
-  focused: boolean;
-}
 
 const TabsLayout = () => {
   return (

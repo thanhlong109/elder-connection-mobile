@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import MapView, { Details, LatLng, Marker, PROVIDER_GOOGLE, Region } from 'react-native-maps';
-import { StyleSheet, View } from 'react-native';
+import MapView, { LatLng, Marker, PROVIDER_GOOGLE, Region } from 'react-native-maps';
+import { View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import colors from '~/constants/colors';
 
@@ -12,7 +12,7 @@ const initalRegion: Region = {
 };
 
 export default function App() {
-  const [region, setRegion] = useState<Region>(initalRegion);
+  const [region] = useState<Region>(initalRegion);
   const [markerPos, setMarkerPos] = useState<LatLng>({
     latitude: initalRegion.latitude,
     longitude: initalRegion.longitude,

@@ -20,8 +20,3 @@ declare module '*.json' {
   const value: ImageSourcePropType;
   export default value;
 }
-declare module '*.lottie' {
-  import { ImageSourcePropType } from 'react-native';
-  const value: any;
-  export default value;
-}
