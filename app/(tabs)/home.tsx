@@ -19,13 +19,13 @@ const home = () => {
       <View className="p-6">
         <Animated.Text
           entering={FadeInDown.delay(200).duration(1000).springify()}
-          className="font-psemibold mt-4 text-lg text-white">
+          className="mt-4 font-psemibold text-lg text-white">
           Xin Chào Thắng Nguyễn
         </Animated.Text>
         <Animated.View
           entering={FadeInUp.duration(1000).springify()}
           className="mt-4 w-full  rounded-lg bg-white shadow-md">
-          <Text className="font-pregular text-primary px-6 py-4">
+          <Text className="px-6 py-4 font-pregular text-primary">
             Khám phá và trải nghiệm dịch vụ chăm sóc ngay hôm nay.
           </Text>
           <Divider />
@@ -36,11 +36,11 @@ const home = () => {
                 className="h-[25px] w-[25px]"
                 resizeMode="contain"
               />
-              <Text className="font-pregular h-full align-middle">10.000.000đ</Text>
+              <Text className="h-full align-middle font-pregular">10.000.000đ</Text>
             </View>
-            <Divider vertical />
+            <View className="h-full w-[1px] bg-gray-C5" />
             <View className="flex-1 flex-row items-center justify-around px-4 py-4">
-              <Text className="font-pregular h-full align-middle">Nạp tiền</Text>
+              <Text className="h-full align-middle font-pregular">Nạp tiền</Text>
               <AntDesign name="right" size={24} color="#37474F" />
             </View>
           </View>
