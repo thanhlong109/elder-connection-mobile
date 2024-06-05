@@ -4,7 +4,6 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import LottieView from 'lottie-react-native';
 import images from '~/constants/images';
 import { LinearGradient } from 'expo-linear-gradient';
-//import { Divider } from '@rneui/themed';
 import { StatusBar } from 'expo-status-bar';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import Transaction from '~/components/Transaction';
@@ -32,16 +31,17 @@ const myWallet = () => {
           <LottieView
             style={{ flex: 1, width: 'auto', height: '100%' }}
             autoPlay
+            renderMode="SOFTWARE"
             source={require('../../assets/animations/wallet_bg_amin.json')}
             resizeMode="contain"
           />
         </LinearGradient>
 
-        <View className="border-gray-C5 flex-row border-b-[1px] bg-white px-4 py-6">
+        <View className="flex-row border-b-[1px] border-gray-C5 bg-white px-4 py-6">
           {menu.map((e) => (
             <TouchableOpacity key={e.id} onPress={() => setActive(e.id)} className="flex-1">
               <Text
-                className={` font-psemibold text-center text-lg ${active === e.id ? 'text-[#004CFF]' : 'text-[#666]'}`}>
+                className={` text-center font-psemibold text-lg ${active === e.id ? 'text-[#004CFF]' : 'text-[#666]'}`}>
                 {e.title}
               </Text>
             </TouchableOpacity>
@@ -89,9 +89,9 @@ const myWallet = () => {
           <Animated.View
             entering={FadeInDown.duration(1000).springify()}
             className="flex-1 bg-white p-6">
-            <View className="border-gray-C5 rounded-lg border-[1px]">
+            <View className="rounded-lg border-[1px] border-gray-C5">
               <View className="p-4">
-                <Text className="font-pregular mb-2">Số tiền trong tài khoản</Text>
+                <Text className="mb-2 font-pregular">Số tiền trong tài khoản</Text>
                 <View className="flex-row justify-around ">
                   <Text className="h-full items-center text-center align-middle text-2xl text-[#006D60]">
                     10,000,000đ
@@ -106,7 +106,7 @@ const myWallet = () => {
               <Divider />
               <View className="w-full px-8 py-4">
                 <TouchableOpacity>
-                  <Text className="font-psemibold text-secondary self-end">Nạp thêm</Text>
+                  <Text className="self-end font-psemibold text-secondary">Nạp thêm</Text>
                 </TouchableOpacity>
               </View>
             </View>

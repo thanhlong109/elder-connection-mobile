@@ -2,17 +2,22 @@ import { View, Text, ScrollView } from 'react-native';
 import React, { useEffect, useRef, useState } from 'react';
 import { Container } from '~/components/Container';
 import { Link, router } from 'expo-router';
-import FormField from '~/components/FormField';
 import { AntDesign } from '@expo/vector-icons';
 import CustomButton from '~/components/CustomButton';
 import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
-import { TextField, TextFieldRef, Toast } from 'react-native-ui-lib';
+import { TextField, TextFieldRef } from 'react-native-ui-lib';
 import { SignUpRequest } from '~/types/auth.type';
 import colors from '~/constants/colors';
 import { useSignUpMutation } from '~/services/accountApi';
-
-const fullNameRegex = /^(?=.* .{2,}).{6,}$/;
-const passwordRegex = /^\S{6,12}$/;
+import {
+  containNumberRegex,
+  containSpaceRegex,
+  containSpecialCharacterRegex,
+  containUppercaseRegex,
+} from '~/regex';
+import CustomDialog from '~/components/CustomDialog';
+import { DialogType } from '~/enums';
+import LoadingModel from '~/components/LoadingModel';
 
 const SignUp = () => {
   const [form, setform] = useState<SignUpRequest>({
@@ -25,19 +30,23 @@ const SignUp = () => {
   });
 
   const [signUp, { isLoading, isSuccess, isError, error }] = useSignUpMutation();
-  const [showToask, setshowToask] = useState(false);
+  const [showDialog, setshowDialog] = useState(false);
   const fullNameRef = useRef<TextFieldRef>(null);
   const emailRef = useRef<TextFieldRef>(null);
   const passwordRef = useRef<TextFieldRef>(null);
   const confirmPasswordRef = useRef<TextFieldRef>(null);
   const phoneRef = useRef<TextFieldRef>(null);
+  const [emailChecked, setemailChecked] = useState('');
 
   useEffect(() => {
-    if (isSuccess) setshowToask(true);
+    if (isSuccess) setshowDialog(true);
   }, [isSuccess]);
 
   useEffect(() => {
-    if (isError) console.log(error);
+    if (isError) {
+      console.log(error);
+      emailRef.current?.validate();
+    }
   }, [isError]);
 
   const validateFields = () => {
@@ -50,18 +59,23 @@ const SignUp = () => {
   };
 
   const handleSubmit = () => {
+    setemailChecked(form.accountEmail);
     if (validateFields()) signUp(form);
   };
 
   return (
     <Container style="justify-center  relative">
-      <Toast
-        visible={showToask}
-        position={'top'}
+      <LoadingModel isloading={isLoading} />
+      <CustomDialog
+        title="thành công!"
         onDismiss={() => router.push('sign-in')}
-        autoDismiss={3000}>
-        <Text>Đăng ký tài khoản thành công!</Text>
-      </Toast>
+        visble={showDialog}
+        setVisible={setshowDialog}
+        body="Bạn đã đăng ký tài khoản thành công. Vui lòng kiểm tra email để xác thực!"
+        type={DialogType.SUCCESS}
+        showCloseButton
+        buttonCloseTitle="Tiếp tục"
+      />
       <ScrollView
         contentContainerStyle={{ justifyContent: 'center' }}
         className="max-h-[90%] px-6 ">
@@ -91,10 +105,15 @@ const SignUp = () => {
               }}
               value={`${form.firstName} ${form.lastName}`}
               enableErrors
-              validate={['required', (value: string) => fullNameRegex.test(value)]}
+              validate={[
+                'required',
+                (value: string) => containSpaceRegex.test(value),
+                (value: string) => value.length > 5,
+              ]}
               validationMessage={[
                 'Vui lòng không bỏ trống trường này!',
-                'Họ tên cần ít nhất 6 ký tự và có khoảng trắng giữa họ tên!',
+                'Cần có khoảng trắng giữa họ tên!',
+                'Họ tên cần ít nhất 6 ký tự!',
               ]}
               showCharCounter
               maxLength={50}
@@ -141,8 +160,16 @@ const SignUp = () => {
               label="Email"
               onChangeText={(value: string) => setform({ ...form, accountEmail: value })}
               enableErrors
-              validate={['required', 'email']}
-              validationMessage={['Vui lòng không bỏ trống trường này!', 'Email không hợp lệ!']}
+              validate={[
+                'required',
+                'email',
+                (value: string) => !(isError && value === emailChecked),
+              ]}
+              validationMessage={[
+                'Vui lòng không bỏ trống trường này!',
+                'Email không hợp lệ!',
+                'Email này đã được đăng ký!',
+              ]}
             />
             {/* password */}
             <TextField
@@ -159,10 +186,19 @@ const SignUp = () => {
               label="Mật khẩu (để đăng nhập lần sau)"
               onChangeText={(value: string) => setform({ ...form, accountPassword: value })}
               enableErrors
-              validate={['required', (value: string) => passwordRegex.test(value)]}
+              validate={[
+                'required',
+                (value: string) => value.length > 5,
+                (value: string) => containNumberRegex.test(value),
+                (value: string) => containSpecialCharacterRegex.test(value),
+                (value: string) => containUppercaseRegex.test(value),
+              ]}
               validationMessage={[
                 'Vui lòng không bỏ trống trường này!',
-                'Mật khẩu Phải chứa 6-12 ký tự và không có khoảng cách',
+                'Mật khẩu Phải dài ít nhât 6 ký tự!',
+                'Mật khẩu phải chứa ít nhất một số!',
+                'Mật khẩu phải chứa ít nhất một ký tự đặc biệt!',
+                'Mật khẩu phải chứa ít nhất một ký tự in hoa!',
               ]}
             />
             {/* password confirm */}

@@ -1,19 +1,51 @@
 import { View, Text } from 'react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Container } from '~/components/Container';
 import { Link, router } from 'expo-router';
 import FormField from '~/components/FormField';
-import { SignUpForm } from '~/types/auth.type';
 import { AntDesign } from '@expo/vector-icons';
 import CustomButton from '~/components/CustomButton';
 import images from '~/constants/images';
 import Animated, { FadeInDown, FadeInLeft, FadeInRight } from 'react-native-reanimated';
+import { SignInRequest } from '~/types/auth.type';
+import LoadingModel from '~/components/LoadingModel';
+import { useSignInMutation } from '~/services/accountApi';
+import { useDispatch } from 'react-redux';
+import { setSignInRespone } from '~/slices/accountSlice';
 
 const SignIn = () => {
-  const [form, setform] = useState<SignUpForm>({
-    email: '',
-    password: '',
+  const dispatch = useDispatch();
+  const [form, setform] = useState<SignInRequest>({
+    accountEmail: '',
+    accountPassword: '',
   });
+  const [eror, seteror] = useState('');
+  const [signIn, { isError, isLoading, isSuccess, data, error, status }] = useSignInMutation();
+
+  useEffect(() => {
+    if (isSuccess && data) {
+      if (data.status == 401) {
+        seteror(
+          'Email xác nhận đã được gửi đến tài khoản email bạn đã đăng ký, vui lòng xác thực tài khoản để đăng nhập!'
+        );
+      } else {
+        dispatch(setSignInRespone(data.result));
+        router.push('/home');
+      }
+    }
+  }, [isSuccess]);
+
+  useEffect(() => {
+    if (isError) {
+      seteror('Tên đăng nhập hoặc mật khẩu không đúng!');
+    }
+  }, [isError]);
+
+  const handleOnSubmit = () => {
+    seteror('');
+    signIn(form);
+  };
+
   return (
     <>
       <Container style="justify-end relative">
@@ -29,6 +61,7 @@ const SignIn = () => {
           resizeMode="contain"
           className="absolute right-0 top-0 w-[35%]"
         />
+
         <View className="mb-[10%] justify-end p-6">
           <Animated.Text
             entering={FadeInDown.duration(1000).springify()}
@@ -38,26 +71,28 @@ const SignIn = () => {
 
           <Animated.View entering={FadeInDown.delay(200).duration(1000).springify()}>
             <FormField
-              handleChangeText={(value) => setform({ ...form, email: value })}
-              value={form.email}
+              handleChangeText={(value) => setform({ ...form, accountEmail: value })}
+              value={form.accountEmail}
               placeholder="Nhập địa chỉ email"
             />
           </Animated.View>
 
           <Animated.View entering={FadeInDown.delay(400).duration(1000).springify()}>
             <FormField
-              handleChangeText={(value) => setform({ ...form, password: value })}
-              value={form.password}
+              handleChangeText={(value) => setform({ ...form, accountPassword: value })}
+              value={form.accountPassword}
               secureTextEntry
               placeholder="Nhập mật khẩu"
             />
           </Animated.View>
 
+          <Text className="mt-5 font-pregular text-base !text-red-500">{eror}</Text>
+
           <Animated.View entering={FadeInDown.delay(600).duration(1000).springify()}>
             <CustomButton
               title="Đăng Nhập"
-              containerStyles="mt-[60px] bg-secondary"
-              handlePress={() => router.push('/home')}
+              containerStyles="mt-[40px] bg-secondary"
+              handlePress={handleOnSubmit}
             />
           </Animated.View>
 
@@ -74,6 +109,7 @@ const SignIn = () => {
             </Link>
           </Animated.View>
         </View>
+        <LoadingModel isloading={isLoading} />
       </Container>
     </>
   );

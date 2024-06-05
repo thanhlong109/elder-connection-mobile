@@ -19,6 +19,9 @@ export interface Account {
   birthDate: string;
   accountPassword: string;
   confirmAccountPassword: string;
+  jwtToken: string;
+  expired: string;
+  jwtRefreshToken: string;
 }
 
 export type SignUpRequest = Pick<
@@ -42,3 +45,11 @@ export type SignUpRespone = Pick<
   | 'accountPassword'
   | 'confirmAccountPassword'
 >;
+
+export type SignInRequest = Pick<Account, 'accountEmail' | 'accountPassword'>;
+
+export interface SignInRespone {
+  jwtToken: string;
+  expired: string;
+  jwtRefreshToken: string;
+}

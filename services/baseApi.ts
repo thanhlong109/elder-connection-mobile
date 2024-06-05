@@ -1,39 +1,50 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { fetchBaseQuery, FetchBaseQueryError } from '@reduxjs/toolkit/query/react';
+import { KEYS } from '~/enums';
+import { SignInRespone } from '~/types/auth.type';
+import { saveToken } from '~/utils/auth';
 //import { logout } from '../auth';
 
 const baseQuery = fetchBaseQuery({
   baseUrl: 'https://elderconnectionwebapp.azurewebsites.net/',
   prepareHeaders: (headers, { getState }) => {
-    const token = AsyncStorage.getItem('accessToken');
+    const token = AsyncStorage.getItem(KEYS.ACCESS_TOKEN);
     if (token) {
       headers.set('Authorization', `Bearer ${token}`);
     }
+    console.log('Request Headers:', headers);
     return headers;
   },
 });
 
 export const baseQueryWithReauth = async (args: any, api: any, extraOptions: any) => {
-  let result = await baseQuery(args, api, extraOptions);
+  let response = await baseQuery(args, api, extraOptions);
 
-  if (result.error && (result.error as FetchBaseQueryError).status === 401) {
+  if (response.error && (response.error as FetchBaseQueryError).status === 401) {
     // token expired
+    const token = AsyncStorage.getItem(KEYS.ACCESS_TOKEN);
+    const refreshToken = AsyncStorage.getItem(KEYS.REFRESH_TOKEN);
     const refreshResult = await baseQuery(
-      { url: '/auth/refresh', method: 'POST' },
+      {
+        url: 'api/users/refresh-token',
+        method: 'POST',
+        body: { accessToken: token, refreshToken },
+      },
       api,
       extraOptions
     );
 
     if (refreshResult.data) {
-      const { accessToken } = refreshResult.data as { accessToken: string };
-      localStorage.setItem('accessToken', accessToken);
+      const { result } = refreshResult.data as ApiResponse<SignInRespone>;
+      const { jwtToken } = result;
+      saveToken(result);
       // retry original query with new access token
-      result = await baseQuery(
+      response = await baseQuery(
         {
           ...args,
           headers: {
             ...args.headers,
-            Authorization: `Bearer ${accessToken}`,
+            Authorization: `Bearer ${jwtToken}`,
           },
         },
         api,
@@ -45,5 +56,5 @@ export const baseQueryWithReauth = async (args: any, api: any, extraOptions: any
     }
   }
 
-  return result;
+  return response;
 };

@@ -23,7 +23,6 @@ export default function Layout() {
     'Poppins-Black': require('../assets/fonts/Poppins-Black.ttf'),
   });
 
-  console.log(fontsLoaded);
   useEffect(() => {
     if (error) throw error;
     if (fontsLoaded) SplashScreen.hideAsync();

@@ -28,3 +28,16 @@ export enum NotificationType {
   IMPORTANCE,
   NORMAL,
 }
+
+export enum DialogType {
+  SUCCESS,
+  WARNING,
+  ERROR,
+  INFO,
+}
+
+export enum KEYS {
+  REFRESH_TOKEN = 'refreshToken',
+  ACCESS_TOKEN = 'accessToken',
+  EXPIRED_TOKEN = 'expireToke',
+}

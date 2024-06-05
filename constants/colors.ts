@@ -19,4 +19,10 @@ export default {
     B2: '#1CB45D',
     B3: '#008375',
   },
+  Type: {
+    success: '#7fdf4b',
+    error: '#e5342f',
+    warning: '#eeba56',
+    info: '#468ee5',
+  },
 };
