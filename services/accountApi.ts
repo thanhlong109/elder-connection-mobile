@@ -31,6 +31,7 @@ export const accountApi = createApi({
 
         if ('jwtToken' in response && 'expired' in response && 'jwtRefreshToken' in response) {
           transform.result.expired = response.expired;
+          console.log(response.expired);
           transform.result.jwtRefreshToken = response.jwtRefreshToken;
           transform.result.jwtToken = response.jwtToken;
         }

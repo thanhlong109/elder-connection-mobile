@@ -7,7 +7,7 @@ import { AntDesign } from '@expo/vector-icons';
 import CustomButton from '~/components/CustomButton';
 import images from '~/constants/images';
 import Animated, { FadeInDown, FadeInLeft, FadeInRight } from 'react-native-reanimated';
-import { SignInRequest } from '~/types/auth.type';
+import { SignInRequest, SignInRespone } from '~/types/auth.type';
 import LoadingModel from '~/components/LoadingModel';
 import { useSignInMutation } from '~/services/accountApi';
 import { useDispatch } from 'react-redux';
@@ -20,7 +20,7 @@ const SignIn = () => {
     accountPassword: '',
   });
   const [eror, seteror] = useState('');
-  const [signIn, { isError, isLoading, isSuccess, data, error, status }] = useSignInMutation();
+  const [signIn, { isError, isLoading, isSuccess, data }] = useSignInMutation();
 
   useEffect(() => {
     if (isSuccess && data) {
@@ -29,7 +29,17 @@ const SignIn = () => {
           'Email xác nhận đã được gửi đến tài khoản email bạn đã đăng ký, vui lòng xác thực tài khoản để đăng nhập!'
         );
       } else {
-        dispatch(setSignInRespone(data.result));
+        let tranform: SignInRespone = {
+          expired: '',
+          jwtRefreshToken: '',
+          jwtToken: '',
+        };
+        if ('jwtToken' in data && 'expired' in data && 'jwtRefreshToken' in data) {
+          tranform.expired = data.expired as string;
+          tranform.jwtRefreshToken = data.jwtRefreshToken as string;
+          tranform.jwtToken = data.jwtToken as string;
+        }
+        dispatch(setSignInRespone(tranform));
         router.push('/home');
       }
     }

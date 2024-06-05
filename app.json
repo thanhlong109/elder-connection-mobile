@@ -16,6 +16,12 @@
         {
           "launchModeExperimental": "most-recent"
         }
+      ],
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "Show current location on map."
+        }
       ]
     ],
     "experiments": {
@@ -38,6 +44,11 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
+      },
+      "config": {
+        "googleMaps": {
+          "apiKey": ""
+        }
       },
       "package": "com.thanhlong109.elderconnectionmobilev2"
     },

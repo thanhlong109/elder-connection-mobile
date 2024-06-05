@@ -1,40 +1,110 @@
-import React, { useState } from 'react';
-import MapView, { LatLng, Marker, PROVIDER_GOOGLE, Region } from 'react-native-maps';
-import { View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import colors from '~/constants/colors';
+import React, { useEffect, useRef, useState } from 'react';
+import { Dimensions, StyleSheet, View } from 'react-native';
+import { Button, Text } from 'react-native-ui-lib';
+import MapView, { Marker, Region } from 'react-native-maps';
+import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+import * as Location from 'expo-location';
 
-const initalRegion: Region = {
-  latitude: 37.78825,
-  longitude: -122.4324,
-  latitudeDelta: 0.0922,
-  longitudeDelta: 0.0421,
-};
+const { width, height } = Dimensions.get('window');
+const ASPECT_RATIO = width / height;
+const LATITUDE = 37.78825;
+const LONGITUDE = -122.4324;
+const LATITUDE_DELTA = 0.0922;
+const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
-export default function App() {
-  const [region] = useState<Region>(initalRegion);
-  const [markerPos, setMarkerPos] = useState<LatLng>({
-    latitude: initalRegion.latitude,
-    longitude: initalRegion.longitude,
+const addAddress = () => {
+  const [region, setRegion] = useState<Region>({
+    latitude: LATITUDE,
+    longitude: LONGITUDE,
+    latitudeDelta: LATITUDE_DELTA,
+    longitudeDelta: LONGITUDE_DELTA,
   });
+
+  const [marker, setMarker] = useState<{ latitude: number; longitude: number } | null>(null);
+
+  const mapRef = useRef<MapView | null>(null);
+
+  const [currentLocation, setcurrentLocation] = useState<Location.LocationObject>();
+  const [errorMsg, setErrorMsg] = useState('');
+
+  useEffect(() => {
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        setErrorMsg('Cấp quyền truy cập vị trí của bạn?');
+        return;
+      }
+
+      let location = await Location.getCurrentPositionAsync({});
+      setcurrentLocation(location);
+    })();
+  }, []);
+
   return (
-    <SafeAreaView>
-      <View className="h-full w-full">
-        <MapView
-          style={{ width: '100%', height: '100%' }}
-          loadingEnabled
-          loadingIndicatorColor={colors.primary}
-          provider={PROVIDER_GOOGLE}
-          showsUserLocation
-          showsMyLocationButton
-          region={region}>
-          <Marker
-            draggable
-            coordinate={markerPos}
-            onDragEnd={(e) => setMarkerPos(e.nativeEvent.coordinate)}
-          />
-        </MapView>
-      </View>
-    </SafeAreaView>
+    <View style={styles.container}>
+      <GooglePlacesAutocomplete
+        placeholder="Tìm địa điểm"
+        onPress={(data, details) => {
+          console.log(data);
+          const location = details?.geometry.location;
+          if (location) {
+            const newRegion = {
+              latitude: location.lat,
+              longitude: location.lng,
+              latitudeDelta: LATITUDE_DELTA,
+              longitudeDelta: LONGITUDE_DELTA,
+            };
+            setRegion(newRegion);
+            setMarker({ latitude: location.lat, longitude: location.lng });
+            mapRef.current?.animateToRegion(newRegion, 1000);
+          }
+        }}
+        query={{
+          key: process.env.GOGGLE_MAP_API_KEY,
+          language: 'vi',
+          components: 'country:vi',
+        }}
+        fetchDetails={true}
+        styles={{
+          container: styles.autocompleteContainer,
+          textInput: styles.textInput,
+        }}
+      />
+      <MapView
+        ref={mapRef}
+        style={styles.map}
+        region={region}
+        onPress={(e) => {
+          const { coordinate } = e.nativeEvent;
+          setMarker(coordinate);
+        }}>
+        {marker && <Marker coordinate={marker} />}
+      </MapView>
+    </View>
   );
-}
+};
+const styles = StyleSheet.create({
+  container: {
+    ...StyleSheet.absoluteFillObject,
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+  },
+  map: {
+    ...StyleSheet.absoluteFillObject,
+  },
+  autocompleteContainer: {
+    position: 'absolute',
+    top: 10,
+    width: '90%',
+    zIndex: 1,
+  },
+  textInput: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 5,
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    fontSize: 16,
+  },
+});
+
+export default addAddress;
