@@ -23,3 +23,8 @@ export enum DateStringType {
   SHORT,
   FULL,
 }
+
+export enum NotificationType {
+  IMPORTANCE,
+  NORMAL,
+}

@@ -20,7 +20,6 @@ export const accountApi = createApi({
       }),
     }),
   }),
-  tagTypes: [],
   reducerPath: 'accountApi',
 });
 export const { useRefreshMutation, useSignUpMutation } = accountApi;

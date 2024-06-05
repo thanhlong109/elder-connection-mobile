@@ -11,6 +11,7 @@ export default {
     Text: '#7D8FAB',
     C5: '#C5C5C5',
     F6: '#F6F6F6',
+    F2: '#F2F2F2',
   },
   green: {
     Text: '#005F74',

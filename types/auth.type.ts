@@ -1,10 +1,3 @@
-export interface SignInForm {
-  email: string;
-  password: string;
-  confirmPassword: string;
-}
-export type SignUpForm = Pick<SignInForm, 'email' | 'password'>;
-
 export interface Credentials {
   username: string;
   password: string;
@@ -33,9 +26,7 @@ export type SignUpRequest = Pick<
   | 'accountPhone'
   | 'firstName'
   | 'lastName'
-  | 'sex'
   | 'accountEmail'
-  | 'birthDate'
   | 'accountPassword'
   | 'confirmAccountPassword'
 >;

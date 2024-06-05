@@ -1,10 +1,11 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { fetchBaseQuery, FetchBaseQueryError } from '@reduxjs/toolkit/query/react';
 //import { logout } from '../auth';
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: 'https://localhost:7026/',
+  baseUrl: 'https://elderconnectionwebapp.azurewebsites.net/',
   prepareHeaders: (headers, { getState }) => {
-    const token = localStorage.getItem('accessToken');
+    const token = AsyncStorage.getItem('accessToken');
     if (token) {
       headers.set('Authorization', `Bearer ${token}`);
     }
