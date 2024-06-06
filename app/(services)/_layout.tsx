@@ -38,6 +38,17 @@ const ServiceLayout = () => {
           },
         }}
       />
+      <Stack.Screen
+        name="addLocation"
+        options={{
+          headerShown: true,
+          animation: 'ios',
+          title: 'Chọn vị trí',
+          contentStyle: {
+            backgroundColor: '#fff',
+          },
+        }}
+      />
     </Stack>
   );
 };

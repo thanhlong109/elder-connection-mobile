@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { Account, SignInRespone } from '~/types/auth.type';
+import { Account, AccountDestailsRespones, SignInRespone } from '~/types/auth.type';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { KEYS } from '~/enums';
 import { saveToken } from '~/utils/auth';
@@ -41,12 +41,24 @@ export const accountSlice = createSlice({
       state.account.expired = action.payload.expired;
       state.account.jwtRefreshToken = action.payload.jwtRefreshToken;
       state.account.jwtToken = action.payload.jwtToken;
+      state.account.id = action.payload.accountId;
       saveToken(action.payload);
+    },
+    setAccountDetails: (state, action: PayloadAction<AccountDestailsRespones>) => {
+      state.account.biography = action.payload.biography;
+      state.account.birthDate = action.payload.birthDate;
+      state.account.createAt = action.payload.createAt;
+      state.account.firstName = action.payload.firstName;
+      state.account.lastName = action.payload.lastName;
+      state.account.profilePicture = action.payload.profilePicture;
+      state.account.sex = action.payload.sex;
+      state.account.status = action.payload.status;
+      state.account.walletBalance = action.payload.walletBalance;
     },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { setSignInRespone } = accountSlice.actions;
+export const { setSignInRespone, setAccountDetails } = accountSlice.actions;
 
 export default accountSlice.reducer;

@@ -33,11 +33,18 @@ const SignIn = () => {
           expired: '',
           jwtRefreshToken: '',
           jwtToken: '',
+          accountId: '',
         };
-        if ('jwtToken' in data && 'expired' in data && 'jwtRefreshToken' in data) {
+        if (
+          'jwtToken' in data &&
+          'expired' in data &&
+          'jwtRefreshToken' in data &&
+          'accountId' in data
+        ) {
           tranform.expired = data.expired as string;
           tranform.jwtRefreshToken = data.jwtRefreshToken as string;
           tranform.jwtToken = data.jwtToken as string;
+          tranform.accountId = data.accountId as string;
         }
         dispatch(setSignInRespone(tranform));
         router.push('/home');
@@ -53,6 +60,7 @@ const SignIn = () => {
 
   const handleOnSubmit = () => {
     seteror('');
+    console.log(form);
     signIn(form);
   };
 

@@ -1,9 +1,16 @@
-import { SignInRequest, SignInRespone, SignUpRequest, SignUpRespone } from '~/types/auth.type';
+import {
+  AccountDestailsRespones,
+  SignInRequest,
+  SignInRespone,
+  SignUpRequest,
+  SignUpRespone,
+} from '~/types/auth.type';
 import { baseQueryWithReauth } from './baseApi';
 import { createApi } from '@reduxjs/toolkit/query/react';
 
 export const accountApi = createApi({
   baseQuery: baseQueryWithReauth,
+  refetchOnMountOrArgChange: true,
   endpoints: (builder) => ({
     signUp: builder.mutation<ApiResponse<SignUpRespone>, SignUpRequest>({
       query: (signUpRequest) => ({
@@ -25,15 +32,21 @@ export const accountApi = createApi({
             expired: '',
             jwtRefreshToken: '',
             jwtToken: '',
+            accountId: '',
           },
           status: 400,
         };
 
-        if ('jwtToken' in response && 'expired' in response && 'jwtRefreshToken' in response) {
+        if (
+          'jwtToken' in response &&
+          'expired' in response &&
+          'jwtRefreshToken' in response &&
+          'accountId' in response
+        ) {
           transform.result.expired = response.expired;
-          console.log(response.expired);
           transform.result.jwtRefreshToken = response.jwtRefreshToken;
           transform.result.jwtToken = response.jwtToken;
+          transform.result.accountId = response.accountId;
         }
         if ('status' in response) {
           transform.status = response.status;
@@ -41,9 +54,17 @@ export const accountApi = createApi({
         if ('message' in response) {
           transform.message = response.message;
         }
+
         return transform;
       },
     }),
+
+    accountDetails: builder.query<ApiResponse<AccountDestailsRespones>, string>({
+      query: (accountId) => ({
+        url: `api/accounts/get-account-detail/${accountId}`,
+      }),
+    }),
+
     refresh: builder.mutation<{ accessToken: string }, { refreshToken: string }>({
       query: (refreshToken) => ({
         url: 'auth/refresh',
@@ -54,4 +75,5 @@ export const accountApi = createApi({
   }),
   reducerPath: 'accountApi',
 });
-export const { useRefreshMutation, useSignInMutation, useSignUpMutation } = accountApi;
+export const { useRefreshMutation, useSignInMutation, useSignUpMutation, useAccountDetailsQuery } =
+  accountApi;

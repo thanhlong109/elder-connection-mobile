@@ -1,5 +1,5 @@
 import { View, Text, ImageBackground, Image } from 'react-native';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Container } from '~/components/Container';
 import images from '~/constants/images';
 import { AntDesign } from '@expo/vector-icons';
@@ -7,10 +7,49 @@ import CustomIconButton from '~/components/CustomIconButton';
 import { UtilListItems } from '~/constants/menus';
 import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
 import Divider from '~/components/Divider';
+import { useAccountDetailsQuery } from '~/services/accountApi';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '~/store';
+import LoadingModel from '~/components/LoadingModel';
+import { setAccountDetails } from '~/slices/accountSlice';
 
 const home = () => {
+  const dispatch = useDispatch();
+  const account = useSelector((state: RootState) => state.accountSlice.account);
+  //-------------------------- start load user account infor ------------------------------//
+  const {
+    data: userData,
+    isLoading: isGetUserLoading,
+    isSuccess: isGetUserSuccess,
+    isError: isGetUserError,
+    error: getUserError,
+    refetch: refetchGetUser,
+  } = useAccountDetailsQuery(account.id);
+
+  useEffect(() => {
+    if (isGetUserSuccess && userData) {
+      console.log('success', userData);
+      dispatch(setAccountDetails(userData.result));
+    }
+  }, [isGetUserSuccess]);
+
+  useEffect(() => {
+    if (isGetUserError) {
+      console.log('error load user:', getUserError);
+    }
+  }, [isGetUserError]);
+
+  //-------------------------- end load user account infor ------------------------------//
+
+  useEffect(() => {
+    console.log('call', account.id);
+    refetchGetUser();
+  }, [account.id]);
+
   return (
     <Container style="item-center relative">
+      <LoadingModel isloading={isGetUserLoading} />
+
       <ImageBackground
         source={images.bgShapes.bgShapes3}
         className="absolute h-[150px] w-full"
@@ -20,7 +59,7 @@ const home = () => {
         <Animated.Text
           entering={FadeInDown.delay(200).duration(1000).springify()}
           className="mt-4 font-psemibold text-lg text-white">
-          Xin Chào Thắng Nguyễn
+          Xin Chào {account.lastName}
         </Animated.Text>
         <Animated.View
           entering={FadeInUp.duration(1000).springify()}
@@ -36,7 +75,7 @@ const home = () => {
                 className="h-[25px] w-[25px]"
                 resizeMode="contain"
               />
-              <Text className="h-full align-middle font-pregular">10.000.000đ</Text>
+              <Text className="h-full align-middle font-pregular">{account.walletBalance}đ</Text>
             </View>
             <View className="h-full w-[1px] bg-gray-C5" />
             <View className="flex-1 flex-row items-center justify-around px-4 py-4">

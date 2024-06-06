@@ -52,4 +52,19 @@ export interface SignInRespone {
   jwtToken: string;
   expired: string;
   jwtRefreshToken: string;
+  accountId: string;
 }
+
+export type AccountDestailsRespones = Pick<
+  Account,
+  | 'id'
+  | 'firstName'
+  | 'lastName'
+  | 'biography'
+  | 'profilePicture'
+  | 'birthDate'
+  | 'sex'
+  | 'status'
+  | 'walletBalance'
+  | 'createAt'
+>;
