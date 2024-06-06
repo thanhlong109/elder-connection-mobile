@@ -41,3 +41,9 @@ export enum KEYS {
   ACCESS_TOKEN = 'accessToken',
   EXPIRED_TOKEN = 'expireToke',
 }
+
+export enum HomeType {
+  TOWN_HOUSE = 1,
+  APARTMENT = 2,
+  MANSION = 3,
+}

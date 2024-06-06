@@ -28,7 +28,6 @@ const home = () => {
 
   useEffect(() => {
     if (isGetUserSuccess && userData) {
-      console.log('success', userData);
       dispatch(setAccountDetails(userData.result));
     }
   }, [isGetUserSuccess]);
@@ -42,7 +41,6 @@ const home = () => {
   //-------------------------- end load user account infor ------------------------------//
 
   useEffect(() => {
-    console.log('call', account.id);
     refetchGetUser();
   }, [account.id]);
 

@@ -1,44 +1,69 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Dimensions, StyleSheet, View } from 'react-native';
-import MapView, { Marker, Region } from 'react-native-maps';
+import MapView, { Marker, MarkerPressEvent, Region } from 'react-native-maps';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import * as Location from 'expo-location';
-import { Text } from 'react-native-ui-lib';
+import { Button, Text } from 'react-native-ui-lib';
+import colors from '~/constants/colors';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '~/store';
+import { Postion } from '~/types/address.type';
+import { setAddAddress } from '~/slices/addressSlice';
+import { router } from 'expo-router';
 
 const { width, height } = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
-const LATITUDE_DELTA = 0.0922;
+const LATITUDE_DELTA = 0.005;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
 const AddLocation = () => {
+  const form = useSelector((state: RootState) => state.addressSlice.addAdress);
+  const dispatch = useDispatch();
   const [region, setRegion] = useState<Region | undefined>(undefined);
   const [marker, setMarker] = useState<{ latitude: number; longitude: number } | null>(null);
   const mapRef = useRef<MapView | null>(null);
-
   const [errorMsg, setErrorMsg] = useState('');
 
   useEffect(() => {
     (async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== 'granted') {
-        setErrorMsg('Cấp quyền truy cập vị trí của bạn?');
-        return;
+      if (form.addressDetail.trim().length == 0) {
+        let { status } = await Location.requestForegroundPermissionsAsync();
+        if (status !== 'granted') {
+          setErrorMsg('Cấp quyền truy cập vị trí của bạn?');
+          return;
+        }
+
+        let location = await Location.getCurrentPositionAsync({});
+        const { latitude, longitude } = location.coords;
+        const initialRegion = {
+          latitude,
+          longitude,
+          latitudeDelta: LATITUDE_DELTA,
+          longitudeDelta: LONGITUDE_DELTA,
+        };
+
+        setRegion(initialRegion);
+        setMarker({ latitude, longitude });
+        mapRef.current?.animateToRegion(initialRegion, 1000);
+      } else {
+        const position: Postion = JSON.parse(form.addressDetail);
+        const newRegion = {
+          ...position,
+          latitudeDelta: LATITUDE_DELTA,
+          longitudeDelta: LONGITUDE_DELTA,
+        };
+        setRegion(newRegion);
+        setMarker(position);
+        mapRef.current?.animateToRegion(newRegion, 1000);
       }
-
-      let location = await Location.getCurrentPositionAsync({});
-      const { latitude, longitude } = location.coords;
-      const initialRegion = {
-        latitude,
-        longitude,
-        latitudeDelta: LATITUDE_DELTA,
-        longitudeDelta: LONGITUDE_DELTA,
-      };
-
-      setRegion(initialRegion);
-      setMarker({ latitude, longitude });
-      mapRef.current?.animateToRegion(initialRegion, 1000);
     })();
   }, []);
+
+  const handleSelectPostion = () => {
+    const position = JSON.stringify(marker);
+    dispatch(setAddAddress({ ...form, addressDetail: position }));
+    router.back();
+  };
 
   return (
     <View style={styles.container}>
@@ -60,7 +85,7 @@ const AddLocation = () => {
           }
         }}
         query={{
-          key: 'AIzaSyBOXv-RTW64FwhfZs2hP-B1JwAyJkwvoUU',
+          key: process.env.EXPO_PUBLIC_GOGGLE_MAP_API_KEY,
           language: 'vi',
           components: 'country:vi',
         }}
@@ -74,6 +99,8 @@ const AddLocation = () => {
       <MapView
         ref={mapRef}
         style={styles.map}
+        zoomTapEnabled
+        zoomEnabled
         region={region}
         onRegionChangeComplete={setRegion}
         onPress={(e) => {
@@ -83,6 +110,12 @@ const AddLocation = () => {
         {marker && <Marker coordinate={marker} />}
       </MapView>
       {errorMsg ? <Text>{errorMsg}</Text> : null}
+      <Button
+        onPress={handleSelectPostion}
+        backgroundColor={colors.primary}
+        className="absolute bottom-8 z-10 !rounded-lg">
+        <Text className="font-psemibold text-lg !text-white">Chọn vị trí này</Text>
+      </Button>
     </View>
   );
 };

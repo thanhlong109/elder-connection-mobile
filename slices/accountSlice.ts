@@ -1,7 +1,5 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { Account, AccountDestailsRespones, SignInRespone } from '~/types/auth.type';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { KEYS } from '~/enums';
 import { saveToken } from '~/utils/auth';
 
 export interface AccountSliceState {
