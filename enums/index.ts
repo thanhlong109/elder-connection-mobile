@@ -47,3 +47,8 @@ export enum HomeType {
   APARTMENT = 2,
   MANSION = 3,
 }
+
+export enum MODE {
+  UPDATE,
+  CREATE,
+}

@@ -2,12 +2,12 @@ import { View, Text, ScrollView, Pressable } from 'react-native';
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '~/store';
-import { HomeType } from '~/enums';
+import { HomeType, MODE } from '~/enums';
 import { Button, TextField, TextFieldRef, TouchableOpacity } from 'react-native-ui-lib';
 import colors from '~/constants/colors';
 import { router } from 'expo-router';
-import { setAddAddress } from '~/slices/addressSlice';
-import { useAddAddressMutation } from '~/services/addressApi';
+import { setAddAddress, setClearState } from '~/slices/addressSlice';
+import { useAddAddressMutation, useUpdateAddressMutation } from '~/services/addressApi';
 import LoadingModel from '~/components/LoadingModel';
 
 const homeData = [
@@ -28,24 +28,54 @@ const addAddress = () => {
   const accountId = useSelector((state: RootState) => state.accountSlice.account.id);
   const dispatch = useDispatch();
   const form = useSelector((state: RootState) => state.addressSlice.addAdress);
-
+  const currentMode = useSelector((state: RootState) => state.addressSlice.mode);
   //---------------------- start call api add address --------------------//
 
-  const [callAddAddress, { isError, isSuccess, isLoading, error }] = useAddAddressMutation();
+  const [
+    callAddAddress,
+    { isError: isAddError, isSuccess: isAddSuccess, isLoading: isAddLoading, error: addError },
+  ] = useAddAddressMutation();
 
   useEffect(() => {
-    if (isSuccess) {
+    if (isAddSuccess) {
+      dispatch(setClearState());
       router.back();
     }
-  }, [isSuccess]);
+  }, [isAddSuccess]);
 
   useEffect(() => {
-    if (isError) {
-      console.log('error add address:', error);
+    if (isAddError) {
+      console.log('error add address:', addError);
     }
-  }, [isError]);
+  }, [isAddError]);
 
   //---------------------- end call api add address --------------------//
+
+  //---------------------- start call api update address --------------------//
+
+  const [
+    callUpdateAddress,
+    {
+      isError: isUpdateError,
+      isSuccess: isUpdateSuccess,
+      isLoading: isUpdateLoading,
+      error: updateError,
+    },
+  ] = useUpdateAddressMutation();
+
+  useEffect(() => {
+    if (isUpdateSuccess) {
+      router.back();
+    }
+  }, [isUpdateSuccess]);
+
+  useEffect(() => {
+    if (isUpdateError) {
+      console.log('error add address:', updateError);
+    }
+  }, [isUpdateError]);
+
+  //---------------------- end call api update address --------------------//
 
   const phoneRef = useRef<TextFieldRef>(null);
   const addressNameRef = useRef<TextFieldRef>(null);
@@ -66,7 +96,10 @@ const addAddress = () => {
       isValidPhone &&
       isValidDescription
     ) {
-      callAddAddress(form);
+      if (currentMode == MODE.CREATE) callAddAddress(form);
+      else if (currentMode == MODE.UPDATE) {
+        callUpdateAddress({ ...form });
+      }
     }
   };
 
@@ -76,7 +109,7 @@ const addAddress = () => {
 
   return (
     <ScrollView>
-      <LoadingModel isloading={isLoading} />
+      <LoadingModel isloading={isAddLoading || isUpdateLoading} />
       <View className="gap-8 p-6">
         {/* address name */}
         <TextField

@@ -1,6 +1,11 @@
 import { baseQueryWithReauth } from './baseApi';
 import { createApi } from '@reduxjs/toolkit/query/react';
-import { AddAdressRequest, AddAdressRespone, GetAddressRespone } from '~/types/address.type';
+import {
+  AddAdressRequest,
+  AddAdressRespone,
+  GetAddressRespone,
+  UpdateAdressRequest,
+} from '~/types/address.type';
 
 export const addressApi = createApi({
   baseQuery: baseQueryWithReauth,
@@ -11,6 +16,14 @@ export const addressApi = createApi({
       query: (body) => ({
         url: 'api/addresses/create-address',
         method: 'POST',
+        body,
+      }),
+      invalidatesTags: ['Address'],
+    }),
+    updateAddress: builder.mutation<ApiResponse<any>, UpdateAdressRequest>({
+      query: (body) => ({
+        url: 'api/addresses/update-account-address/' + body.addressId,
+        method: 'PUT',
         body,
       }),
       invalidatesTags: ['Address'],
@@ -27,4 +40,4 @@ export const addressApi = createApi({
   }),
   reducerPath: 'addressApi',
 });
-export const { useAddAddressMutation, useGetAddressQuery } = addressApi;
+export const { useAddAddressMutation, useGetAddressQuery, useUpdateAddressMutation } = addressApi;

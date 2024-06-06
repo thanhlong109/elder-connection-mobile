@@ -6,17 +6,19 @@ import { router } from 'expo-router';
 import CustomButton from '~/components/CustomButton';
 import AddressItem from '~/components/AddressItem';
 import { useGetAddressQuery } from '~/services/addressApi';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '~/store';
 import LoadingModel from '~/components/LoadingModel';
 import { Text, View } from 'react-native-ui-lib';
+import { setCreateNewAddress } from '~/slices/addressSlice';
 
 const selectAddress = () => {
   const accountId = useSelector((state: RootState) => state.accountSlice.account.id);
+  const dispatch = useDispatch();
   const [query, setquery] = useState<PaggingRequest<String>>({
     data: accountId,
     pageIndex: 1,
-    pageSize: 10,
+    pageSize: 20,
   });
 
   //--------------------------- start call api ----------------------------//
@@ -50,7 +52,10 @@ const selectAddress = () => {
             />
           )}
         </View>
-        <CustomButton handlePress={() => router.push('addAddress')} title="Thêm địa chỉ mới" />
+        <CustomButton
+          handlePress={() => dispatch(setCreateNewAddress())}
+          title="Thêm địa chỉ mới"
+        />
       </View>
     </View>
   );
