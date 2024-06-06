@@ -35,6 +35,17 @@ export type AddAdressRespone = Pick<
   | 'contactPhone'
 >;
 
+export type GetAddressRespone = Pick<
+  Address,
+  | 'addressId'
+  | 'addressName'
+  | 'addressDetail'
+  | 'addressDescription'
+  | 'homeType'
+  | 'contactName'
+  | 'contactPhone'
+>;
+
 export interface Postion {
   latitude: number;
   longitude: number;

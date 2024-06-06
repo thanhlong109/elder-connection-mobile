@@ -1,39 +1,58 @@
-import { View, Text, TouchableOpacity } from 'react-native';
-import React from 'react';
+import { FlatList, ScrollView } from 'react-native';
+import React, { useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Entypo } from '@expo/vector-icons';
-import colors from '~/constants/colors';
+
 import { router } from 'expo-router';
 import CustomButton from '~/components/CustomButton';
+import AddressItem from '~/components/AddressItem';
+import { useGetAddressQuery } from '~/services/addressApi';
+import { useSelector } from 'react-redux';
+import { RootState } from '~/store';
+import LoadingModel from '~/components/LoadingModel';
+import { Text, View } from 'react-native-ui-lib';
 
 const selectAddress = () => {
-  return (
-    <SafeAreaView>
-      <View className="h-full justify-between bg-white px-4 pb-5">
-        <View>
-          <Text className="mb-8 font-psemibold text-lg">Danh sách địa điểm</Text>
-          <View className="flex-row gap-3 rounded-lg p-3 shadow-sm">
-            <TouchableOpacity
-              className="flex-1 flex-row gap-3"
-              onPress={() => router.push('workTime')}>
-              <Entypo name="location-pin" size={24} color={colors.secondary.DEFAULT} />
-              <View className="flex-1">
-                <Text className="font-psemibold text-xl">Ahid Quận 9</Text>
-                <Text className="line-clamp-3 font-plight text-lg">
-                  Căn hộ Vinhomes Golden River Ba Son tọa lạc tại số 2 đường Tôn Đức Thắng, quận 1,
-                  TP.HCM, Việt Nam
-                </Text>
-              </View>
-            </TouchableOpacity>
+  const accountId = useSelector((state: RootState) => state.accountSlice.account.id);
+  const [query, setquery] = useState<PaggingRequest<String>>({
+    data: accountId,
+    pageIndex: 1,
+    pageSize: 10,
+  });
 
-            <TouchableOpacity className="self-start rounded-full bg-primary p-2">
-              <Entypo name="edit" size={20} color="#fff" />
-            </TouchableOpacity>
-          </View>
+  //--------------------------- start call api ----------------------------//
+
+  const { isError, isLoading, error, data } = useGetAddressQuery(query);
+
+  useEffect(() => {
+    if (isError) {
+      console.log('error get address list: ', error);
+    }
+  }, [isError]);
+
+  //--------------------------- end call api ----------------------------//
+
+  return (
+    <View flex>
+      <LoadingModel isloading={isLoading} />
+      <View flex className=" justify-between gap-4 bg-white px-6 pb-5">
+        <View flex>
+          <Text className="mb-8 mt-6 font-psemibold text-lg">Danh sách địa điểm</Text>
+          {data && (
+            <FlatList
+              showsVerticalScrollIndicator={false}
+              className="flex"
+              data={data.result.items}
+              renderItem={({ item, index }) => (
+                <View key={index} className="my-1 p-2">
+                  <AddressItem address={item} />
+                </View>
+              )}
+            />
+          )}
         </View>
         <CustomButton handlePress={() => router.push('addAddress')} title="Thêm địa chỉ mới" />
       </View>
-    </SafeAreaView>
+    </View>
   );
 };
 
