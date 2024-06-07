@@ -10,8 +10,8 @@ export enum MenuStatus {
 }
 
 export enum ServiceType {
-  SERVICE_4,
-  SERVICE_8,
+  SERVICE_4 = 4,
+  SERVICE_8 = 8,
 }
 
 export enum ServicePackageType {

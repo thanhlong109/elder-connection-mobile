@@ -10,6 +10,7 @@ import { getStringEnum } from '~/utils/enumHelper';
 import CustomConfirmDialog from './CustomConfirmDialog';
 import { useDeleteAddressMutation } from '~/services/addressApi';
 import LoadingModel from './LoadingModel';
+import { setWorkingAddress } from '~/slices/serviceBookingSlice';
 
 interface AddressItemProps {
   address: GetAddressRespone;
@@ -37,7 +38,10 @@ const AddressItem = ({ address, isDelete }: AddressItemProps) => {
       <TouchableOpacity
         flex
         className="flex-1 flex-row gap-3"
-        onPress={() => router.push('workTime')}>
+        onPress={() => {
+          dispatch(setWorkingAddress(address));
+          router.push('workTime');
+        }}>
         <Entypo name="location-pin" size={24} color={colors.secondary.DEFAULT} />
         <View className="flex-1">
           <Text className="font-psemibold text-xl capitalize">{addressName}</Text>

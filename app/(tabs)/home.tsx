@@ -29,7 +29,6 @@ const home = () => {
   useEffect(() => {
     if (isGetUserSuccess && userData) {
       dispatch(setAccountDetails(userData.result));
-      console.log('de');
     }
   }, [isGetUserSuccess, userData]);
 
