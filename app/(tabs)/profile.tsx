@@ -55,7 +55,7 @@ const profile = () => {
                     uri: account.profilePicture,
                   }}
                   name={account.lastName}
-                  useAutoColors
+                  autoColorsConfig={{ defaultColor: colors.gray.F2 }}
                 />
               </View>
               <Text className="my-auto rounded-full bg-secondary px-[16px] py-[10px] text-white">

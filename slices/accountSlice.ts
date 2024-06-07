@@ -44,7 +44,8 @@ export const accountSlice = createSlice({
     },
     setAccountDetails: (state, action: PayloadAction<AccountDestailsRespones>) => {
       state.account.biography = action.payload.biography;
-      state.account.birthDate = action.payload.birthDate;
+      state.account.birthDate = action.payload.birthday;
+      state.account.birthday = action.payload.birthday;
       state.account.createAt = action.payload.createAt;
       state.account.firstName = action.payload.firstName;
       state.account.lastName = action.payload.lastName;

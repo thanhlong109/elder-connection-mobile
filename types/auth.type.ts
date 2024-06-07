@@ -62,11 +62,11 @@ export type AccountDestailsRespones = Pick<
   | 'lastName'
   | 'biography'
   | 'profilePicture'
-  | 'birthDate'
   | 'sex'
   | 'status'
   | 'walletBalance'
   | 'createAt'
+  | 'birthday'
 >;
 
 export type UpdateAccountRequest = Pick<

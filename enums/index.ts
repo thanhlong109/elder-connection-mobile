@@ -52,6 +52,7 @@ export enum MODE {
   UPDATE,
   CREATE,
   DELETE,
+  VIEW,
 }
 
 export enum Gender {

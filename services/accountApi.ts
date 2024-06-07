@@ -11,6 +11,7 @@ import { createApi } from '@reduxjs/toolkit/query/react';
 
 export const accountApi = createApi({
   baseQuery: baseQueryWithReauth,
+  tagTypes: ['account'],
   refetchOnMountOrArgChange: true,
   endpoints: (builder) => ({
     signUp: builder.mutation<ApiResponse<SignUpRespone>, SignUpRequest>({
@@ -64,6 +65,7 @@ export const accountApi = createApi({
       query: (accountId) => ({
         url: `api/accounts/get-account-detail/${accountId}`,
       }),
+      providesTags: ['account'],
     }),
 
     updateAccount: builder.mutation<ApiResponse<AccountDestailsRespones>, UpdateAccountRequest>({
@@ -72,6 +74,7 @@ export const accountApi = createApi({
         method: 'PUT',
         body,
       }),
+      invalidatesTags: ['account'],
     }),
 
     refresh: builder.mutation<{ accessToken: string }, { refreshToken: string }>({
