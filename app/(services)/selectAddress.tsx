@@ -11,10 +11,12 @@ import { RootState } from '~/store';
 import LoadingModel from '~/components/LoadingModel';
 import { Text, View } from 'react-native-ui-lib';
 import { setCreateNewAddress } from '~/slices/addressSlice';
+import { MODE } from '~/enums';
 
 const selectAddress = () => {
   const accountId = useSelector((state: RootState) => state.accountSlice.account.id);
   const dispatch = useDispatch();
+  const currentMode = useSelector((state: RootState) => state.addressSlice.mode);
   const [query, setquery] = useState<PaggingRequest<String>>({
     data: accountId,
     pageIndex: 1,
@@ -46,7 +48,7 @@ const selectAddress = () => {
               data={data.result.items}
               renderItem={({ item, index }) => (
                 <View key={index} className="my-1 p-2">
-                  <AddressItem address={item} />
+                  <AddressItem isDelete={currentMode === MODE.DELETE} address={item} />
                 </View>
               )}
             />

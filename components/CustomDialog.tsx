@@ -1,5 +1,4 @@
 import { AntDesign } from '@expo/vector-icons';
-import LottieView from 'lottie-react-native';
 import React from 'react';
 import { Pressable } from 'react-native';
 import { Button, Modal, Text, View } from 'react-native-ui-lib';
@@ -42,7 +41,7 @@ const CustomDialog = ({
           <View>
             <View center className="gap-4">
               <AntDesign name="checkcircle" size={70} color={colors.Type.success} />
-              <Text center className="!text-Type-success font-pbold text-xl">
+              <Text center className="font-pbold text-xl !text-Type-success">
                 {title}
               </Text>
               <Text center className="font-pregular !text-[#7b7b7b]">

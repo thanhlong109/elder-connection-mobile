@@ -295,7 +295,9 @@ const addAddress = () => {
           fullWidth
           className="!rounded-lg"
           backgroundColor={colors.primary}>
-          <Text className="py-2 font-psemibold text-base !text-white">Thêm địa chỉ</Text>
+          <Text className="py-2 font-psemibold text-base !text-white">
+            {currentMode === MODE.CREATE ? 'Thêm địa chỉ' : 'Cập nhật'}
+          </Text>
         </Button>
       </View>
     </ScrollView>

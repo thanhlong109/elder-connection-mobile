@@ -28,6 +28,13 @@ export const addressApi = createApi({
       }),
       invalidatesTags: ['Address'],
     }),
+    deleteAddress: builder.mutation<ApiResponse<any>, number>({
+      query: (para) => ({
+        url: 'api/addresses/delete-account-address/' + para,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['Address'],
+    }),
     getAddress: builder.query<
       ApiResponse<PaggingResponse<GetAddressRespone>>,
       PaggingRequest<String>
@@ -40,4 +47,9 @@ export const addressApi = createApi({
   }),
   reducerPath: 'addressApi',
 });
-export const { useAddAddressMutation, useGetAddressQuery, useUpdateAddressMutation } = addressApi;
+export const {
+  useAddAddressMutation,
+  useGetAddressQuery,
+  useUpdateAddressMutation,
+  useDeleteAddressMutation,
+} = addressApi;

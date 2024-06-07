@@ -51,4 +51,5 @@ export enum HomeType {
 export enum MODE {
   UPDATE,
   CREATE,
+  DELETE,
 }
