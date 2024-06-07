@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { ServicePackageType, ServiceType } from '~/enums';
+import { CreatePostAndScheduleRequest } from '~/types/post.type';
 import { SelectableDateString } from '~/types/time.type';
 
 const getNextSevenDays = () => {
@@ -23,6 +24,7 @@ export interface ServiceBookingSliceState {
   workingStartTime: string;
   workingAddress: string;
   isPriorityFavoriteConnector: boolean;
+  //createPostAndSchedule: CreatePostAndScheduleRequest
 }
 
 const initialState: ServiceBookingSliceState = {

@@ -68,3 +68,8 @@ export type AccountDestailsRespones = Pick<
   | 'walletBalance'
   | 'createAt'
 >;
+
+export type UpdateAccountRequest = Pick<
+  Account,
+  'id' | 'firstName' | 'lastName' | 'sex' | 'biography' | 'profilePicture' | 'birthday'
+>;

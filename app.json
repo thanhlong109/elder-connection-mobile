@@ -20,7 +20,13 @@
       [
         "expo-location",
         {
-          "locationWhenInUsePermission": "Show current location on map."
+          "locationWhenInUsePermission": "Cho phép hiện vị trí của bạn trên bản đồ."
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Cho phép ứng dụng truy cập vào thư viện ảnh."
         }
       ]
     ],

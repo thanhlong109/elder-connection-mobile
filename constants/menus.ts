@@ -36,7 +36,7 @@ export const profileList = [
     {
       img: images.Icons.findUser,
       title: 'Thông tin thành viên',
-      href: '',
+      href: 'person-infor',
       id: 1,
     },
     {

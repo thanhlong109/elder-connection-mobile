@@ -4,6 +4,7 @@ import {
   SignInRespone,
   SignUpRequest,
   SignUpRespone,
+  UpdateAccountRequest,
 } from '~/types/auth.type';
 import { baseQueryWithReauth } from './baseApi';
 import { createApi } from '@reduxjs/toolkit/query/react';
@@ -65,6 +66,14 @@ export const accountApi = createApi({
       }),
     }),
 
+    updateAccount: builder.mutation<ApiResponse<AccountDestailsRespones>, UpdateAccountRequest>({
+      query: (body) => ({
+        url: `api/accounts/update-account-detail/${body.id}`,
+        method: 'PUT',
+        body,
+      }),
+    }),
+
     refresh: builder.mutation<{ accessToken: string }, { refreshToken: string }>({
       query: (refreshToken) => ({
         url: 'auth/refresh',
@@ -75,5 +84,10 @@ export const accountApi = createApi({
   }),
   reducerPath: 'accountApi',
 });
-export const { useRefreshMutation, useSignInMutation, useSignUpMutation, useAccountDetailsQuery } =
-  accountApi;
+export const {
+  useRefreshMutation,
+  useSignInMutation,
+  useSignUpMutation,
+  useAccountDetailsQuery,
+  useUpdateAccountMutation,
+} = accountApi;

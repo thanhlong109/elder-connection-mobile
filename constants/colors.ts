@@ -25,4 +25,7 @@ export default {
     warning: '#eeba56',
     info: '#468ee5',
   },
+  red: {
+    R1: '#FF7170',
+  },
 };

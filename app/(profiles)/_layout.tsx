@@ -11,6 +11,13 @@ const ProfileLayout = () => {
           animation: 'ios',
         }}
       />
+      <Stack.Screen
+        name="person-infor"
+        options={{
+          headerShown: false,
+          animation: 'ios',
+        }}
+      />
     </Stack>
   );
 };

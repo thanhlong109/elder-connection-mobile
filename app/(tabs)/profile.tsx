@@ -6,8 +6,12 @@ import { Link, router } from 'expo-router';
 import colors from '~/constants/colors';
 import { profileList } from '~/constants/menus';
 import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
+import { useSelector } from 'react-redux';
+import { RootState } from '~/store';
+import { Avatar } from 'react-native-ui-lib';
 
 const profile = () => {
+  const account = useSelector((state: RootState) => state.accountSlice.account);
   return (
     <SafeAreaView>
       <FlatList
@@ -38,19 +42,24 @@ const profile = () => {
           );
         }}
         ListHeaderComponent={() => (
-          <View className="flex-row items-center justify-between gap-4 bg-white p-6">
+          <View className="flex-row items-center justify-between gap-4 bg-white px-6 py-4">
             <Animated.View
               entering={FadeInUp.duration(1000).springify()}
               className="flex-row items-center gap-4">
-              <Image
-                resizeMode="cover"
-                source={{
-                  uri: 'https://lh3.googleusercontent.com/-x-WJ-sxmdj0/AAAAAAAAAAI/AAAAAAAAAAA/ALKGfkn8bHe7DelriE97PP4tJcoAC_Jfbg/photo.jpg?sz=46',
-                }}
-                className="h-[50px] w-[50px] rounded-full border-[2px] border-gray-400"
-              />
+              <View className="!rounded-full !bg-gray-C5 p-[1px]">
+                {/* avatar */}
+                <Avatar
+                  animate
+                  size={50}
+                  source={{
+                    uri: account.profilePicture,
+                  }}
+                  name={account.lastName}
+                  useAutoColors
+                />
+              </View>
               <Text className="my-auto rounded-full bg-secondary px-[16px] py-[10px] text-white">
-                Chào, Thắng!
+                Chào, {account.lastName}!
               </Text>
             </Animated.View>
             <Animated.View entering={FadeInUp.delay(200).duration(1000).springify()}>
