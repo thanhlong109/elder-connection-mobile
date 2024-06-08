@@ -7,14 +7,13 @@ import CustomButton from '~/components/CustomButton';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '~/store';
-import { getServiceTypeStringEnum, getStringEnum } from '~/utils/enumHelper';
+import { getServiceIdByType, getServiceTypeStringEnum, getStringEnum } from '~/utils/enumHelper';
 import { Text, TextField, View } from 'react-native-ui-lib';
 import colors from '~/constants/colors';
 import { setPostDescription } from '~/slices/serviceBookingSlice';
 import { CreatePostAndScheduleRequest } from '~/types/post.type';
 import { useAddPostMutation } from '~/services/postApi';
 import LoadingModel from '~/components/LoadingModel';
-import CustomDialog from '~/components/CustomDialog';
 
 const paymentConfirm = () => {
   const serviceBooking = useSelector((state: RootState) => state.serviceBooking.uiData);
@@ -66,23 +65,7 @@ const paymentConfirm = () => {
   };
 
   const onSubmit = () => {
-    let selectedService = SERVICE_ID.SERVICE_DATE_4H;
-    switch (serviceType) {
-      case ServiceType.SERVICE_4: {
-        selectedService =
-          packageType === ServicePackageType.DAILY
-            ? SERVICE_ID.SERVICE_DATE_4H
-            : SERVICE_ID.SERVICE_MONTH_4H;
-        break;
-      }
-      case ServiceType.SERVICE_8: {
-        selectedService =
-          packageType === ServicePackageType.DAILY
-            ? SERVICE_ID.SERVICE_DATE_8H
-            : SERVICE_ID.SERVICE_MONTH_8H;
-        break;
-      }
-    }
+    let selectedService = getServiceIdByType(serviceType, packageType);
     const lastIndex = listDayWork.findLastIndex((d) => d.isSelected);
     const endDate = new Date(listDayWork[lastIndex].date);
     const firstIndex = listDayWork.findIndex((d) => d.isSelected);

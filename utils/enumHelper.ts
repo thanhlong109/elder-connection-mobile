@@ -1,4 +1,4 @@
-import { HomeType, PostStatus, SERVICE_ID, ServiceType } from '~/enums';
+import { HomeType, PostStatus, SERVICE_ID, ServicePackageType, ServiceType } from '~/enums';
 
 export const getStringEnum = (homeType: HomeType) => {
   switch (homeType) {
@@ -53,4 +53,25 @@ export const getStringPostStatusEnum = (status: PostStatus) => {
     case PostStatus.Completed:
       return 'Đã xong';
   }
+};
+
+export const getServiceIdByType = (serviceType: ServiceType, packageType: ServicePackageType) => {
+  let selectedService = SERVICE_ID.SERVICE_DATE_4H;
+  switch (serviceType) {
+    case ServiceType.SERVICE_4: {
+      selectedService =
+        packageType === ServicePackageType.DAILY
+          ? SERVICE_ID.SERVICE_DATE_4H
+          : SERVICE_ID.SERVICE_MONTH_4H;
+      break;
+    }
+    case ServiceType.SERVICE_8: {
+      selectedService =
+        packageType === ServicePackageType.DAILY
+          ? SERVICE_ID.SERVICE_DATE_8H
+          : SERVICE_ID.SERVICE_MONTH_8H;
+      break;
+    }
+  }
+  return selectedService;
 };

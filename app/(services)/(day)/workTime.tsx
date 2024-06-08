@@ -1,5 +1,5 @@
-import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
-import React, { useMemo, useRef, useState } from 'react';
+import { Text, ScrollView } from 'react-native';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ServiceType } from '~/enums';
 import { getDateString } from '~/utils/date';
@@ -21,9 +21,14 @@ import {
   setWokingDates,
   setWokingStartTime,
 } from '~/slices/serviceBookingSlice';
-import Animated, { FadeInDown } from 'react-native-reanimated';
+import Animated, { FadeInDown, SlideInDown } from 'react-native-reanimated';
 import { router } from 'expo-router';
 import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
+import { useGetServiceByIdQuery } from '~/services/serviceApi';
+import { getServiceIdByType } from '~/utils/enumHelper';
+import { formatNumberToMoney } from '~/utils/formater';
+import { E } from '~/constants/base';
+import { Button, TouchableOpacity, View } from 'react-native-ui-lib';
 
 const dateData = [
   {
@@ -39,26 +44,48 @@ const dateData = [
 ];
 
 const workTime = () => {
-  //const [typeSelected, setTypeSelected] = useState<ServiceType | null>(null);
   const [isChangeTime, setIsChangeTime] = useState(false);
   const dispatch = useDispatch();
   const snapPoints = useMemo(() => ['25%', '50%', '75%', '100%'], []);
   const bottomSheetRef1 = useRef<BottomSheet>(null);
   const bottomSheetRef2 = useRef<BottomSheet>(null);
   const bottomSheetRef3 = useRef<BottomSheet>(null);
-
   const toggleSwitch = () => {
     dispatch(setIsPriorityFavoriteConnector(!isPriorityFavoriteConnector));
   };
 
   //slices
   const serviceBooking = useSelector((state: RootState) => state.serviceBooking.uiData);
+  const waletBalance = useSelector((state: RootState) => state.accountSlice.account.walletBalance);
   const dateList: SelectableDate[] = serviceBooking.schedule.listDayWork.map((d) => {
     return { date: new Date(d.date), isSelected: d.isSelected };
   });
   const timeSelected: Date = new Date(serviceBooking.post.startTime);
   const isPriorityFavoriteConnector = serviceBooking.post.isPriorityFavoriteConnector;
-  const typeSelected = serviceBooking.post.serviceType;
+  const { serviceType, packageType } = serviceBooking.post;
+  const [serviceId, setserviceId] = useState(getServiceIdByType(serviceType, packageType));
+  const [price, setprice] = useState(0);
+  const [payable, setpayable] = useState(true);
+
+  //---------------- call service api get price --------------------//
+
+  const { isError, isLoading, isSuccess, data } = useGetServiceByIdQuery(serviceId);
+
+  //---------------- end call service api get price --------------------//
+
+  //--------------- calculate money when service & date changed -------------//
+  useEffect(() => {
+    if (isSuccess && data) {
+      const selectedDates = dateList.filter((d) => d.isSelected);
+      const p = data.result.finalPrice * serviceType * selectedDates.length;
+      setprice(p);
+      setpayable(parseFloat(waletBalance) > p);
+    }
+  }, [data, isSuccess, dateList]);
+
+  useEffect(() => {
+    setserviceId(getServiceIdByType(serviceType, packageType));
+  }, [serviceType, packageType]);
 
   const toggleSelectDate = (index: number) => {
     var tempList = [...dateList];
@@ -102,9 +129,9 @@ const workTime = () => {
               <TouchableOpacity
                 activeOpacity={0.7}
                 onPress={() => dispatch(setServiceType(d.type))}
-                className={`my-2 gap-1 rounded-md border-[1px] border-gray-300 p-4  ${typeSelected === d.type ? '!border-secondary bg-secondary-BG' : ''}`}>
+                className={`my-2 gap-1 rounded-md border-[1px] border-gray-300 p-4  ${serviceType === d.type ? '!border-secondary bg-secondary-BG' : ''}`}>
                 <Text
-                  className={`font-psemibold text-lg ${typeSelected === d.type ? 'text-secondary' : ''}`}>
+                  className={`font-psemibold text-lg ${serviceType === d.type ? 'text-secondary' : ''}`}>
                   {d.title}
                 </Text>
                 <Text className="font-pregular">{d.des} </Text>
@@ -234,14 +261,41 @@ const workTime = () => {
             </TouchableOpacity>
           </Animated.View>
 
-          <Animated.View entering={FadeInDown.delay(1600).duration(1000).springify()}>
-            <TouchableOpacity onPress={() => bottomSheetRef3.current?.snapToIndex(2)}>
-              <View className="mx-6 mt-8 flex-row justify-between rounded-lg bg-green-B2 p-4">
-                <Text className="font-pbold text-lg text-white">520,000 VND/8h</Text>
-                <Text className="font-pregular text-lg text-white">tiếp theo</Text>
-              </View>
-            </TouchableOpacity>
-          </Animated.View>
+          {price > 0 && (
+            <View>
+              <Animated.View entering={FadeInDown.delay(1600).duration(1000).springify()}>
+                <TouchableOpacity
+                  onPress={() => {
+                    if (!isLoading) {
+                      if (payable) {
+                        bottomSheetRef3.current?.snapToIndex(2);
+                      } else {
+                        router.push('myWallet');
+                      }
+                    }
+                  }}
+                  className="mx-6 mt-8">
+                  <View
+                    backgroundColor={!payable ? colors.red.R1 : colors.green.B2}
+                    className=" flex-row justify-between rounded-lg  p-4">
+                    <Text className="font-pbold text-lg text-white">
+                      {formatNumberToMoney(price) + ' ' + E}
+                    </Text>
+                    <Text className="font-pregular text-lg text-white">
+                      {!payable ? 'Nạp thêm' : 'Tiếp theo'}
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+                {!payable && (
+                  <View center className="mt-1 w-full justify-center" row>
+                    <Text className="font-pmedium text-base text-red-500">
+                      Số dư ví của bạn không đủ!
+                    </Text>
+                  </View>
+                )}
+              </Animated.View>
+            </View>
+          )}
         </View>
       </ScrollView>
 
