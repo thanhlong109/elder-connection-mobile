@@ -1,33 +1,115 @@
 import { TextInput, ScrollView } from 'react-native';
 import React, { useEffect } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { getDateString } from '~/utils/date';
-import { DateStringType } from '~/enums';
+import { getDateString, getTimeFromDate } from '~/utils/date';
+import { DateStringType, SERVICE_ID, ServicePackageType, ServiceType } from '~/enums';
 import CustomButton from '~/components/CustomButton';
 import Animated, { FadeInDown } from 'react-native-reanimated';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '~/store';
 import { getServiceTypeStringEnum, getStringEnum } from '~/utils/enumHelper';
-import { Text, View } from 'react-native-ui-lib';
+import { Text, TextField, View } from 'react-native-ui-lib';
+import colors from '~/constants/colors';
+import { setPostDescription } from '~/slices/serviceBookingSlice';
+import { CreatePostAndScheduleRequest } from '~/types/post.type';
+import { useAddPostMutation } from '~/services/postApi';
+import LoadingModel from '~/components/LoadingModel';
+import CustomDialog from '~/components/CustomDialog';
 
 const paymentConfirm = () => {
   const serviceBooking = useSelector((state: RootState) => state.serviceBooking.uiData);
+  const accountId = useSelector((state: RootState) => state.accountSlice.account.id);
+  const dispatch = useDispatch();
   const {
     address,
     isPriorityFavoriteConnector,
-    packageType,
+    title,
     postDescription,
+    packageType,
     serviceType,
     startTime,
-    title,
   } = serviceBooking.post;
 
   const { listDayWork } = serviceBooking.schedule;
-  const dateStartTime = new Date(startTime);
-  const dateEndTime = new Date();
-  dateEndTime.setHours(dateEndTime.getHours() + serviceType, dateEndTime.getMinutes());
+
+  //------------------------ call api add post ---------------------//
+
+  const [callAddpost, { isError, isLoading, isSuccess, error }] = useAddPostMutation();
+
+  useEffect(() => {
+    if (isSuccess) {
+      console.log('thanh con');
+    }
+  }, [isSuccess]);
+
+  useEffect(() => {
+    if (isError) {
+      alert(error);
+      console.log('error add post: ', error);
+    }
+  }, [isError]);
+
+  //------------------------ end api add post ---------------------//
+
+  const getWorkDates = (isFormatDate: boolean) => {
+    const list = listDayWork.map((date) => {
+      if (date.isSelected) {
+        const d = new Date(date.date);
+        const dateString = isFormatDate
+          ? `${getDateString(d.getDay(), DateStringType.SHORT)} - ${d.getDate()}\/${d.getMonth()}`
+          : d.toISOString();
+        return dateString;
+      }
+      return '';
+    });
+    return list.filter((value) => value.trim().length > 0).join(' | ');
+  };
+
+  const onSubmit = () => {
+    let selectedService = SERVICE_ID.SERVICE_DATE_4H;
+    switch (serviceType) {
+      case ServiceType.SERVICE_4: {
+        selectedService =
+          packageType === ServicePackageType.DAILY
+            ? SERVICE_ID.SERVICE_DATE_4H
+            : SERVICE_ID.SERVICE_MONTH_4H;
+        break;
+      }
+      case ServiceType.SERVICE_8: {
+        selectedService =
+          packageType === ServicePackageType.DAILY
+            ? SERVICE_ID.SERVICE_DATE_8H
+            : SERVICE_ID.SERVICE_MONTH_8H;
+        break;
+      }
+    }
+    const lastIndex = listDayWork.findLastIndex((d) => d.isSelected);
+    const endDate = new Date(listDayWork[lastIndex].date);
+    const firstIndex = listDayWork.findIndex((d) => d.isSelected);
+    const startDate = new Date(listDayWork[firstIndex].date);
+    const createPostAndScheduleRequest: CreatePostAndScheduleRequest = {
+      jobScheduleCreateViewModel: {
+        description: '',
+        endDate: endDate.toISOString(),
+        listDayWork: getWorkDates(false),
+        startDate: startDate.toISOString(),
+      },
+      postCreateViewModel: {
+        addressId: address.addressId,
+        customerId: accountId,
+        isPriorityFavoriteConnector,
+        postDescription: postDescription,
+        serviceId: selectedService,
+        startTime: getTimeFromDate(startTime),
+        title,
+      },
+    };
+    callAddpost(createPostAndScheduleRequest);
+  };
+
   return (
     <SafeAreaView className="h-full">
+      <LoadingModel isloading={isLoading} />
       <ScrollView showsVerticalScrollIndicator={false}>
         <View className="h-full w-full gap-10 px-5 pb-10">
           {/* vi tri lm viec */}
@@ -42,21 +124,19 @@ const paymentConfirm = () => {
               className="mt-5 gap-4 rounded-md border-[1px] border-gray-300 p-4">
               <View className="gap-1">
                 <Text className="font-pmedium text-base">{address.addressName}</Text>
-                <Text className="line-clamp-1 font-pregular text-base text-black/65">
+                <Text className="line-clamp-1 font-plight text-base text-black/65">
                   {`${getStringEnum(address.homeType)} tại ${address.addressDescription}`}
                 </Text>
               </View>
               <View className="gap-1">
                 <Text className="font-pmedium text-base">Thông tin liên hệ</Text>
-                <View row centerV>
+                <View row centerV className="gap-1">
                   <Text className="font-pregular text-base text-black/50">Họ tên:</Text>
-                  <Text className="font-pregular text-base text-black/50">
-                    {address.contactName}
-                  </Text>
+                  <Text className="font-plight text-base text-black/50">{address.contactName}</Text>
                 </View>
-                <View row centerV>
+                <View row centerV className="gap-1">
                   <Text className="font-pregular text-base text-black/50">Số điện thoại:</Text>
-                  <Text className="font-pregular text-base text-black/50">
+                  <Text className="font-plight text-base text-black/50">
                     {address.contactPhone}
                   </Text>
                 </View>
@@ -78,17 +158,13 @@ const paymentConfirm = () => {
                 <Text className="font-pmedium text-base">Thời gian làm việc</Text>
                 <View className="gap-1">
                   <View className=" justify-between gap-1">
-                    <Text className="font-pregular text-sm text-black/55">Ngày làm việc</Text>
-                    <Text className="font-pregular text-sm  text-black/90">{`${listDayWork.map(
-                      (date) => {
-                        const d = new Date(date.date);
-                        return `${getDateString(d.getDate(), DateStringType.SHORT)} - ${d.getDate()}\/${d.getMonth()} `;
-                      }
-                    )}`}</Text>
+                    <Text className="font-plight text-base  text-black/90">
+                      {getWorkDates(true)}
+                    </Text>
                   </View>
-                  <View className="flex-row justify-between gap-10">
-                    <Text className="font-pregular text-sm text-black/55">Làm trong</Text>
-                    <Text className="font-pregular text-sm  text-black/90">{`${getServiceTypeStringEnum(serviceType)}, ${dateStartTime.getHours()}:${dateStartTime.getMinutes()} đến ${dateEndTime.getHours()}:${dateEndTime.getMinutes()}`}</Text>
+                  <View className="flex-row  gap-1">
+                    <Text className="font-plight text-base text-black/55">Thời gian: </Text>
+                    <Text className="font-plight text-base  text-black/90">{`${getServiceTypeStringEnum(serviceType)}, ${getTimeFromDate(startTime)} đến  ${getTimeFromDate(startTime, serviceType)}`}</Text>
                   </View>
                 </View>
               </View>
@@ -96,8 +172,7 @@ const paymentConfirm = () => {
               <View className="gap-1">
                 <Text className="font-pmedium text-base">Chi tiết công việc</Text>
                 <View className="mt-2 flex-row justify-between gap-10">
-                  <Text className="font-pregular text-sm text-black/55">Chi tiết công việc</Text>
-                  <Text className="flex-1 font-pregular text-sm text-black/90">
+                  <Text className="flex-1 font-plight text-base text-black/90">
                     Chăm xóc người cao tuổi tại nhà.
                   </Text>
                 </View>
@@ -107,16 +182,27 @@ const paymentConfirm = () => {
 
           {/* Ghi chu */}
           <Animated.View entering={FadeInDown.delay(800).duration(1000).springify()}>
-            <Text className="font-psemibold text-lg ">Ghi chú cho Connector</Text>
-            <TextInput
-              placeholder="Ghi chú gì đó giúp Connector làm việc tốt hơn."
-              numberOfLines={3}
+            <Text className="mb-2 font-psemibold text-lg ">Ghi chú cho Connector</Text>
+            <TextField
+              validateOnChange
+              placeholder={'Ghi chú gì đó giúp Connector làm việc tốt hơn.'}
+              fieldStyle={{
+                backgroundColor: '#fff',
+                padding: 16,
+                borderStyle: 'solid',
+                borderWidth: 1,
+                borderRadius: 4,
+                borderColor: colors.gray.C5,
+              }}
+              value={postDescription}
+              onChangeText={(value: string) => dispatch(setPostDescription(value))}
               multiline
-              className="mt-5 rounded-md border-[1px] border-gray-300 p-4"
+              maxLength={500}
+              showCharCounter
             />
           </Animated.View>
           <Animated.View entering={FadeInDown.delay(1000).duration(1000).springify()}>
-            <CustomButton handlePress={() => {}} title="Đăng việc" containerStyles="!bg-green-B2" />
+            <CustomButton handlePress={onSubmit} title="Đăng việc" containerStyles="!bg-green-B2" />
           </Animated.View>
         </View>
       </ScrollView>

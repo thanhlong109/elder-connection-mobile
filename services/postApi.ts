@@ -21,4 +21,4 @@ export const postApi = createApi({
   }),
   reducerPath: 'postApi',
 });
-export const {} = postApi;
+export const { useAddPostMutation } = postApi;

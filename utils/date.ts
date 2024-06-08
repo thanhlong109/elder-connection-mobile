@@ -63,3 +63,16 @@ export const formatDateTime = (date: Date) => {
   const formattedDateTime = `${formattedTime} - ${formattedDate}`;
   return formattedDateTime;
 };
+
+export const getTimeFromDate = (dateString: string, addHours?: number) => {
+  const date = new Date(dateString);
+  if (addHours) {
+    date.setHours(date.getHours() + addHours);
+  }
+  const hours = date.getHours().toString().padStart(2, '0');
+  const minutes = date.getMinutes().toString().padStart(2, '0');
+  const seconds = date.getSeconds().toString().padStart(2, '0');
+
+  const formattedTime = `${hours}:${minutes}:${seconds}`;
+  return formattedTime;
+};

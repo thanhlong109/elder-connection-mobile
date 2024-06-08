@@ -60,3 +60,10 @@ export enum Gender {
   FEMALE = 2,
   ORTHER = 3,
 }
+
+export enum SERVICE_ID {
+  SERVICE_DATE_4H = 2,
+  SERVICE_DATE_8H = 1,
+  SERVICE_MONTH_8H = 4,
+  SERVICE_MONTH_4H = 3,
+}
