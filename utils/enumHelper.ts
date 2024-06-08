@@ -1,4 +1,4 @@
-import { HomeType, ServiceType } from '~/enums';
+import { HomeType, PostStatus, SERVICE_ID, ServiceType } from '~/enums';
 
 export const getStringEnum = (homeType: HomeType) => {
   switch (homeType) {
@@ -16,5 +16,41 @@ export const getServiceTypeStringEnum = (serviceType: ServiceType) => {
       return '4 giờ';
     case ServiceType.SERVICE_8:
       return '8 giờ';
+  }
+};
+
+export const getServiceTypeFromServiceStringEnum = (service: SERVICE_ID) => {
+  switch (service) {
+    case SERVICE_ID.SERVICE_DATE_4H:
+    case SERVICE_ID.SERVICE_MONTH_4H:
+      return '4 giờ';
+    case SERVICE_ID.SERVICE_DATE_8H:
+    case SERVICE_ID.SERVICE_MONTH_8H:
+      return '8 giờ';
+  }
+};
+
+export const getTimeFromServiceStringEnum = (service: SERVICE_ID) => {
+  switch (service) {
+    case SERVICE_ID.SERVICE_DATE_4H:
+    case SERVICE_ID.SERVICE_MONTH_4H:
+      return 4;
+    case SERVICE_ID.SERVICE_DATE_8H:
+    case SERVICE_ID.SERVICE_MONTH_8H:
+      return 4;
+  }
+};
+
+export const getStringPostStatusEnum = (status: PostStatus) => {
+  switch (status) {
+    case PostStatus.Posted:
+    case PostStatus.Public:
+      return 'Đang chờ';
+    case PostStatus.Accepted:
+      return 'Đã nhận';
+    case PostStatus.Cancelled:
+      return 'Đã hủy';
+    case PostStatus.Completed:
+      return 'Đã xong';
   }
 };

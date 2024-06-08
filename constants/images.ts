@@ -22,6 +22,7 @@ import connectorFavorite from '../assets/images/Icons/ConnectorFavorite.png';
 import sendMoney2 from '../assets/images/Icons/SendMoney2.png';
 import recevieMoney from '../assets/images/Icons/RecevieMoney.png';
 import actionIcon from '../assets/images/Icons/ActionIcon.png';
+import empty from '../assets/images/Icons/Empty.png';
 import service1 from '../assets/images/serviceImg/service1.png';
 import service2 from '../assets/images/serviceImg/service2.png';
 import service3 from '../assets/images/serviceImg/service3.png';
@@ -55,6 +56,7 @@ export default {
     connectorFavorite,
     sendMoney2,
     recevieMoney,
+    empty,
   },
   home: {
     homeImg1,

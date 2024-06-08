@@ -22,10 +22,9 @@ export const postApi = createApi({
       }),
       invalidatesTags: ['post'],
     }),
-    getPosts: builder.query<ApiResponse<PaggingResponse<GetPostRespone>>, string>({
+    getPosts: builder.query<ApiResponse<PaggingResponse<GetPostRespone>>, PaggingRequest<String>>({
       query: (para) => ({
-        url: 'api/posts/get-post-by-customer-id/' + para,
-        method: 'POST',
+        url: `api/posts/get-post-by-customer-id/${para.data}?pageIndex=${para.pageIndex}&pageSize=${para.pageSize}`,
       }),
       providesTags: ['post'],
     }),

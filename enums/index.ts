@@ -1,7 +1,9 @@
-export enum ActionStatus {
-  APPROVED = 'Đã nhận',
-  PENDING = 'Đang chờ',
-  DONE = 'Đã xong',
+export enum PostStatus {
+  Posted = 1,
+  Public = 2,
+  Accepted = 3,
+  Completed = 4,
+  Cancelled = 5,
 }
 
 export enum MenuStatus {

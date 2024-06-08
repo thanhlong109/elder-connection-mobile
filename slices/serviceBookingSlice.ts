@@ -1,8 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import { HomeType, ServicePackageType, ServiceType } from '~/enums';
-import { Address, GetAddressRespone } from '~/types/address.type';
-import { CreatePostAndScheduleRequest } from '~/types/post.type';
+import { HomeType, PostStatus, ServicePackageType, ServiceType } from '~/enums';
+import {
+  AddAdressRequest,
+  AddAdressRespone,
+  Address,
+  GetAddressRespone,
+} from '~/types/address.type';
+import { GetPostRespone } from '~/types/post.type';
 import { SelectableDateString } from '~/types/time.type';
 
 const getNextSevenDays = () => {
@@ -35,19 +40,23 @@ interface UIData {
 
 export interface ServiceBookingSliceState {
   uiData: UIData;
+  viewPostDetails: GetPostRespone;
 }
+
+const initAddress: AddAdressRespone = {
+  addressDescription: '',
+  addressDetail: '',
+  addressId: 0,
+  addressName: '',
+  contactName: '',
+  contactPhone: '',
+  homeType: HomeType.TOWN_HOUSE,
+  accountId: '',
+};
 
 const initialUiData: UIData = {
   post: {
-    address: {
-      addressDescription: '',
-      addressDetail: '',
-      addressId: 0,
-      addressName: '',
-      contactName: '',
-      contactPhone: '',
-      homeType: HomeType.TOWN_HOUSE,
-    },
+    address: initAddress,
     isPriorityFavoriteConnector: false,
     postDescription: '',
     serviceType: ServiceType.SERVICE_4,
@@ -60,8 +69,38 @@ const initialUiData: UIData = {
   },
 };
 
+const initViewPost: GetPostRespone = {
+  address: initAddress,
+  createAt: '',
+  customerFirstName: '',
+  customerId: '',
+  customerLastName: '',
+  isPriorityFavoriteConnector: false,
+  jobSchedule: {
+    description: '',
+    endDate: '',
+    jobScheduleId: 0,
+    listDayWork: '',
+    locationWork: '',
+    onTask: false,
+    startDate: '',
+    taskProcess: 0,
+  },
+  postDescription: '',
+  postId: 0,
+  postStatus: PostStatus.Posted,
+  price: 0,
+  salaryAfterWork: 0,
+  serviceId: 0,
+  serviceName: '',
+  startTime: '',
+  title: '',
+  updateAt: '',
+};
+
 const initialState: ServiceBookingSliceState = {
   uiData: initialUiData,
+  viewPostDetails: initViewPost,
 };
 
 export const ServiceBookingSliceState = createSlice({
@@ -92,6 +131,9 @@ export const ServiceBookingSliceState = createSlice({
     setPostTitle: (state, action: PayloadAction<string>) => {
       state.uiData.post.title = action.payload;
     },
+    setViewPostDetail: (state, action: PayloadAction<GetPostRespone>) => {
+      state.viewPostDetails = action.payload;
+    },
   },
 });
 
@@ -105,6 +147,7 @@ export const {
   setWorkingAddress,
   setPostDescription,
   setPostTitle,
+  setViewPostDetail,
 } = ServiceBookingSliceState.actions;
 
 export default ServiceBookingSliceState.reducer;
