@@ -1,4 +1,5 @@
-import { CreateJobScheduleRequest } from './jobSchedule.type';
+import { Address } from './address.type';
+import { CreateJobScheduleRequest, JobSchedule } from './jobSchedule.type';
 
 export interface Post {
   serviceId: number;
@@ -8,6 +9,17 @@ export interface Post {
   postDescription: string;
   title: string;
   startTime: string;
+  postId: number;
+  serviceName: string;
+  jobSchedule: JobSchedule;
+  customerFirstName: string;
+  customerLastName: string;
+  address: Address;
+  postStatus: number;
+  createAt: string;
+  updateAt: string;
+  price: number;
+  salaryAfterWork: number;
 }
 
 export type CreatePostRequest = Pick<
@@ -26,4 +38,43 @@ export interface CreatePostAndScheduleRequest {
   jobScheduleCreateViewModel: CreateJobScheduleRequest;
 }
 
-export interface CreatePostAndScheduleResponse {}
+export type GetPostRespone = Pick<
+  Post,
+  | 'postId'
+  | 'serviceId'
+  | 'serviceName'
+  | 'jobSchedule'
+  | 'customerId'
+  | 'customerFirstName'
+  | 'customerLastName'
+  | 'address'
+  | 'isPriorityFavoriteConnector'
+  | 'postDescription'
+  | 'title'
+  | 'postStatus'
+  | 'startTime'
+  | 'createAt'
+  | 'updateAt'
+  | 'price'
+  | 'salaryAfterWork'
+>;
+export type CreatePostAndScheduleResponse = Pick<
+  Post,
+  | 'postId'
+  | 'serviceId'
+  | 'serviceName'
+  | 'jobSchedule'
+  | 'customerId'
+  | 'customerFirstName'
+  | 'customerLastName'
+  | 'address'
+  | 'isPriorityFavoriteConnector'
+  | 'postDescription'
+  | 'title'
+  | 'postStatus'
+  | 'startTime'
+  | 'createAt'
+  | 'updateAt'
+  | 'price'
+  | 'salaryAfterWork'
+>;

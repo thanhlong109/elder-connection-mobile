@@ -1,6 +1,10 @@
 import { baseQueryWithReauth } from './baseApi';
 import { createApi } from '@reduxjs/toolkit/query/react';
-import { CreatePostAndScheduleRequest, CreatePostAndScheduleResponse } from '~/types/post.type';
+import {
+  CreatePostAndScheduleRequest,
+  CreatePostAndScheduleResponse,
+  GetPostRespone,
+} from '~/types/post.type';
 
 export const postApi = createApi({
   baseQuery: baseQueryWithReauth,
@@ -18,7 +22,14 @@ export const postApi = createApi({
       }),
       invalidatesTags: ['post'],
     }),
+    getPosts: builder.query<ApiResponse<PaggingResponse<GetPostRespone>>, string>({
+      query: (para) => ({
+        url: 'api/posts/get-post-by-customer-id/' + para,
+        method: 'POST',
+      }),
+      providesTags: ['post'],
+    }),
   }),
   reducerPath: 'postApi',
 });
-export const { useAddPostMutation } = postApi;
+export const { useAddPostMutation, useGetPostsQuery } = postApi;

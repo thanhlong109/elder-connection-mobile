@@ -1,10 +1,12 @@
-import { View, Text, FlatList, Image } from 'react-native';
+import { FlatList, Image } from 'react-native';
 import React, { useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ActionStatus } from '~/enums';
 import images from '~/constants/images';
 import CustomButton from '~/components/CustomButton';
 import Animated, { FadeInDown } from 'react-native-reanimated';
+import { Button, Text, View } from 'react-native-ui-lib';
+import colors from '~/constants/colors';
 
 const data1 = [
   {
@@ -50,65 +52,68 @@ const data2 = [
 const nav = [
   {
     title: 'Chờ làm',
-    data: data1,
+    id: 1,
   },
   {
     title: 'Lịch sử',
-    data: data2,
+    id: 2,
   },
 ];
 
 const action = () => {
-  const [data, setData] = useState({
-    selected: nav[0].title,
-    datalist: nav[0].data,
-  });
+  const [selectedNav, setSelectedNav] = useState(1);
 
   return (
     <SafeAreaView>
-      <View className="h-full bg-white">
+      <View className="h-full bg-white ">
+        <View className="border-b-[1px] border-gray-C5 bg-white px-6 pb-6 pt-4">
+          <Text className="font-pmedium text-2xl">Hoạt động</Text>
+        </View>
         <FlatList
-          data={data.datalist}
-          renderItem={({ item, index }) => (
-            <Animated.View
-              entering={FadeInDown.delay(index * 200)
-                .duration(1000)
-                .springify()}
-              key={index}
-              className="mx-4 my-4 mt-8 rounded-3xl bg-white  p-4 shadow-md">
-              <View className="flex-row items-center justify-between ">
-                <Image source={item.img} className="h-[60px] w-[60px]" resizeMode="contain" />
-                <View>
-                  <Text className="font-psemibold">{item.serviceTile}</Text>
-                  <Text className="mt-2 font-pregular">Ngày: {item.date}</Text>
-                  <Text className="font-pregular">Dịch vụ: {item.serviceType}</Text>
-                  <Text className="font-pregular">Bắt đầu: {item.startTime}</Text>
-                </View>
-                <Text
-                  className={`rounded-full ${item.status == ActionStatus.APPROVED ? 'bg-[#468DE0]' : item.status == ActionStatus.DONE ? 'bg-primary' : 'bg-secondary'} p-2 font-pmedium text-sm text-white`}>
-                  {item.status}
-                </Text>
-              </View>
-              <Text className="w-full text-right font-pthin text-sm italic">
-                Ngày đăng: {item.postDate}
-              </Text>
-            </Animated.View>
-          )}
+          data={[]}
+          // renderItem={({ item, index }) => (
+          //   <Animated.View
+          //     entering={FadeInDown.delay(index * 200)
+          //       .duration(1000)
+          //       .springify()}
+          //     key={index}
+          //     className="mx-4 my-4 mt-8 rounded-3xl bg-white  p-4 shadow-md">
+          //     <View className="flex-row items-center justify-between ">
+          //       <Image source={item.img} className="h-[60px] w-[60px]" resizeMode="contain" />
+          //       <View>
+          //         <Text className="font-psemibold">{item.serviceTile}</Text>
+          //         <Text className="mt-2 font-pregular">Ngày: {item.date}</Text>
+          //         <Text className="font-pregular">Dịch vụ: {item.serviceType}</Text>
+          //         <Text className="font-pregular">Bắt đầu: {item.startTime}</Text>
+          //       </View>
+          //       <Text
+          //         className={`rounded-full ${item.status == ActionStatus.APPROVED ? 'bg-[#468DE0]' : item.status == ActionStatus.DONE ? 'bg-primary' : 'bg-secondary'} p-2 font-pmedium text-sm text-white`}>
+          //         {item.status}
+          //       </Text>
+          //     </View>
+          //     <Text className="w-full text-right font-pthin text-sm italic">
+          //       Ngày đăng: {item.postDate}
+          //     </Text>
+          //   </Animated.View>
+          // )}
+          renderItem={() => <></>}
           ListHeaderComponent={() => (
             <View>
-              <View className="w-full flex-row border-b-[1px] border-gray-C5 bg-white">
+              <View row className="w-full  border-b-[1px] border-gray-C5 bg-white">
                 {nav.map((n) => (
-                  <CustomButton
-                    key={n.title}
-                    handlePress={() => {
-                      setData({
-                        datalist: n.data,
-                        selected: n.title,
-                      });
-                    }}
-                    containerStyles={`${n.title === data.selected ? '!bg-primary' : '!bg-gray-C5'} flex-1 rounded-none`}
-                    title={n.title}
-                  />
+                  <Button
+                    backgroundColor={selectedNav === n.id ? colors.primary : '#E0E0E0'}
+                    key={n.id}
+                    flex
+                    className="!rounded-none"
+                    center
+                    onPress={() => setSelectedNav(n.id)}>
+                    <Text
+                      color={selectedNav === n.id ? 'white' : '#333'}
+                      className="py-1 font-pregular text-lg">
+                      {n.title}
+                    </Text>
+                  </Button>
                 ))}
               </View>
             </View>
