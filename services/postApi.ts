@@ -9,7 +9,7 @@ import {
 export const postApi = createApi({
   baseQuery: baseQueryWithReauth,
   refetchOnMountOrArgChange: true,
-  tagTypes: ['post'],
+  tagTypes: ['post', 'wallet'],
   endpoints: (builder) => ({
     addPost: builder.mutation<
       ApiResponse<CreatePostAndScheduleResponse>,
@@ -20,7 +20,7 @@ export const postApi = createApi({
         method: 'POST',
         body,
       }),
-      invalidatesTags: ['post'],
+      invalidatesTags: ['post', 'wallet'],
     }),
     getPosts: builder.query<ApiResponse<PaggingResponse<GetPostRespone>>, PaggingRequest<String>>({
       query: (para) => ({
