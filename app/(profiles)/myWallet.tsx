@@ -8,7 +8,7 @@ import { StatusBar } from 'expo-status-bar';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import Transaction from '~/components/Transaction';
 import Divider from '~/components/Divider';
-import { useGetWalletBalanceQuery } from '~/services/accountApi';
+import { useGetTransactionHistoryQuery, useGetWalletBalanceQuery } from '~/services/accountApi';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '~/store';
 import { setWalletRespone } from '~/slices/accountSlice';
@@ -48,9 +48,28 @@ const myWallet = () => {
   }, [isError]);
 
   //-------------------- end call api get wallet balance ------------------------------//
+
+  //-------------------- call api get transaction history ------------------------------//
+
+  const {
+    data: transactionData,
+    isSuccess: isGetTransactionSuccess,
+    isLoading: isGetTransactionLoading,
+    isError: isGetTransactionError,
+    error: transactionError,
+  } = useGetTransactionHistoryQuery(accountId);
+
+  useEffect(() => {
+    if (isGetTransactionError) {
+      console.log('error load balance:', transactionError);
+      alert('Lỗi không thể load lịch sử giao dịch!');
+    }
+  }, [isGetTransactionError]);
+
+  //-------------------- end call api get transaction history ------------------------------//
   return (
     <SafeAreaView>
-      <LoadingModel isloading={isLoading} />
+      <LoadingModel isloading={isLoading || isGetTransactionLoading} />
       <StatusBar backgroundColor="#48F2DD" />
       <View className="h-full bg-white">
         <LinearGradient colors={['#48F2DD', '#FFF']} className="h-1/3">
@@ -73,26 +92,9 @@ const myWallet = () => {
             </TouchableOpacity>
           ))}
         </View>
-        {active === menu[1].id && (
+        {active === menu[1].id && isGetTransactionSuccess && (
           <FlatList
-            data={[
-              {
-                id: 1,
-                title: 'Thanh toán dịch vụ',
-                isSend: false,
-                time: new Date(),
-                transaction: '-800,000đ',
-                walletAmount: '200,000đ',
-              },
-              {
-                id: 2,
-                title: 'Nạp tiền vào ví ',
-                isSend: true,
-                time: new Date(),
-                transaction: '+100,000đ',
-                walletAmount: '1,000,000đ',
-              },
-            ]}
+            data={transactionData.result.items}
             renderItem={({ index, item }) => (
               <Animated.View
                 entering={FadeInDown.delay(index * 200)
@@ -100,12 +102,8 @@ const myWallet = () => {
                   .springify()}
                 key={index}>
                 <Transaction
-                  isSend={item.isSend}
-                  time={item.time}
-                  title={item.title}
-                  transaction={item.transaction}
-                  walletAmount={item.walletAmount}
-                  containerStyle={index % 2 == 0 ? 'bg-white' : 'bg-[#EFFBFA]'}
+                  transaction={item}
+                  containerStyle={index % 2 == 0 ? '!bg-white' : '!bg-[#EFFBFA]'}
                 />
               </Animated.View>
             )}

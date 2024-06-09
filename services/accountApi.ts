@@ -9,6 +9,7 @@ import {
 } from '~/types/auth.type';
 import { baseQueryWithReauth } from './baseApi';
 import { createApi } from '@reduxjs/toolkit/query/react';
+import { GetTransactionByAccountResponse } from '~/types/payment.type';
 
 export const accountApi = createApi({
   baseQuery: baseQueryWithReauth,
@@ -76,6 +77,16 @@ export const accountApi = createApi({
       providesTags: ['wallet'],
     }),
 
+    getTransactionHistory: builder.query<
+      ApiResponse<PaggingResponse<GetTransactionByAccountResponse>>,
+      string
+    >({
+      query: (accountId) => ({
+        url: `api/transaction-histories/get-all-transaction-history-by-account/${accountId}`,
+      }),
+      providesTags: ['wallet'],
+    }),
+
     updateAccount: builder.mutation<ApiResponse<AccountDestailsRespones>, UpdateAccountRequest>({
       query: (body) => ({
         url: `api/accounts/update-account-detail/${body.id}`,
@@ -102,4 +113,5 @@ export const {
   useAccountDetailsQuery,
   useUpdateAccountMutation,
   useGetWalletBalanceQuery,
+  useGetTransactionHistoryQuery,
 } = accountApi;

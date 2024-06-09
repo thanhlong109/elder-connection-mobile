@@ -1,4 +1,13 @@
-import { HomeType, PostStatus, SERVICE_ID, ServicePackageType, ServiceType } from '~/enums';
+import {
+  HomeType,
+  PostStatus,
+  SERVICE_ID,
+  ServicePackageType,
+  ServiceType,
+  TransactionStatus,
+  TransactionType,
+  TransactionTypeString,
+} from '~/enums';
 
 export const getStringEnum = (homeType: HomeType) => {
   switch (homeType) {
@@ -74,4 +83,32 @@ export const getServiceIdByType = (serviceType: ServiceType, packageType: Servic
     }
   }
   return selectedService;
+};
+
+export const getStringTransactionStatusEnum = (status: TransactionStatus) => {
+  switch (status) {
+    case TransactionStatus.Pending:
+      return 'Đang chờ';
+    case TransactionStatus.Failed:
+      return 'Thất bại';
+    case TransactionStatus.Success:
+      return 'Thành công';
+  }
+};
+
+export const getStringTransactionTypeEnum = (
+  status: TransactionType | TransactionTypeString,
+  detail?: boolean
+) => {
+  switch (status) {
+    case TransactionTypeString.NAP_TIEN:
+    case TransactionType.NAP_TIEN:
+      return detail ? 'Nạp tiền vào ví' : 'Nạp tiền';
+    case TransactionTypeString.NHAN_TIEN:
+    case TransactionType.NHAN_TIEN:
+      return detail ? 'Nhận tiền vào ví' : 'Nhận tiền';
+    case TransactionTypeString.THANH_TOAN:
+    case TransactionType.THANH_TOAN:
+      return detail ? 'Thanh toán dịch vị' : 'Thanh toán';
+  }
 };

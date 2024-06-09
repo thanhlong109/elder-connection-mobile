@@ -70,3 +70,21 @@ export enum SERVICE_ID {
   SERVICE_MONTH_8H = 4,
   SERVICE_MONTH_4H = 3,
 }
+
+export enum TransactionStatus {
+  Pending = 1,
+  Success = 2,
+  Failed = 3,
+}
+
+export enum TransactionType {
+  NAP_TIEN = 1,
+  THANH_TOAN = 2,
+  NHAN_TIEN = 3,
+}
+
+export enum TransactionTypeString {
+  NAP_TIEN = 'NAP_TIEN',
+  THANH_TOAN = 'THANH_TOAN',
+  NHAN_TIEN = 'NHAN_TIEN',
+}
