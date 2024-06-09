@@ -1,16 +1,16 @@
 import '../global.css';
 
-import { SplashScreen, Stack } from 'expo-router';
-//import { createTheme, ThemeProvider } from '@rneui/themed';
+import { SplashScreen, Stack, router } from 'expo-router';
 import { useFonts } from 'expo-font';
 import { useEffect } from 'react';
 import { store } from '~/store';
-import { Provider } from 'react-redux';
+import { Provider, useDispatch } from 'react-redux';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { loadToken } from '~/utils/auth';
+import { setSignInRespone } from '~/slices/accountSlice';
 
 SplashScreen.preventAutoHideAsync();
 
-//const theme = createTheme({});
 export default function Layout() {
   const [fontsLoaded, error] = useFonts({
     'Poppins-Thin': require('../assets/fonts/Poppins-Thin.ttf'),

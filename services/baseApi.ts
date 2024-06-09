@@ -7,8 +7,8 @@ import { saveToken } from '~/utils/auth';
 
 const baseQuery = fetchBaseQuery({
   baseUrl: 'https://elderconnectionwebapp.azurewebsites.net/',
-  prepareHeaders: (headers, { getState }) => {
-    const token = AsyncStorage.getItem(KEYS.ACCESS_TOKEN);
+  prepareHeaders: async (headers, { getState }) => {
+    const token = await AsyncStorage.getItem(KEYS.ACCESS_TOKEN);
     if (token) {
       headers.set('Authorization', `Bearer ${token}`);
     }
@@ -21,8 +21,8 @@ export const baseQueryWithReauth = async (args: any, api: any, extraOptions: any
 
   if (response.error && (response.error as FetchBaseQueryError).status === 401) {
     // token expired
-    const token = AsyncStorage.getItem(KEYS.ACCESS_TOKEN);
-    const refreshToken = AsyncStorage.getItem(KEYS.REFRESH_TOKEN);
+    const token = await AsyncStorage.getItem(KEYS.ACCESS_TOKEN);
+    const refreshToken = await AsyncStorage.getItem(KEYS.REFRESH_TOKEN);
     const refreshResult = await baseQuery(
       {
         url: 'api/users/refresh-token',

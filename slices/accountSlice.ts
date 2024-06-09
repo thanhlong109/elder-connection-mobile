@@ -1,5 +1,10 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { Account, AccountDestailsRespones, SignInRespone } from '~/types/auth.type';
+import {
+  Account,
+  AccountDestailsRespones,
+  GetWalletBalanceResponse,
+  SignInRespone,
+} from '~/types/auth.type';
 import { saveToken } from '~/utils/auth';
 
 export interface AccountSliceState {
@@ -54,10 +59,16 @@ export const accountSlice = createSlice({
       state.account.status = action.payload.status;
       state.account.walletBalance = action.payload.walletBalance;
     },
+    setWalletRespone: (state, action: PayloadAction<GetWalletBalanceResponse>) => {
+      state.account.walletBalance = action.payload.walletBalance + '';
+      state.account.firstName = action.payload.lastName;
+      state.account.lastName = action.payload.lastName;
+      state.account.profilePicture = action.payload.profilePicture;
+    },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { setSignInRespone, setAccountDetails } = accountSlice.actions;
+export const { setSignInRespone, setAccountDetails, setWalletRespone } = accountSlice.actions;
 
 export default accountSlice.reducer;

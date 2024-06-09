@@ -42,6 +42,7 @@ export enum KEYS {
   REFRESH_TOKEN = 'refreshToken',
   ACCESS_TOKEN = 'accessToken',
   EXPIRED_TOKEN = 'expireToke',
+  ACCOUNT_ID_TOKEN = 'accountId',
 }
 
 export enum HomeType {

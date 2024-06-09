@@ -1,5 +1,5 @@
 import { View, Text, Image, FlatList, TouchableOpacity } from 'react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import LottieView from 'lottie-react-native';
 import images from '~/constants/images';
@@ -8,6 +8,12 @@ import { StatusBar } from 'expo-status-bar';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import Transaction from '~/components/Transaction';
 import Divider from '~/components/Divider';
+import { useGetWalletBalanceQuery } from '~/services/accountApi';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '~/store';
+import { setWalletRespone } from '~/slices/accountSlice';
+import LoadingModel from '~/components/LoadingModel';
+import { E } from '~/constants/base';
 
 const menu = [
   {
@@ -22,9 +28,29 @@ const menu = [
 
 const myWallet = () => {
   const [active, setActive] = useState(menu[0].id);
+  const accountId = useSelector((state: RootState) => state.accountSlice.account.id);
+  const dispatch = useDispatch();
+  //-------------------- call api get wallet balance ------------------------------//
 
+  const { data, isSuccess, isLoading, isError, error } = useGetWalletBalanceQuery(accountId);
+
+  useEffect(() => {
+    if (data && isSuccess) {
+      dispatch(setWalletRespone(data.result));
+    }
+  }, [data, isSuccess]);
+
+  useEffect(() => {
+    if (isError) {
+      console.log('error load balance:', error);
+      alert('Lỗi không thể load số dư ví!');
+    }
+  }, [isError]);
+
+  //-------------------- end call api get wallet balance ------------------------------//
   return (
     <SafeAreaView>
+      <LoadingModel isloading={isLoading} />
       <StatusBar backgroundColor="#48F2DD" />
       <View className="h-full bg-white">
         <LinearGradient colors={['#48F2DD', '#FFF']} className="h-1/3">
@@ -94,7 +120,7 @@ const myWallet = () => {
                 <Text className="mb-2 font-pregular">Số tiền trong tài khoản</Text>
                 <View className="flex-row justify-around ">
                   <Text className="h-full items-center text-center align-middle text-2xl text-[#006D60]">
-                    10,000,000đ
+                    {isSuccess && data && data.result.walletBalance + ' ' + E}
                   </Text>
                   <Image
                     source={images.Icons.Eicon}

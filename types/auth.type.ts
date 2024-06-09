@@ -73,3 +73,10 @@ export type UpdateAccountRequest = Pick<
   Account,
   'id' | 'firstName' | 'lastName' | 'sex' | 'biography' | 'profilePicture' | 'birthday'
 >;
+
+export type GetWalletBalanceResponse = Pick<
+  Account,
+  'firstName' | 'lastName' | 'profilePicture'
+> & {
+  walletBalance: number;
+};

@@ -1,5 +1,6 @@
 import {
   AccountDestailsRespones,
+  GetWalletBalanceResponse,
   SignInRequest,
   SignInRespone,
   SignUpRequest,
@@ -11,7 +12,7 @@ import { createApi } from '@reduxjs/toolkit/query/react';
 
 export const accountApi = createApi({
   baseQuery: baseQueryWithReauth,
-  tagTypes: ['account'],
+  tagTypes: ['account', 'wallet'],
   refetchOnMountOrArgChange: true,
   endpoints: (builder) => ({
     signUp: builder.mutation<ApiResponse<SignUpRespone>, SignUpRequest>({
@@ -68,6 +69,13 @@ export const accountApi = createApi({
       providesTags: ['account'],
     }),
 
+    getWalletBalance: builder.query<ApiResponse<GetWalletBalanceResponse>, string>({
+      query: (accountId) => ({
+        url: `api/accounts/get-wallet-balance/${accountId}`,
+      }),
+      providesTags: ['wallet'],
+    }),
+
     updateAccount: builder.mutation<ApiResponse<AccountDestailsRespones>, UpdateAccountRequest>({
       query: (body) => ({
         url: `api/accounts/update-account-detail/${body.id}`,
@@ -93,4 +101,5 @@ export const {
   useSignUpMutation,
   useAccountDetailsQuery,
   useUpdateAccountMutation,
+  useGetWalletBalanceQuery,
 } = accountApi;

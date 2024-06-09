@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "elder-connection-mobile-v2",
-    "slug": "elder-connection-mobile-v2",
+    "name": "Elder connection",
+    "slug": "elder-connection",
     "version": "1.0.0",
     "scheme": "elder-connection-mobile-v2",
     "web": {
@@ -35,10 +35,10 @@
       "tsconfigPaths": true
     },
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/images/appIcon.jpg",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/images/logo.jpg",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },

@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '~/store';
 import LoadingModel from '~/components/LoadingModel';
 import { setAccountDetails } from '~/slices/accountSlice';
+import { E } from '~/constants/base';
 
 const home = () => {
   const dispatch = useDispatch();
@@ -73,7 +74,9 @@ const home = () => {
                 className="h-[25px] w-[25px]"
                 resizeMode="contain"
               />
-              <Text className="h-full align-middle font-pregular">{account.walletBalance}đ</Text>
+              <Text className="h-full align-middle font-pregular">
+                {account.walletBalance + ' ' + E}
+              </Text>
             </View>
             <View className="h-full w-[1px] bg-gray-C5" />
             <View className="flex-1 flex-row items-center justify-around px-4 py-4">
