@@ -1,7 +1,7 @@
 import { Text, ScrollView } from 'react-native';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { ServiceType } from '~/enums';
+import { DialogType, ServiceType } from '~/enums';
 import { getDateString } from '~/utils/date';
 import { SelectableDate, SelectableDateString } from '~/types/time.type';
 import { AntDesign } from '@expo/vector-icons';
@@ -30,6 +30,7 @@ import { formatNumberToMoney } from '~/utils/formater';
 import { E } from '~/constants/base';
 import { Button, TouchableOpacity, View } from 'react-native-ui-lib';
 import ErrorModel from '~/components/ErrorModel';
+import CustomDialog from '~/components/CustomDialog';
 
 const dateData = [
   {
@@ -272,7 +273,7 @@ const workTime = () => {
                       if (payable) {
                         bottomSheetRef3.current?.snapToIndex(2);
                       } else {
-                        router.push('myWallet');
+                        router.push('addCoins');
                       }
                     }
                   }}

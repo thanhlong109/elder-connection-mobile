@@ -134,6 +134,9 @@ export const ServiceBookingSliceState = createSlice({
     setViewPostDetail: (state, action: PayloadAction<GetPostRespone>) => {
       state.viewPostDetails = action.payload;
     },
+    setClearBookingState: (state) => {
+      state.uiData = initialUiData;
+    },
   },
 });
 
@@ -148,6 +151,7 @@ export const {
   setPostDescription,
   setPostTitle,
   setViewPostDetail,
+  setClearBookingState,
 } = ServiceBookingSliceState.actions;
 
 export default ServiceBookingSliceState.reducer;

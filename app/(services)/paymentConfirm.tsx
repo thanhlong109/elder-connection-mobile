@@ -1,8 +1,8 @@
 import { TextInput, ScrollView } from 'react-native';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { getDateString, getTimeFromDate } from '~/utils/date';
-import { DateStringType, SERVICE_ID, ServicePackageType, ServiceType } from '~/enums';
+import { DateStringType, DialogType, SERVICE_ID, ServicePackageType, ServiceType } from '~/enums';
 import CustomButton from '~/components/CustomButton';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { useDispatch, useSelector } from 'react-redux';
@@ -10,14 +10,17 @@ import { RootState } from '~/store';
 import { getServiceIdByType, getServiceTypeStringEnum, getStringEnum } from '~/utils/enumHelper';
 import { Text, TextField, View } from 'react-native-ui-lib';
 import colors from '~/constants/colors';
-import { setPostDescription } from '~/slices/serviceBookingSlice';
+import { setClearBookingState, setPostDescription } from '~/slices/serviceBookingSlice';
 import { CreatePostAndScheduleRequest } from '~/types/post.type';
 import { useAddPostMutation } from '~/services/postApi';
 import LoadingModel from '~/components/LoadingModel';
+import CustomDialog from '~/components/CustomDialog';
+import { router } from 'expo-router';
 
 const paymentConfirm = () => {
   const serviceBooking = useSelector((state: RootState) => state.serviceBooking.uiData);
   const accountId = useSelector((state: RootState) => state.accountSlice.account.id);
+  const [dialogVisible, setDialogVisible] = useState(false);
   const dispatch = useDispatch();
   const {
     address,
@@ -37,7 +40,8 @@ const paymentConfirm = () => {
 
   useEffect(() => {
     if (isSuccess) {
-      console.log('thanh con');
+      setDialogVisible(true);
+      dispatch(setClearBookingState());
     }
   }, [isSuccess]);
 
@@ -92,6 +96,15 @@ const paymentConfirm = () => {
 
   return (
     <SafeAreaView className="h-full">
+      <CustomDialog
+        visble={dialogVisible}
+        body="Bạn đã đăng việc thành công, vui lòng chờ connector nhận việc!"
+        setVisible={setDialogVisible}
+        type={DialogType.SUCCESS}
+        bgDismissable={false}
+        buttonCloseTitle="Quay lại trang chủ"
+        onDismiss={() => router.push('home')}
+      />
       <LoadingModel isloading={isLoading} />
       <ScrollView showsVerticalScrollIndicator={false}>
         <View className="h-full w-full gap-10 px-5 pb-10">
