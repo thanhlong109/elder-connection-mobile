@@ -24,3 +24,15 @@ export type GetTransactionByAccountResponse = Pick<
   | 'transactionType'
   | 'walletBalanceChange'
 >;
+
+export interface TopUpWalletRequest {
+  amount: number;
+  accountId: string;
+}
+
+export interface TopUpWalletResponse {
+  result: string;
+  transId: number;
+  status: number;
+  message: string;
+}

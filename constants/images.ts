@@ -28,6 +28,7 @@ import service2 from '../assets/images/serviceImg/service2.png';
 import service3 from '../assets/images/serviceImg/service3.png';
 import service4 from '../assets/images/serviceImg/service4.png';
 import service5 from '../assets/images/serviceImg/service5.png';
+import vnpayLogo from '../assets/images/vnpayLogo.png';
 
 export default {
   bannerStart,
@@ -67,5 +68,8 @@ export default {
     service3,
     service4,
     service5,
+  },
+  logo: {
+    vnpayLogo,
   },
 };

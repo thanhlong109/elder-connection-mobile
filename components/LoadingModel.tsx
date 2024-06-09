@@ -10,12 +10,13 @@ interface LoadingModelProps {
 const LoadingModel = ({ isloading }: LoadingModelProps) => {
   return (
     <Modal animationType="slide" visible={isloading} transparent>
-      <View center className=" h-full w-full bg-[rgba(0,0,0,0.3)]">
+      <View center className=" h-full w-full bg-[rgba(0,0,0,0.1)]">
         <LottieView
-          style={{ width: 100, height: 100 }}
+          style={{ width: 300, height: 300 }}
           autoPlay
           loop
-          source={require('~/assets/animations/LoadingAnimation.json')}
+          renderMode="SOFTWARE"
+          source={require('~/assets/animations/Loading2.json')}
           resizeMode="contain"
         />
       </View>

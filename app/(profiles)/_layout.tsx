@@ -18,6 +18,17 @@ const ProfileLayout = () => {
           animation: 'ios',
         }}
       />
+      <Stack.Screen
+        name="addCoins"
+        options={{
+          headerShown: true,
+          animation: 'ios',
+          title: 'Nạp tiền',
+          contentStyle: {
+            backgroundColor: '#fff',
+          },
+        }}
+      />
     </Stack>
   );
 };

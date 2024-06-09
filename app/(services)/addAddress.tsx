@@ -9,6 +9,7 @@ import { router } from 'expo-router';
 import { setAddAddress, setClearState } from '~/slices/addressSlice';
 import { useAddAddressMutation, useUpdateAddressMutation } from '~/services/addressApi';
 import LoadingModel from '~/components/LoadingModel';
+import ErrorModel from '~/components/ErrorModel';
 
 const homeData = [
   {
@@ -109,6 +110,7 @@ const addAddress = () => {
 
   return (
     <ScrollView>
+      <ErrorModel isError={isAddError} onReload={() => handleSubmit()} />
       <LoadingModel isloading={isAddLoading || isUpdateLoading} />
       <View className="gap-8 p-6">
         {/* address name */}

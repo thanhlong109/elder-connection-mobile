@@ -4,26 +4,7 @@ import { Entypo } from '@expo/vector-icons';
 import { Notification } from '~/types/notification.type';
 import { NotificationType } from '~/enums';
 
-const fdata: Notification[] = [
-  {
-    isRead: false,
-    action: '',
-    message: 'Bạn đã đăng thành công công việc chăm sóc người cao tuổi',
-    notificationId: 1,
-    sendDate: new Date(),
-    title: 'Thanh toán thành công',
-    type: NotificationType.NORMAL,
-  },
-  {
-    isRead: true,
-    action: '',
-    message: 'meassage 2',
-    notificationId: 2,
-    sendDate: new Date(),
-    title: 'Title message 2',
-    type: NotificationType.NORMAL,
-  },
-];
+const fdata: Notification[] = [];
 
 const notification = () => {
   const [data, setData] = useState<Notification[]>(fdata);

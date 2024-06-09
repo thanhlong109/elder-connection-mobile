@@ -29,6 +29,7 @@ import { getServiceIdByType } from '~/utils/enumHelper';
 import { formatNumberToMoney } from '~/utils/formater';
 import { E } from '~/constants/base';
 import { Button, TouchableOpacity, View } from 'react-native-ui-lib';
+import ErrorModel from '~/components/ErrorModel';
 
 const dateData = [
   {
@@ -69,7 +70,7 @@ const workTime = () => {
 
   //---------------- call service api get price --------------------//
 
-  const { isError, isLoading, isSuccess, data } = useGetServiceByIdQuery(serviceId);
+  const { isError, isLoading, isSuccess, data, refetch } = useGetServiceByIdQuery(serviceId);
 
   //---------------- end call service api get price --------------------//
 
@@ -113,6 +114,7 @@ const workTime = () => {
 
   return (
     <SafeAreaView>
+      <ErrorModel isError={isError} onReload={() => refetch()} />
       <ScrollView className="h-full">
         <View className="m-4 pb-8">
           <Animated.Text

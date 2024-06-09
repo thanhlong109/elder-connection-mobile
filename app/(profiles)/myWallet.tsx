@@ -14,6 +14,7 @@ import { RootState } from '~/store';
 import { setWalletRespone } from '~/slices/accountSlice';
 import LoadingModel from '~/components/LoadingModel';
 import { E } from '~/constants/base';
+import { router } from 'expo-router';
 
 const menu = [
   {
@@ -128,8 +129,8 @@ const myWallet = () => {
                 </View>
               </View>
               <Divider />
-              <View className="w-full px-8 py-4">
-                <TouchableOpacity>
+              <View className="w-full">
+                <TouchableOpacity onPress={() => router.push('addCoins')} className="px-8 py-4">
                   <Text className="self-end font-psemibold text-secondary">Nạp thêm</Text>
                 </TouchableOpacity>
               </View>

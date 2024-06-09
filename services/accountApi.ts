@@ -9,7 +9,11 @@ import {
 } from '~/types/auth.type';
 import { baseQueryWithReauth } from './baseApi';
 import { createApi } from '@reduxjs/toolkit/query/react';
-import { GetTransactionByAccountResponse } from '~/types/payment.type';
+import {
+  GetTransactionByAccountResponse,
+  TopUpWalletRequest,
+  TopUpWalletResponse,
+} from '~/types/payment.type';
 
 export const accountApi = createApi({
   baseQuery: baseQueryWithReauth,
@@ -95,6 +99,12 @@ export const accountApi = createApi({
       }),
       invalidatesTags: ['account'],
     }),
+    topUpWallet: builder.mutation<TopUpWalletResponse, TopUpWalletRequest>({
+      query: (para) => ({
+        url: `api/payments/request-top-up-wallet?accountId=${para.accountId}&amount=${para.amount}`,
+        method: 'POST',
+      }),
+    }),
 
     refresh: builder.mutation<{ accessToken: string }, { refreshToken: string }>({
       query: (refreshToken) => ({
@@ -114,4 +124,5 @@ export const {
   useUpdateAccountMutation,
   useGetWalletBalanceQuery,
   useGetTransactionHistoryQuery,
+  useTopUpWalletMutation,
 } = accountApi;

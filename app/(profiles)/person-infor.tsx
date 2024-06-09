@@ -28,6 +28,7 @@ import { containSpaceRegex } from '~/regex';
 import { useUpdateAccountMutation } from '~/services/accountApi';
 import LoadingModel from '~/components/LoadingModel';
 import UploadStatus from '~/components/UploadStatus';
+import ErrorModel from '~/components/ErrorModel';
 
 const PersonInfor = () => {
   const account = useSelector((state: RootState) => state.accountSlice.account);
@@ -95,6 +96,7 @@ const PersonInfor = () => {
 
   return (
     <SafeAreaView>
+      <ErrorModel isError={isError} onReload={() => handleSave()} />
       <LoadingModel isloading={isLoading} />
       <UploadStatus uploadStatus={uploadStatus} />
       <StatusBar backgroundColor="#4045A3" style="light" />

@@ -12,6 +12,7 @@ import { RootState } from '~/store';
 import { GetPostRespone } from '~/types/post.type';
 import ActionItem from '~/components/ActionItem';
 import LoadingModel from '~/components/LoadingModel';
+import ErrorModel from '~/components/ErrorModel';
 
 const nav = [
   {
@@ -47,7 +48,7 @@ const action = () => {
 
   //----------------------------- start call api get post ---------------------------//
 
-  const { data, error, isError, isLoading, isSuccess } = useGetPostsQuery({
+  const { data, error, isError, isLoading, isSuccess, refetch } = useGetPostsQuery({
     data: accountId,
     pageIndex: 0,
     pageSize: 30,
@@ -71,6 +72,7 @@ const action = () => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <LoadingModel isloading={isLoading} />
+      <ErrorModel isError={isError} onReload={() => refetch()} />
       <View flex className=" bg-white ">
         <View className="border-b-[1px] border-gray-C5 bg-white px-6 pb-6 pt-4">
           <Text className="font-pmedium text-2xl">Hoạt động</Text>

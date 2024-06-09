@@ -1,4 +1,4 @@
-import { View, Text, ImageBackground, Image } from 'react-native';
+import { View, Text, ImageBackground, Image, TouchableOpacity } from 'react-native';
 import React, { useEffect } from 'react';
 import { Container } from '~/components/Container';
 import images from '~/constants/images';
@@ -13,6 +13,8 @@ import { RootState } from '~/store';
 import LoadingModel from '~/components/LoadingModel';
 import { setAccountDetails } from '~/slices/accountSlice';
 import { E } from '~/constants/base';
+import { router } from 'expo-router';
+import ErrorModel from '~/components/ErrorModel';
 
 const home = () => {
   const dispatch = useDispatch();
@@ -48,7 +50,7 @@ const home = () => {
   return (
     <Container style="item-center relative">
       <LoadingModel isloading={isGetUserLoading} />
-
+      <ErrorModel isError={isGetUserError} onReload={() => refetchGetUser()} />
       <ImageBackground
         source={images.bgShapes.bgShapes3}
         className="absolute h-[150px] w-full"
@@ -79,10 +81,12 @@ const home = () => {
               </Text>
             </View>
             <View className="h-full w-[1px] bg-gray-C5" />
-            <View className="flex-1 flex-row items-center justify-around px-4 py-4">
+            <TouchableOpacity
+              onPress={() => router.push('addCoins')}
+              className="flex-1 flex-row items-center justify-around px-4 py-4">
               <Text className="h-full align-middle font-pregular">Nạp tiền</Text>
               <AntDesign name="right" size={24} color="#37474F" />
-            </View>
+            </TouchableOpacity>
           </View>
         </Animated.View>
       </View>
