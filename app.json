@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Elder connection",
-    "slug": "elder-connection",
+    "slug": "elder-connection-mobile-v2",
     "version": "1.0.0",
     "scheme": "elder-connection-mobile-v2",
     "web": {
@@ -35,7 +35,7 @@
       "tsconfigPaths": true
     },
     "orientation": "portrait",
-    "icon": "./assets/images/appIcon.jpg",
+    "icon": "./assets/images/logo.jpg",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/images/logo.jpg",
@@ -53,7 +53,7 @@
       },
       "config": {
         "googleMaps": {
-          "apiKey": ""
+          "apiKey": "AIzaSyDuWHS7jUAl0pnYSV_WiFWULZH5tQLWgt4"
         }
       },
       "package": "com.thanhlong109.elderconnectionmobilev2"
