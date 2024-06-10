@@ -35,7 +35,7 @@
       "tsconfigPaths": true
     },
     "orientation": "portrait",
-    "icon": "./assets/images/logo.jpg",
+    "icon": "./assets/images/appIcon.jpg",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/images/logo.jpg",
@@ -53,10 +53,11 @@
       },
       "config": {
         "googleMaps": {
-          "apiKey": "AIzaSyDuWHS7jUAl0pnYSV_WiFWULZH5tQLWgt4"
+          "apiKey": ""
         }
       },
-      "package": "com.thanhlong109.elderconnectionmobilev2"
+      "package": "com.thanhlong109.elderconnectionmobilev2",
+      "googleServicesFile": "./elderconnection-firebase-adminsdk-dcusd-bc75aea9a7.json"
     },
     "extra": {
       "router": {

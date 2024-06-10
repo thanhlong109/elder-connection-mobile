@@ -18,6 +18,7 @@ import {
 import CustomDialog from '~/components/CustomDialog';
 import { DialogType } from '~/enums';
 import LoadingModel from '~/components/LoadingModel';
+import ErrorModel from '~/components/ErrorModel';
 
 const SignUp = () => {
   const [form, setform] = useState<SignUpRequest>({
@@ -66,6 +67,11 @@ const SignUp = () => {
   return (
     <Container style="justify-center  relative">
       <LoadingModel isloading={isLoading} />
+      <ErrorModel
+        isError={isError}
+        onReload={handleSubmit}
+        message="Không thể kết nối đến sever, vui lòng đợi 2p để sever khởi động!"
+      />
       <CustomDialog
         title="thành công!"
         onDismiss={() => router.push('sign-in')}
