@@ -15,6 +15,7 @@ expo-env.d.ts
 # firebase/supabase
 .env
 elderconnection-firebase-adminsdk-dcusd-bc75aea9a7.json
+spry-connection-425510-t1-0c00a0ee1ac2.json
 
 ios
 android

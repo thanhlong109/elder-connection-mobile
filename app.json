@@ -57,7 +57,7 @@
         }
       },
       "package": "com.thanhlong109.elderconnectionmobilev2",
-      "googleServicesFile": "./elderconnection-firebase-adminsdk-dcusd-bc75aea9a7.json"
+      "googleServicesFile": ""
     },
     "extra": {
       "router": {
