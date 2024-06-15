@@ -29,6 +29,16 @@ const ProfileLayout = () => {
           },
         }}
       />
+      <Stack.Screen
+        name="paymentWebview"
+        options={{
+          headerShown: false,
+          animation: 'ios',
+          contentStyle: {
+            backgroundColor: '#fff',
+          },
+        }}
+      />
     </Stack>
   );
 };

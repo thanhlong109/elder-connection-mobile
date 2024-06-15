@@ -5,10 +5,7 @@
   "build": {
     "development": {
       "developmentClient": false,
-      "distribution": "internal",
-      "android": {
-        "buildType": "aab"
-      }
+      "distribution": "internal"
     },
     "preview": {
       "distribution": "internal"

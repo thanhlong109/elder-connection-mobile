@@ -11,6 +11,7 @@ import { useTopUpWalletMutation } from '~/services/accountApi';
 import { RootState } from '~/store';
 import { formatNumberToMoney } from '~/utils/formater';
 import * as Linking from 'expo-linking';
+import { router } from 'expo-router';
 
 const priceList = [100000, 200000, 300000, 500000, 1000000, 2000000];
 
@@ -24,7 +25,8 @@ const addCoins = () => {
 
   useEffect(() => {
     if (isSuccess && data) {
-      Linking.openURL(data.result);
+      //Linking.openURL(data.result);
+      router.replace({ pathname: 'paymentWebview', params: { urlRequest: data.result } });
     }
   }, [isSuccess]);
 
