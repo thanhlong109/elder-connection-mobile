@@ -12,6 +12,7 @@ import LoadingModel from '~/components/LoadingModel';
 import { Text, View } from 'react-native-ui-lib';
 import { setCreateNewAddress } from '~/slices/addressSlice';
 import { MODE } from '~/enums';
+import { setClearBookingState } from '~/slices/serviceBookingSlice';
 
 const selectAddress = () => {
   const accountId = useSelector((state: RootState) => state.accountSlice.account.id);
@@ -32,6 +33,10 @@ const selectAddress = () => {
       console.log('error get address list: ', error);
     }
   }, [isError]);
+
+  useEffect(() => {
+    dispatch(setClearBookingState());
+  }, []);
 
   //--------------------------- end call api ----------------------------//
 

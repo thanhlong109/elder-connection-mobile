@@ -1,237 +1,74 @@
-import { Text, ScrollView } from 'react-native';
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState, useCallback } from 'react';
+import { Text, ScrollView, View, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { DialogType, ServiceType } from '~/enums';
-import { getDateString } from '~/utils/date';
-import { SelectableDate, SelectableDateString } from '~/types/time.type';
-import { AntDesign } from '@expo/vector-icons';
-import colors from '~/constants/colors';
-import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
-import { Switch } from 'react-native';
-import { MaterialIcons } from '@expo/vector-icons';
-import { FontAwesome6 } from '@expo/vector-icons';
-import { unWorkList, workList } from '~/constants/menus';
-import { Image } from 'react-native';
-import images from '~/constants/images';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '~/store';
-import {
-  setIsPriorityFavoriteConnector,
-  setServiceType,
-  setWokingDates,
-  setWokingStartTime,
-} from '~/slices/serviceBookingSlice';
-import Animated, { FadeInDown, SlideInDown } from 'react-native-reanimated';
+import Animated, { FadeInDown } from 'react-native-reanimated';
 import { router } from 'expo-router';
 import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
 import { useGetServiceByIdQuery } from '~/services/serviceApi';
 import { getServiceIdByType } from '~/utils/enumHelper';
 import { formatNumberToMoney } from '~/utils/formater';
-import { E } from '~/constants/base';
-import { Button, TouchableOpacity, View } from 'react-native-ui-lib';
+import colors from '~/constants/colors';
 import ErrorModel from '~/components/ErrorModel';
-import CustomDialog from '~/components/CustomDialog';
+import SelectServiceType from '~/components/SelectServiceType';
+import SelecWorktTime from '~/components/SelecWorktTime';
+import PriorityFavoriteConnector from '~/components/PriorityFavoriteConnector';
+import { E } from '~/constants/base';
+import { AntDesign, FontAwesome6, MaterialIcons } from '@expo/vector-icons';
+import { unWorkList, workList } from '~/constants/menus';
 
-const dateData = [
-  {
-    title: 'Theo buổi',
-    des: 'Thời gian làm việc tối đa 4 giờ/ngày',
-    type: ServiceType.SERVICE_4,
-  },
-  {
-    title: 'Theo ngày',
-    des: 'Thời gian làm việc tối đa 8 giờ/ngày',
-    type: ServiceType.SERVICE_8,
-  },
-];
-
-const workTime = () => {
-  const [isChangeTime, setIsChangeTime] = useState(false);
-  const dispatch = useDispatch();
+const WorkTime: React.FC = () => {
+  const serviceBooking = useSelector((state: RootState) => state.serviceBooking.uiData);
+  const walletBalance = useSelector((state: RootState) => state.accountSlice.account.walletBalance);
+  const bottomSheetRef3 = useRef<BottomSheet>(null);
   const snapPoints = useMemo(() => ['25%', '50%', '75%', '100%'], []);
   const bottomSheetRef1 = useRef<BottomSheet>(null);
   const bottomSheetRef2 = useRef<BottomSheet>(null);
-  const bottomSheetRef3 = useRef<BottomSheet>(null);
-  const toggleSwitch = () => {
-    dispatch(setIsPriorityFavoriteConnector(!isPriorityFavoriteConnector));
-  };
 
-  //slices
-  const serviceBooking = useSelector((state: RootState) => state.serviceBooking.uiData);
-  const waletBalance = useSelector((state: RootState) => state.accountSlice.account.walletBalance);
-  const dateList: SelectableDate[] = serviceBooking.schedule.listDayWork.map((d) => {
-    return { date: new Date(d.date), isSelected: d.isSelected };
-  });
-  const timeSelected: Date = new Date(serviceBooking.post.startTime);
-  const isPriorityFavoriteConnector = serviceBooking.post.isPriorityFavoriteConnector;
   const { serviceType, packageType } = serviceBooking.post;
-  const [serviceId, setserviceId] = useState(getServiceIdByType(serviceType, packageType));
-  const [price, setprice] = useState(0);
-  const [payable, setpayable] = useState(true);
-
-  //---------------- call service api get price --------------------//
+  const [serviceId, setServiceId] = useState(() => getServiceIdByType(serviceType, packageType));
+  const [price, setPrice] = useState(0);
+  const [payable, setPayable] = useState(true);
+  const [numDateSelected, setNumDateSelected] = useState(0);
 
   const { isError, isLoading, isSuccess, data, refetch } = useGetServiceByIdQuery(serviceId);
 
-  //---------------- end call service api get price --------------------//
-
-  //--------------- calculate money when service & date changed -------------//
   useEffect(() => {
     if (isSuccess && data) {
-      const selectedDates = dateList.filter((d) => d.isSelected);
-      const p = data.result.finalPrice * serviceType * selectedDates.length;
-      setprice(p);
-      setpayable(parseFloat(waletBalance) > p);
+      const p = data.result.finalPrice * serviceType * numDateSelected;
+      setPrice(p);
+      setPayable(parseFloat(walletBalance) > p);
     }
-  }, [data, isSuccess, dateList]);
+  }, [data, isSuccess, numDateSelected]);
 
   useEffect(() => {
-    setserviceId(getServiceIdByType(serviceType, packageType));
+    setServiceId(getServiceIdByType(serviceType, packageType));
   }, [serviceType, packageType]);
 
-  const toggleSelectDate = (index: number) => {
-    var tempList = [...dateList];
-    var temp = tempList[index];
-    tempList.splice(index, 1, { ...temp, isSelected: !temp.isSelected });
-    var dates: SelectableDateString[] = tempList.map((d) => {
-      return { date: d.date.toISOString(), isSelected: d.isSelected };
-    });
-    dispatch(setWokingDates(dates));
-  };
-
-  const onTimeChange = (e: DateTimePickerEvent, date?: Date) => {
-    setIsChangeTime(false);
-    if (e.type === 'set') {
-      if (date) {
-        dispatch(setWokingStartTime(date.toISOString()));
-      }
-    }
-  };
-
-  const onConfirm = () => {
+  const onConfirm = useCallback(() => {
     bottomSheetRef3.current?.close();
     router.push('paymentConfirm');
-  };
+  }, []);
+
+  const handlePayment = useCallback(() => {
+    if (!isLoading) {
+      if (payable) {
+        bottomSheetRef3.current?.snapToIndex(2);
+      } else {
+        router.push('addCoins');
+      }
+    }
+  }, [isLoading, payable]);
 
   return (
     <SafeAreaView>
-      <ErrorModel isError={isError} onReload={() => refetch()} />
+      <ErrorModel isError={isError} onReload={refetch} />
       <ScrollView className="h-full">
         <View className="m-4 pb-8">
-          <Animated.Text
-            entering={FadeInDown.duration(1000).springify()}
-            className="mb-4 font-psemibold text-xl">
-            Thời lượng
-          </Animated.Text>
-          {dateData.map((d, index) => (
-            <Animated.ScrollView
-              entering={FadeInDown.delay(index * 200)
-                .duration(1000)
-                .springify()}
-              key={index}>
-              <TouchableOpacity
-                activeOpacity={0.7}
-                onPress={() => dispatch(setServiceType(d.type))}
-                className={`my-2 gap-1 rounded-md border-[1px] border-gray-300 p-4  ${serviceType === d.type ? '!border-secondary bg-secondary-BG' : ''}`}>
-                <Text
-                  className={`font-psemibold text-lg ${serviceType === d.type ? 'text-secondary' : ''}`}>
-                  {d.title}
-                </Text>
-                <Text className="font-pregular">{d.des} </Text>
-              </TouchableOpacity>
-            </Animated.ScrollView>
-          ))}
-
-          <Animated.Text
-            entering={FadeInDown.delay(400).duration(1000).springify()}
-            className="mb-4 mt-6 font-psemibold text-xl">
-            Thời gian làm việc
-          </Animated.Text>
-          <Animated.View
-            entering={FadeInDown.delay(600).duration(1000).springify()}
-            className="flex-row justify-between">
-            <Text className="font-plight">Chọn ngày làm</Text>
-            <Text className="text-right font-pbold">
-              Tháng{` ${dateList[0].date.getMonth() + 1}/${dateList[0].date.getFullYear()}`}
-            </Text>
-          </Animated.View>
-          <Animated.FlatList
-            entering={FadeInDown.delay(800).duration(1000).springify()}
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            data={dateList}
-            renderItem={({ item, index }) => {
-              return (
-                <TouchableOpacity
-                  key={index}
-                  activeOpacity={0.7}
-                  disabled={index === 0}
-                  className={`relative mx-3 my-4 gap-2 rounded-lg border-[1px] border-gray-300 p-4 ${item.isSelected ? 'border-secondary !bg-secondary' : ''}`}
-                  onPress={() => toggleSelectDate(index)}>
-                  {index === 0 && (
-                    <View className="absolute left-[50%] top-0 h-4 w-4 translate-x-1/2 translate-y-[-8px] rounded-full bg-green-B2"></View>
-                  )}
-                  <Text
-                    className={`text-center font-pbold ${index === 0 ? 'text-secondary' : ''} ${item.isSelected ? 'text-white' : ''}`}>
-                    {getDateString(item.date.getDay())}
-                  </Text>
-                  <Text
-                    className={`text-center font-pregular ${index === 0 ? 'text-secondary' : ''}  ${item.isSelected ? 'text-white' : ''}`}>
-                    {item.date.getDate()}
-                  </Text>
-                </TouchableOpacity>
-              );
-            }}
-          />
-          <Animated.View
-            entering={FadeInDown.delay(1000).duration(1000).springify()}
-            className="mt-4 flex-row items-center justify-between rounded-lg border-[1px] border-gray-C5 p-4">
-            <View className="flex-row gap-2">
-              <AntDesign name="clockcircle" size={24} color={colors.secondary.DEFAULT} />
-              <Text className="font-psemibold text-lg text-textPrimary">Thời gian bắt đầu</Text>
-            </View>
-            <TouchableOpacity
-              onPress={() => setIsChangeTime(true)}
-              className="flex-row items-center justify-center rounded-md bg-gray-F6">
-              <Text className="h-[48px] w-[64px] text-center align-middle font-psemibold text-lg">
-                {timeSelected.getHours()}
-              </Text>
-              {/* <Divider orientation="vertical" /> */}
-              <Text className="h-[48px] w-[64px] text-center align-middle font-psemibold text-lg">
-                {timeSelected.getMinutes()}
-              </Text>
-            </TouchableOpacity>
-          </Animated.View>
-          {isChangeTime && (
-            <DateTimePicker
-              is24Hour
-              value={timeSelected}
-              display="spinner"
-              onChange={onTimeChange}
-              mode="time"
-            />
-          )}
-          <Animated.View
-            entering={FadeInDown.delay(1200).duration(1000).springify()}
-            className="mt-4 flex-row items-center justify-between p-4">
-            <View className="flex-row items-center gap-4">
-              <Image
-                className="h-8 w-8"
-                resizeMode="contain"
-                source={images.Icons.connectorFavorite}
-              />
-              <Text className="align-middle font-pregular text-lg text-textPrimary">
-                Ưu tiên tasker yêu thích
-              </Text>
-            </View>
-            <Switch
-              trackColor={{ false: '#767577', true: colors.green.B2 }}
-              thumbColor={isPriorityFavoriteConnector ? colors.green.B3 : '#f4f3f4'}
-              ios_backgroundColor="#3e3e3e"
-              onValueChange={toggleSwitch}
-              value={isPriorityFavoriteConnector}
-            />
-          </Animated.View>
+          <SelectServiceType />
+          <SelecWorktTime onSelectedDateChange={setNumDateSelected} />
+          <PriorityFavoriteConnector />
           <Animated.View entering={FadeInDown.delay(1400).duration(1000).springify()}>
             {/* control bottom Sheet 1 */}
             <TouchableOpacity
@@ -263,41 +100,28 @@ const workTime = () => {
               </View>
             </TouchableOpacity>
           </Animated.View>
-
           {price > 0 && (
-            <View>
-              <Animated.View entering={FadeInDown.delay(1600).duration(1000).springify()}>
-                <TouchableOpacity
-                  onPress={() => {
-                    if (!isLoading) {
-                      if (payable) {
-                        bottomSheetRef3.current?.snapToIndex(2);
-                      } else {
-                        router.push('addCoins');
-                      }
-                    }
-                  }}
-                  className="mx-6 mt-8">
-                  <View
-                    backgroundColor={!payable ? colors.red.R1 : colors.green.B2}
-                    className=" flex-row justify-between rounded-lg  p-4">
-                    <Text className="font-pbold text-lg text-white">
-                      {formatNumberToMoney(price) + ' ' + E}
-                    </Text>
-                    <Text className="font-pregular text-lg text-white">
-                      {!payable ? 'Nạp thêm' : 'Tiếp theo'}
-                    </Text>
-                  </View>
-                </TouchableOpacity>
-                {!payable && (
-                  <View center className="mt-1 w-full justify-center" row>
-                    <Text className="font-pmedium text-base text-red-500">
-                      Số dư ví của bạn không đủ!
-                    </Text>
-                  </View>
-                )}
-              </Animated.View>
-            </View>
+            <Animated.View entering={FadeInDown.delay(1600).duration(1000).springify()}>
+              <TouchableOpacity onPress={handlePayment} className="mx-6 mt-8">
+                <View
+                  style={{ backgroundColor: !payable ? colors.red.R1 : colors.green.B2 }}
+                  className="flex-row justify-between rounded-lg p-4">
+                  <Text className="font-pbold text-lg text-white">
+                    {formatNumberToMoney(price) + ' ' + E}
+                  </Text>
+                  <Text className="font-pregular text-lg text-white">
+                    {!payable ? 'Nạp thêm' : 'Tiếp theo'}
+                  </Text>
+                </View>
+              </TouchableOpacity>
+              {!payable && (
+                <View className="mt-1 w-full flex-row justify-center">
+                  <Text className="font-pmedium text-base text-red-500">
+                    Số dư ví của bạn không đủ!
+                  </Text>
+                </View>
+              )}
+            </Animated.View>
           )}
         </View>
       </ScrollView>
@@ -326,7 +150,6 @@ const workTime = () => {
           </View>
         </BottomSheetView>
       </BottomSheet>
-
       <BottomSheet enablePanDownToClose index={-1} snapPoints={snapPoints} ref={bottomSheetRef1}>
         <BottomSheetView>
           <View className=" bg-white p-6 pb-10">
@@ -357,26 +180,24 @@ const workTime = () => {
           <View className="bg-white p-6 pb-10">
             <Text className="w-full text-center font-pmedium text-lg">Xác nhận đăng kí</Text>
             <View className="mt-4">
-              <View>
-                <Text className="font-pregular text-base text-textPrimary">
-                  Bằng cách ấn <Text className="font-psemibold">đồng ý</Text> bạn đã xác nhận đã đọc
-                  đầy đủ những công việc mà Connector sẽ làm hoặc không làm và{' '}
-                  <Text className="font-psemibold">đăng ký dịch vụ của chúng tôi.</Text>
-                </Text>
-              </View>
+              <Text className="font-pregular text-base text-textPrimary">
+                Bằng cách ấn <Text className="font-psemibold">đồng ý</Text> bạn đã xác nhận đã đọc
+                đầy đủ những công việc mà Connector sẽ làm hoặc không làm và{' '}
+                <Text className="font-psemibold">đăng ký dịch vụ của chúng tôi.</Text>
+              </Text>
             </View>
 
             <View className="mt-6 flex-row justify-center gap-6">
               <TouchableOpacity
                 onPress={() => bottomSheetRef3.current?.close()}
-                className="flex-1 rounded-lg bg-gray-F6  py-3  shadow-md">
+                className="flex-1 rounded-lg bg-gray-F6 py-3 shadow-md">
                 <Text className="w-full text-center font-psemibold text-base text-gray-600">
                   Hủy
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={onConfirm}
-                className="flex-1 rounded-lg bg-green-B1 py-3  shadow-md">
+                className="flex-1 rounded-lg bg-green-B1 py-3 shadow-md">
                 <Text className="w-full text-center font-psemibold text-base text-white">
                   Đồng ý
                 </Text>
@@ -389,4 +210,4 @@ const workTime = () => {
   );
 };
 
-export default workTime;
+export default WorkTime;

@@ -32,7 +32,7 @@ const paymentConfirm = () => {
     startTime,
   } = serviceBooking.post;
 
-  const { listDayWork } = serviceBooking.schedule;
+  const { listDayWork, listDayWorkString } = serviceBooking.schedule;
 
   //------------------------ call api add post ---------------------//
 
@@ -78,7 +78,8 @@ const paymentConfirm = () => {
       jobScheduleCreateViewModel: {
         description: '',
         endDate: endDate.toISOString(),
-        listDayWork: getWorkDates(false),
+        listDayWork:
+          packageType === ServicePackageType.DAILY ? getWorkDates(false) : listDayWorkString,
         startDate: startDate.toISOString(),
       },
       postCreateViewModel: {
@@ -155,7 +156,9 @@ const paymentConfirm = () => {
                 <View className="gap-1">
                   <View className=" justify-between gap-1">
                     <Text className="font-plight text-base  text-black/90">
-                      {getWorkDates(true)}
+                      {packageType === ServicePackageType.DAILY
+                        ? getWorkDates(true)
+                        : listDayWorkString}
                     </Text>
                   </View>
                   <View className="flex-row  gap-1">

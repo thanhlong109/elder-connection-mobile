@@ -35,6 +35,7 @@ interface UIData {
   };
   schedule: {
     listDayWork: SelectableDateString[];
+    listDayWorkString: string;
   };
 }
 
@@ -66,6 +67,7 @@ const initialUiData: UIData = {
   },
   schedule: {
     listDayWork: getNextSevenDays(),
+    listDayWorkString: '',
   },
 };
 
@@ -134,6 +136,9 @@ export const ServiceBookingSliceState = createSlice({
     setViewPostDetail: (state, action: PayloadAction<GetPostRespone>) => {
       state.viewPostDetails = action.payload;
     },
+    setWokingDatesString: (state, action: PayloadAction<string>) => {
+      state.uiData.schedule.listDayWorkString = action.payload;
+    },
     setClearBookingState: (state) => {
       state.uiData = initialUiData;
     },
@@ -152,6 +157,7 @@ export const {
   setPostTitle,
   setViewPostDetail,
   setClearBookingState,
+  setWokingDatesString,
 } = ServiceBookingSliceState.actions;
 
 export default ServiceBookingSliceState.reducer;

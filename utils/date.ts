@@ -1,3 +1,5 @@
+import { format, addDays, addMonths, getDay, isAfter } from 'date-fns';
+
 import { DateStringType } from '~/enums';
 interface DateString {
   short: string;
@@ -76,3 +78,26 @@ export const getTimeFromDate = (dateString: string, addHours?: number) => {
   const formattedTime = `${hours}:${minutes}:${seconds}`;
   return formattedTime;
 };
+
+export function getSelectedDaysForNextNMonths(
+  startDate: Date,
+  selectedDays: number[],
+  months: number
+): string[] {
+  const end = addMonths(startDate, months);
+
+  const selectedDates: string[] = [];
+  let currentDate = addDays(startDate, 1);
+
+  // Lặp qua các ngày từ ngày bắt đầu đến 3 tháng sau
+  while (isAfter(end, currentDate)) {
+    const dayOfWeek = getDay(currentDate);
+
+    if (selectedDays.includes(dayOfWeek)) {
+      selectedDates.push(format(currentDate, 'yyyy-MM-dd'));
+    }
+
+    currentDate = addDays(currentDate, 1);
+  }
+  return selectedDates;
+}
