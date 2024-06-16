@@ -5,23 +5,28 @@ export const UtilListItems = [
     title: 'Chăm sóc người cao tuổi',
     extend: 'Theo ca',
     img: images.Icons.ElderCare,
+    id: 1,
   },
   {
     title: 'Chăm sóc người cao tuổi',
     extend: 'Theo tháng',
     img: images.Icons.ElderCare,
+    id: 2,
   },
   {
     title: 'Connector yêu thích',
     img: images.Icons.favorite,
+    id: 3,
   },
   {
     title: 'Lịch sử thanh toán',
     img: images.Icons.sendMoney,
+    id: 4,
   },
   {
     title: 'Hỗ trợ ngay',
     img: images.Icons.support,
+    id: 5,
   },
 ];
 
@@ -32,18 +37,21 @@ export const profileList = [
       title: 'Ví của tôi',
       href: '(profiles)/myWallet',
       id: 0,
+      isDeveloping: false,
     },
     {
       img: images.Icons.findUser,
       title: 'Thông tin thành viên',
       href: 'person-infor',
       id: 1,
+      isDeveloping: false,
     },
     {
       img: images.Icons.voucher,
       title: 'Gói ưu đãi',
       href: '',
       id: 2,
+      isDeveloping: true,
     },
   ],
   [
@@ -52,12 +60,14 @@ export const profileList = [
       title: 'Connector yêu thích',
       href: '',
       id: 3,
+      isDeveloping: true,
     },
     {
       img: images.Icons.denied,
       title: 'Danh sách connector chặn',
       href: '',
       id: 4,
+      isDeveloping: true,
     },
   ],
   [
@@ -66,12 +76,14 @@ export const profileList = [
       title: 'Săn quà giới thiệu',
       href: '',
       id: 5,
+      isDeveloping: true,
     },
     {
       img: images.Icons.onlineSupport,
       title: 'Trợ giúp',
       href: '',
       id: 6,
+      isDeveloping: true,
     },
   ],
 ];

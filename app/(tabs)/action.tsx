@@ -62,7 +62,6 @@ const action = () => {
 
   useEffect(() => {
     if (isError) {
-      alert(error);
       console.log('error call get post list', error);
     }
   }, [isError]);

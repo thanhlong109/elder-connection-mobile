@@ -9,6 +9,7 @@ import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
 import { useSelector } from 'react-redux';
 import { RootState } from '~/store';
 import { Avatar } from 'react-native-ui-lib';
+import Toast from 'react-native-simple-toast';
 
 const profile = () => {
   const account = useSelector((state: RootState) => state.accountSlice.account);
@@ -27,7 +28,11 @@ const profile = () => {
                       .springify()}
                     key={index}>
                     <TouchableOpacity
-                      onPress={() => router.push(e.href)}
+                      onPress={() =>
+                        e.isDeveloping
+                          ? Toast.show('Tính năng đang trong quá trình phát triển!', Toast.SHORT)
+                          : router.push(e.href)
+                      }
                       className="my-[2px] flex-row items-center justify-between bg-white p-6">
                       <View className="flex-row items-center">
                         <Image source={e.img} className="h-[25px] w-[25px]" resizeMode="contain" />
@@ -63,11 +68,9 @@ const profile = () => {
               </Text>
             </Animated.View>
             <Animated.View entering={FadeInUp.delay(200).duration(1000).springify()}>
-              <Link href={{ pathname: 'kkk' }}>
-                <View className="rounded-full border-[2px] border-gray-100 bg-[#F8F8F8] p-2">
-                  <AntDesign name="setting" size={24} color={colors.primary} />
-                </View>
-              </Link>
+              <View className="rounded-full border-[2px] border-gray-100 bg-[#F8F8F8] p-2">
+                <AntDesign name="setting" size={24} color={colors.primary} />
+              </View>
             </Animated.View>
           </View>
         )}

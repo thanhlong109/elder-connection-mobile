@@ -1,4 +1,4 @@
-import { View, Text } from 'react-native';
+import { View, Text, Pressable } from 'react-native';
 import React from 'react';
 export interface CustomIconButtonProps {
   icon?: React.ReactNode;
@@ -15,7 +15,7 @@ const CustomIconButton = ({
   onPress,
 }: CustomIconButtonProps) => {
   return (
-    <View onPointerEnter={() => onPress?.()} className={`items-center  ${containerStyle}`}>
+    <Pressable onPress={() => onPress?.()} className={`items-center  ${containerStyle}`}>
       <View
         className={`h-[50px] w-[50px] items-center justify-center rounded-lg bg-primary p-[10px]`}>
         {icon}
@@ -25,7 +25,7 @@ const CustomIconButton = ({
         {`${extend ? ' - ' : ''}`}
         <Text className=" text-secondary">{extend ? extend : ''}</Text>
       </Text>
-    </View>
+    </Pressable>
   );
 };
 

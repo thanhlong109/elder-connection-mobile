@@ -12,9 +12,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '~/store';
 import LoadingModel from '~/components/LoadingModel';
 import { setAccountDetails } from '~/slices/accountSlice';
-import { E } from '~/constants/base';
 import { router } from 'expo-router';
 import ErrorModel from '~/components/ErrorModel';
+import { formatNumberToMoney } from '~/utils/formater';
+import { setServicePackage } from '~/slices/serviceBookingSlice';
+import { ServicePackageType } from '~/enums';
+import Toast from 'react-native-simple-toast';
 
 const home = () => {
   const dispatch = useDispatch();
@@ -47,6 +50,33 @@ const home = () => {
     refetchGetUser();
   }, [account.id]);
 
+  const onPress = (id: number) => {
+    switch (id) {
+      case 1: {
+        dispatch(setServicePackage(ServicePackageType.DAILY));
+        router.push('selectAddress');
+        break;
+      }
+      case 2: {
+        dispatch(setServicePackage(ServicePackageType.MONTHLY));
+        router.push('selectAddress');
+        break;
+      }
+      case 3: {
+        Toast.show('Tính năng đang trong quá trình phát triển!', Toast.SHORT);
+        break;
+      }
+      case 4: {
+        router.push('myWallet');
+        break;
+      }
+      case 5: {
+        Toast.show('Tính năng đang trong quá trình phát triển!', Toast.SHORT);
+        break;
+      }
+    }
+  };
+
   return (
     <Container style="item-center relative">
       <LoadingModel isloading={isGetUserLoading} />
@@ -76,15 +106,15 @@ const home = () => {
                 className="h-[25px] w-[25px]"
                 resizeMode="contain"
               />
-              <Text className="h-full align-middle font-pregular">
-                {account.walletBalance + ' ' + E}
+              <Text className="h-full align-middle font-bold !text-secondary">
+                {formatNumberToMoney(parseFloat(account.walletBalance))}
               </Text>
             </View>
             <View className="h-full w-[1px] bg-gray-C5" />
             <TouchableOpacity
               onPress={() => router.push('addCoins')}
               className="flex-1 flex-row items-center justify-around px-4 py-4">
-              <Text className="h-full align-middle font-pregular">Nạp tiền</Text>
+              <Text className="h-full align-middle font-plight">Nạp tiền</Text>
               <AntDesign name="right" size={24} color="#37474F" />
             </TouchableOpacity>
           </View>
@@ -104,6 +134,7 @@ const home = () => {
               containerStyle="w-[30%] max-w-[30%]"
               title={e.title}
               extend={e?.extend}
+              onPress={() => onPress(e.id)}
               icon={<Image tintColor={'#fff'} source={e.img} className="h-full w-full" />}
             />
           ))}
