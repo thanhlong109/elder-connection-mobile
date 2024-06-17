@@ -45,8 +45,11 @@ const paymentWebview = () => {
         <LoadingModel isloading={loading} />
         <CustomDialog
           visble={showDialog}
+          transparent={false}
           setVisible={setshowDialog}
-          body="Thanh toán thành công!"
+          body={
+            paymentStatus == DialogType.SUCCESS ? 'Thanh toán thành công!' : 'Thanh toán thất bại'
+          }
           type={paymentStatus}
           onDismiss={() => {
             router.replace('home');

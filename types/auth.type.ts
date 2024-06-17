@@ -1,3 +1,5 @@
+import { Role } from '~/enums';
+
 export interface Credentials {
   username: string;
   password: string;
@@ -80,3 +82,12 @@ export type GetWalletBalanceResponse = Pick<
 > & {
   walletBalance: number;
 };
+
+export interface JwtDecoded {
+  aud: string;
+  exp: number;
+  'http://schemas.microsoft.com/ws/2008/06/identity/claims/role': Role;
+  'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name': string;
+  iss: string;
+  jti: string;
+}

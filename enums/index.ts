@@ -88,3 +88,8 @@ export enum TransactionTypeString {
   THANH_TOAN = 'THANH_TOAN',
   NHAN_TIEN = 'NHAN_TIEN',
 }
+
+export enum Role {
+  CUSTOMER = 'Customer',
+  CONNECTOR = 'Connector',
+}

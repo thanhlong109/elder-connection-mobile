@@ -20,7 +20,7 @@ export default {
     B3: '#008375',
   },
   Type: {
-    success: '#7fdf4b',
+    success: '#009D90',
     error: '#e5342f',
     warning: '#eeba56',
     info: '#468ee5',

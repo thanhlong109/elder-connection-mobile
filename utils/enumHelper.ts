@@ -1,4 +1,5 @@
 import {
+  DialogType,
   HomeType,
   PostStatus,
   SERVICE_ID,
@@ -111,4 +112,27 @@ export const getStringTransactionTypeEnum = (
     case TransactionType.THANH_TOAN:
       return detail ? 'Thanh toán dịch vị' : 'Thanh toán';
   }
+};
+
+export const getStringTileDialog = (type: DialogType) => {
+  let title = '';
+  switch (type) {
+    case DialogType.ERROR: {
+      title = 'Thất bại';
+      break;
+    }
+    case DialogType.SUCCESS: {
+      title = 'Thành công';
+      break;
+    }
+    case DialogType.WARNING: {
+      title = 'Cảnh báo';
+      break;
+    }
+    case DialogType.INFO: {
+      title = 'Thông tin';
+      break;
+    }
+  }
+  return title;
 };
