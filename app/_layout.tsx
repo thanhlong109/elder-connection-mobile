@@ -8,7 +8,6 @@ import { Provider, useDispatch } from 'react-redux';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { loadToken } from '~/utils/auth';
 import { setSignInRespone } from '~/slices/accountSlice';
-
 SplashScreen.preventAutoHideAsync();
 
 export default function Layout() {

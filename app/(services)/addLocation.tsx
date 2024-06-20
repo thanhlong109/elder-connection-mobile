@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Dimensions, StyleSheet, View } from 'react-native';
-import MapView, { Marker, MarkerPressEvent, Region } from 'react-native-maps';
-import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+import MapView, { Marker, Region } from 'react-native-maps';
 import * as Location from 'expo-location';
 import { Button, Text } from 'react-native-ui-lib';
 import colors from '~/constants/colors';
@@ -10,7 +9,6 @@ import { RootState } from '~/store';
 import { Postion } from '~/types/address.type';
 import { setAddAddress } from '~/slices/addressSlice';
 import { router } from 'expo-router';
-
 const { width, height } = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
 const LATITUDE_DELTA = 0.005;
@@ -67,35 +65,6 @@ const AddLocation = () => {
 
   return (
     <View style={styles.container}>
-      <GooglePlacesAutocomplete
-        placeholder="Tìm địa điểm"
-        onPress={(data, details) => {
-          console.log(data);
-          const location = details?.geometry.location;
-          if (location) {
-            const newRegion = {
-              latitude: location.lat,
-              longitude: location.lng,
-              latitudeDelta: LATITUDE_DELTA,
-              longitudeDelta: LONGITUDE_DELTA,
-            };
-            setRegion(newRegion);
-            setMarker({ latitude: location.lat, longitude: location.lng });
-            mapRef.current?.animateToRegion(newRegion, 1000);
-          }
-        }}
-        query={{
-          key: process.env.EXPO_PUBLIC_GOGGLE_MAP_API_KEY,
-          language: 'vi',
-          components: 'country:vi',
-        }}
-        fetchDetails={true}
-        styles={{
-          container: styles.autocompleteContainer,
-          textInput: styles.textInput,
-        }}
-        onFail={(error) => console.log('error google autocomplete:', error)}
-      />
       <MapView
         ref={mapRef}
         style={styles.map}

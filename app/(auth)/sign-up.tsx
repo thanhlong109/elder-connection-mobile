@@ -30,6 +30,8 @@ const SignUp = () => {
     lastName: '',
   });
 
+  const [fullName, setfullName] = useState('');
+
   const [signUp, { isLoading, isSuccess, isError, error }] = useSignUpMutation();
   const [showDialog, setshowDialog] = useState(false);
   const fullNameRef = useRef<TextFieldRef>(null);
@@ -61,7 +63,12 @@ const SignUp = () => {
 
   const handleSubmit = () => {
     setemailChecked(form.accountEmail);
-    if (validateFields()) signUp(form);
+    if (validateFields()) {
+      let nameParts = fullName.trim().split(' ');
+      let firstName = nameParts[0];
+      let lastName = nameParts[nameParts.length - 1];
+      signUp({ ...form, firstName, lastName });
+    }
   };
 
   return (
@@ -104,12 +111,9 @@ const SignUp = () => {
               ref={fullNameRef}
               label="Họ và tên"
               onChangeText={(value) => {
-                let nameParts = value.trim().split(' ');
-                let firstName = nameParts[0];
-                let lastName = nameParts.slice(1).join(' ');
-                setform({ ...form, firstName, lastName });
+                setfullName(value);
               }}
-              value={`${form.firstName} ${form.lastName}`}
+              value={fullName}
               enableErrors
               validate={[
                 'required',
