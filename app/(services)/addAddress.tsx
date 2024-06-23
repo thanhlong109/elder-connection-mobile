@@ -143,7 +143,7 @@ const addAddress = () => {
         />
 
         {/* address detail - postion */}
-        <Pressable onPress={() => router.push('locationMapview')}>
+        <Pressable onPress={() => router.push('addLocation2')}>
           <TextField
             ref={addressDetailRef}
             validateOnChange

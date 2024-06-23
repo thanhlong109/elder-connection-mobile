@@ -1,5 +1,5 @@
 import { View, Text, ImageBackground, Image, TouchableOpacity } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Container } from '~/components/Container';
 import images from '~/constants/images';
 import { AntDesign } from '@expo/vector-icons';
@@ -16,9 +16,8 @@ import { router } from 'expo-router';
 import ErrorModel from '~/components/ErrorModel';
 import { formatNumberToMoney } from '~/utils/formater';
 import { setServicePackage } from '~/slices/serviceBookingSlice';
-import { DialogType, ServicePackageType } from '~/enums';
+import { ServicePackageType } from '~/enums';
 import Toast from 'react-native-simple-toast';
-import CustomDialog from '~/components/CustomDialog';
 
 const home = () => {
   const dispatch = useDispatch();

@@ -2,7 +2,6 @@ import { FlatList, Image } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import images from '~/constants/images';
-import CustomButton from '~/components/CustomButton';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { Button, Text, View } from 'react-native-ui-lib';
 import colors from '~/constants/colors';
@@ -30,6 +29,7 @@ const action = () => {
   const accountId = useSelector((state: RootState) => state.accountSlice.account.id);
   const [pastPosts, setpastPosts] = useState<GetPostRespone[]>();
   const [futurePosts, setfuturePosts] = useState<GetPostRespone[]>();
+  const [showErrorDialog, setshowErrorDialog] = useState(false);
 
   const splitListByDate = (list: GetPostRespone[]) => {
     const pastDates: GetPostRespone[] = [];
@@ -63,6 +63,10 @@ const action = () => {
   useEffect(() => {
     if (isError) {
       console.log('error call get post list', error);
+      if ('status' in error && error.status == 404) {
+      } else {
+        setshowErrorDialog(true);
+      }
     }
   }, [isError]);
 
@@ -71,7 +75,7 @@ const action = () => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <LoadingModel isloading={isLoading} />
-      <ErrorModel isError={isError} onReload={() => refetch()} />
+      <ErrorModel isError={showErrorDialog} onReload={() => refetch()} />
       <View flex className=" bg-white ">
         <View className="border-b-[1px] border-gray-C5 bg-white px-6 pb-6 pt-4">
           <Text className="font-pmedium text-2xl">Hoạt động</Text>

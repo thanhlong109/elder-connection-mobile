@@ -63,7 +63,7 @@ const ServiceLayout = () => {
         }}
       />
       <Stack.Screen
-        name="addLocation"
+        name="addLocation2"
         options={{
           headerShown: true,
           animation: 'ios',

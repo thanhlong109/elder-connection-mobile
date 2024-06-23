@@ -11,6 +11,7 @@ import homeImg1 from '../assets/images/homeImg1.png';
 import favorite from '../assets/images/Icons/Favorite.png';
 import sendMoney from '../assets/images/Icons/SendMoney.png';
 import support from '../assets/images/Icons/Support.png';
+import mappin from '../assets/images/Icons/mapPin.png';
 import onlineSupport from '../assets/images/Icons/OnlineSupport.png';
 import trust from '../assets/images/Icons/Trust.png';
 import findUser from '../assets/images/Icons/FindUser.png';
@@ -58,6 +59,7 @@ export default {
     sendMoney2,
     recevieMoney,
     empty,
+    mappin,
   },
   home: {
     homeImg1,

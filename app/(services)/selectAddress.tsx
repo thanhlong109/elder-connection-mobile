@@ -18,6 +18,7 @@ const selectAddress = () => {
   const accountId = useSelector((state: RootState) => state.accountSlice.account.id);
   const dispatch = useDispatch();
   const currentMode = useSelector((state: RootState) => state.addressSlice.mode);
+
   const [query, setquery] = useState<PaggingRequest<String>>({
     data: accountId,
     pageIndex: 1,
