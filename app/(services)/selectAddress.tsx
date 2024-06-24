@@ -51,7 +51,7 @@ const selectAddress = () => {
             <FlatList
               showsVerticalScrollIndicator={false}
               className="flex"
-              data={data.result.items}
+              data={data.result ? data.result.items : []}
               renderItem={({ item, index }) => (
                 <View key={index} className="my-1 p-2">
                   <AddressItem isDelete={currentMode === MODE.DELETE} address={item} />

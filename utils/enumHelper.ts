@@ -110,7 +110,7 @@ export const getStringTransactionTypeEnum = (
       return detail ? 'Nhận tiền vào ví' : 'Nhận tiền';
     case TransactionTypeString.THANH_TOAN:
     case TransactionType.THANH_TOAN:
-      return detail ? 'Thanh toán dịch vị' : 'Thanh toán';
+      return detail ? 'Thanh toán dịch vụ' : 'Thanh toán';
   }
 };
 
