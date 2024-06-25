@@ -1,5 +1,4 @@
-import React from 'react';
-
+import React, { useEffect, useRef, useState } from 'react';
 import LottieView from 'lottie-react-native';
 import { Button, Modal, Text, View } from 'react-native-ui-lib';
 
@@ -10,8 +9,12 @@ interface ErrorModelProps {
 }
 const defaultErrorMessage = 'Không thể kết nối đến sever, vui lòng thử lại!';
 const ErrorModel = ({ isError, onReload, message = defaultErrorMessage }: ErrorModelProps) => {
+  const [show, setshow] = useState(true);
+  useEffect(() => {
+    setshow(isError);
+  }, [isError]);
   return (
-    <Modal animationType="slide" visible={isError} transparent>
+    <Modal animationType="slide" visible={show} transparent>
       <View center className=" h-full w-full bg-[rgba(0,0,0,0.3)]">
         <View className="mx-10 !rounded-lg !bg-white py-6">
           <Text center className="px-4 font-pbold text-2xl !text-red-400">
@@ -28,9 +31,17 @@ const ErrorModel = ({ isError, onReload, message = defaultErrorMessage }: ErrorM
           <Text center className="px-4 font-pregular text-lg !text-red-400">
             {message}
           </Text>
-          <Button onPress={onReload} className="mx-4 mt-4 !rounded-md !bg-primary">
-            <Text className="font-pmedium text-lg !text-white">Thử lại</Text>
-          </Button>
+          <View row>
+            <Button onPress={onReload} className="mx-4 mt-4 flex-1 !rounded-md !bg-primary">
+              <Text className="font-pmedium text-lg !text-white">Thử lại</Text>
+            </Button>
+            <Button
+              backgroundColor={'gray'}
+              onPress={() => setshow(false)}
+              className=" mx-4 mt-4 !rounded-md">
+              <Text className="font-pmedium text-lg !text-white">Hủy</Text>
+            </Button>
+          </View>
         </View>
       </View>
     </Modal>

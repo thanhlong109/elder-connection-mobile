@@ -56,7 +56,7 @@ const action = () => {
 
   useEffect(() => {
     if (isSuccess && data) {
-      if (data.result) {
+      if (data.result && data.result.items) {
         splitListByDate(data.result.items);
       } else {
         splitListByDate([]);

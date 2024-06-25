@@ -17,16 +17,18 @@ import PriorityFavoriteConnector from '~/components/PriorityFavoriteConnector';
 import { E } from '~/constants/base';
 import { AntDesign, FontAwesome6, MaterialIcons } from '@expo/vector-icons';
 import { unWorkList, workList } from '~/constants/menus';
+import { selectPackageType, selectServiceType, selectWalletBalance } from '~/selectors';
 
 const WorkTime: React.FC = () => {
-  const serviceBooking = useSelector((state: RootState) => state.serviceBooking.uiData);
-  const walletBalance = useSelector((state: RootState) => state.accountSlice.account.walletBalance);
-  const bottomSheetRef3 = useRef<BottomSheet>(null);
-  const snapPoints = useMemo(() => ['25%', '50%', '75%', '100%'], []);
+  const serviceType = useSelector((state: RootState) => selectServiceType(state));
+  const packageType = useSelector((state: RootState) => selectPackageType(state));
+  const walletBalance = useSelector((state: RootState) => selectWalletBalance(state));
+
   const bottomSheetRef1 = useRef<BottomSheet>(null);
   const bottomSheetRef2 = useRef<BottomSheet>(null);
+  const bottomSheetRef3 = useRef<BottomSheet>(null);
 
-  const { serviceType, packageType } = serviceBooking.post;
+  const snapPoints = useMemo(() => ['25%', '50%', '75%', '100%'], []);
   const [serviceId, setServiceId] = useState(() => getServiceIdByType(serviceType, packageType));
   const [price, setPrice] = useState(0);
   const [payable, setPayable] = useState(true);
@@ -35,16 +37,16 @@ const WorkTime: React.FC = () => {
   const { isError, isLoading, isSuccess, data, refetch } = useGetServiceByIdQuery(serviceId);
 
   useEffect(() => {
+    setServiceId(getServiceIdByType(serviceType, packageType));
+  }, [serviceType, packageType]);
+
+  useEffect(() => {
     if (isSuccess && data) {
       const p = data.result.finalPrice * serviceType * numDateSelected;
       setPrice(p);
       setPayable(parseFloat(walletBalance) > p);
     }
-  }, [data, isSuccess, numDateSelected]);
-
-  useEffect(() => {
-    setServiceId(getServiceIdByType(serviceType, packageType));
-  }, [serviceType, packageType]);
+  }, [data, isSuccess, numDateSelected, walletBalance, serviceType]);
 
   const onConfirm = useCallback(() => {
     bottomSheetRef3.current?.close();
@@ -70,7 +72,6 @@ const WorkTime: React.FC = () => {
           <SelecWorktTime onSelectedDateChange={setNumDateSelected} />
           <PriorityFavoriteConnector />
           <Animated.View entering={FadeInDown.delay(1400).duration(1000).springify()}>
-            {/* control bottom Sheet 1 */}
             <TouchableOpacity
               onPress={() => bottomSheetRef1.current?.snapToIndex(2)}
               className="mt-4 flex-row gap-3 rounded-lg bg-gray-F6 p-4">
@@ -85,7 +86,6 @@ const WorkTime: React.FC = () => {
               </View>
             </TouchableOpacity>
 
-            {/* control bottom Sheet 2 */}
             <TouchableOpacity
               onPress={() => bottomSheetRef2.current?.snapToIndex(2)}
               className="mt-4 flex-row gap-3 rounded-lg bg-gray-F6 p-4">
@@ -100,6 +100,7 @@ const WorkTime: React.FC = () => {
               </View>
             </TouchableOpacity>
           </Animated.View>
+
           {price > 0 && (
             <Animated.View entering={FadeInDown.delay(1600).duration(1000).springify()}>
               <TouchableOpacity onPress={handlePayment} className="mx-6 mt-8">
@@ -128,7 +129,7 @@ const WorkTime: React.FC = () => {
 
       <BottomSheet enablePanDownToClose index={-1} snapPoints={snapPoints} ref={bottomSheetRef2}>
         <BottomSheetView>
-          <View className=" bg-white p-6 pb-10">
+          <View className="bg-white p-6 pb-10">
             <View className="mb-4 flex-row gap-2 align-middle">
               <Text className="flex-1 justify-center p-2 text-center font-psemibold text-lg">
                 Các công việc sẽ không thực hiện
@@ -137,22 +138,21 @@ const WorkTime: React.FC = () => {
                 <AntDesign name="close" size={24} color="black" />
               </TouchableOpacity>
             </View>
-            <View>
-              <View className="gap-4">
-                {unWorkList.map((item, index) => (
-                  <View key={index} className="flex-row items-center gap-4">
-                    <View className="h-3 w-3 rounded-full bg-secondary" />
-                    <Text className="flex-1 font-pregular text-base">{item}</Text>
-                  </View>
-                ))}
-              </View>
+            <View className="gap-4">
+              {unWorkList.map((item, index) => (
+                <View key={index} className="flex-row items-center gap-4">
+                  <View className="h-3 w-3 rounded-full bg-secondary" />
+                  <Text className="flex-1 font-pregular text-base">{item}</Text>
+                </View>
+              ))}
             </View>
           </View>
         </BottomSheetView>
       </BottomSheet>
+
       <BottomSheet enablePanDownToClose index={-1} snapPoints={snapPoints} ref={bottomSheetRef1}>
         <BottomSheetView>
-          <View className=" bg-white p-6 pb-10">
+          <View className="bg-white p-6 pb-10">
             <View className="mb-4 flex-row gap-2 align-middle">
               <Text className="flex-1 justify-center p-2 text-center font-psemibold text-lg">
                 Các công việc sẽ thực hiện
@@ -161,46 +161,37 @@ const WorkTime: React.FC = () => {
                 <AntDesign name="close" size={24} color="black" />
               </TouchableOpacity>
             </View>
-            <View>
-              <View className="gap-4">
-                {workList.map((item, index) => (
-                  <View key={index} className="flex-row items-center gap-4">
-                    <View className="h-3 w-3 rounded-full bg-secondary" />
-                    <Text className="flex-1 font-pregular text-base">{item}</Text>
-                  </View>
-                ))}
-              </View>
+            <View className="gap-4">
+              {workList.map((item, index) => (
+                <View key={index} className="flex-row items-center gap-4">
+                  <View className="h-3 w-3 rounded-full bg-primary" />
+                  <Text className="flex-1 font-pregular text-base">{item}</Text>
+                </View>
+              ))}
             </View>
           </View>
         </BottomSheetView>
       </BottomSheet>
 
-      <BottomSheet index={-1} snapPoints={snapPoints} ref={bottomSheetRef3}>
+      <BottomSheet enablePanDownToClose index={-1} snapPoints={snapPoints} ref={bottomSheetRef3}>
         <BottomSheetView>
           <View className="bg-white p-6 pb-10">
-            <Text className="w-full text-center font-pmedium text-lg">Xác nhận đăng kí</Text>
-            <View className="mt-4">
-              <Text className="font-pregular text-base text-textPrimary">
-                Bằng cách ấn <Text className="font-psemibold">đồng ý</Text> bạn đã xác nhận đã đọc
-                đầy đủ những công việc mà Connector sẽ làm hoặc không làm và{' '}
-                <Text className="font-psemibold">đăng ký dịch vụ của chúng tôi.</Text>
+            <View className="mb-4 flex-row gap-2 align-middle">
+              <Text className="flex-1 justify-center p-2 text-center font-psemibold text-lg">
+                Xác nhận thanh toán
               </Text>
-            </View>
-
-            <View className="mt-6 flex-row justify-center gap-6">
-              <TouchableOpacity
-                onPress={() => bottomSheetRef3.current?.close()}
-                className="flex-1 rounded-lg bg-gray-F6 py-3 shadow-md">
-                <Text className="w-full text-center font-psemibold text-base text-gray-600">
-                  Hủy
-                </Text>
+              <TouchableOpacity onPress={() => bottomSheetRef3.current?.close()} className="p-2">
+                <AntDesign name="close" size={24} color="black" />
               </TouchableOpacity>
+            </View>
+            <View className="gap-4">
+              <Text className="font-pregular text-base">
+                Số tiền cần thanh toán là {formatNumberToMoney(price)} {E}
+              </Text>
               <TouchableOpacity
                 onPress={onConfirm}
-                className="flex-1 rounded-lg bg-green-B1 py-3 shadow-md">
-                <Text className="w-full text-center font-psemibold text-base text-white">
-                  Đồng ý
-                </Text>
+                className="mt-4 flex-row justify-center rounded-lg bg-green-B2 p-4">
+                <Text className="font-pbold text-lg text-white">Xác nhận</Text>
               </TouchableOpacity>
             </View>
           </View>

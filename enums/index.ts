@@ -17,8 +17,8 @@ export enum ServiceType {
 }
 
 export enum ServicePackageType {
-  MONTHLY,
-  DAILY,
+  MONTHLY = 2,
+  DAILY = 1,
 }
 
 export enum DateStringType {

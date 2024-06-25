@@ -13,7 +13,6 @@ const selectService = () => {
   const dispatch = useDispatch();
   const goToSelectAdress = (packageType: ServicePackageType) => {
     dispatch(setServicePackage(packageType));
-    router.push('selectAddress');
   };
 
   return (

@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
+import { router } from 'expo-router';
 import { HomeType, PostStatus, ServicePackageType, ServiceType } from '~/enums';
 import {
   AddAdressRequest,
@@ -111,6 +112,7 @@ export const ServiceBookingSliceState = createSlice({
   reducers: {
     setServicePackage: (state, action: PayloadAction<ServicePackageType>) => {
       state.uiData.post.packageType = action.payload;
+      router.push('selectAddress');
     },
     setServiceType: (state, action: PayloadAction<ServiceType>) => {
       state.uiData.post.serviceType = action.payload;
@@ -140,7 +142,9 @@ export const ServiceBookingSliceState = createSlice({
       state.uiData.schedule.listDayWorkString = action.payload;
     },
     setClearBookingState: (state) => {
-      state.uiData = initialUiData;
+      state.uiData.post.isPriorityFavoriteConnector = false;
+      state.uiData.post.startTime = new Date().toISOString();
+      state.uiData.schedule.listDayWorkString = '';
     },
   },
 });

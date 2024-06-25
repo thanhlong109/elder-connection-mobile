@@ -18,7 +18,7 @@ import { StatusBar } from 'expo-status-bar';
 import { AntDesign, Feather, FontAwesome, Fontisto, Ionicons } from '@expo/vector-icons';
 import colors from '~/constants/colors';
 import { router } from 'expo-router';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '~/store';
 import ImagePickerOption from '~/components/imagePickerOption';
 import { UploadingStatus, uploadFiles } from '~/utils/uploadMedia';
@@ -29,6 +29,8 @@ import { useUpdateAccountMutation } from '~/services/accountApi';
 import LoadingModel from '~/components/LoadingModel';
 import UploadStatus from '~/components/UploadStatus';
 import ErrorModel from '~/components/ErrorModel';
+import { clearToken } from '~/utils/auth';
+import { clearData } from '~/slices/accountSlice';
 
 const PersonInfor = () => {
   const account = useSelector((state: RootState) => state.accountSlice.account);
@@ -36,6 +38,7 @@ const PersonInfor = () => {
   const [avatar, setavatar] = useState<ImagePicker.ImagePickerAsset | undefined>(undefined);
   const [currentMode, setcurrentMode] = useState(MODE.VIEW);
   const [updateForm, setupdateForm] = useState<UpdateAccountRequest>({ ...account });
+  const dispatch = useDispatch();
 
   //--------------------- start call api update acc -----------------------//
 
@@ -59,6 +62,13 @@ const PersonInfor = () => {
   useEffect(() => {
     setupdateForm({ ...account });
   }, [account]);
+
+  const handleOnLogout = () => {
+    clearToken();
+    dispatch(clearData());
+
+    router.dismissAll();
+  };
 
   const updateAvatar = () => {
     if (avatar) {
@@ -327,7 +337,12 @@ const PersonInfor = () => {
 
             {/* btn sign out */}
             {currentMode === MODE.VIEW && (
-              <Button outline outlineColor={colors.red.R1} outlineWidth={1} className="gap-4 py-4">
+              <Button
+                onPress={handleOnLogout}
+                outline
+                outlineColor={colors.red.R1}
+                outlineWidth={1}
+                className="gap-4 py-4">
                 <Fontisto name="unlocked" size={24} color={colors.red.R1} />
                 <Text className=" !text-red-R1 font-psemibold text-lg">Đăng xuất</Text>
               </Button>

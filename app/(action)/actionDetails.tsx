@@ -139,10 +139,6 @@ const actionDetails = () => {
                 <Text className="font-pmedium text-base">Chi tiết công việc</Text>
                 <View className="mt-2 justify-between gap-1">
                   <Text className="flex-1 font-plight text-base text-black/90">{title}</Text>
-                  <View className="flex-row  gap-1">
-                    <Text className="font-plight text-base text-black/55">Gói dịch vụ: </Text>
-                    <Text className="font-plight text-base  text-black/90">{serviceName}</Text>
-                  </View>
                 </View>
               </View>
             </Animated.View>

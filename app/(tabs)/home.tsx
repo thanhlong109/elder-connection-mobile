@@ -72,12 +72,10 @@ const home = () => {
     switch (id) {
       case 1: {
         dispatch(setServicePackage(ServicePackageType.DAILY));
-        router.push('selectAddress');
         break;
       }
       case 2: {
         dispatch(setServicePackage(ServicePackageType.MONTHLY));
-        router.push('selectAddress');
         break;
       }
       case 3: {
