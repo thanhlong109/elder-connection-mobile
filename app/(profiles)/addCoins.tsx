@@ -116,7 +116,7 @@ const addCoins = () => {
             </TouchableOpacity>
           ))}
         </View>
-        <View>
+        {/* <View>
           <Text className="mb-2 font-pmedium text-lg">Phương thức thanh toán</Text>
           <View className="gap-2 !rounded-md border-[1px] border-gray-C5 p-2">
             <Image
@@ -125,10 +125,8 @@ const addCoins = () => {
               resizeMode="contain"
             />
           </View>
-          <Text className="mt-1 font-light italic !text-red-400">
-            Hiện tại hệ thống chỉ hỗ chợ thanh toán thông qua vnPay, mong quý khách thông cảm!
-          </Text>
-        </View>
+          
+        </View> */}
         <Button
           backgroundColor={colors.primary}
           onPress={() => callToUpWallet({ accountId: account.id, amount: nap })}

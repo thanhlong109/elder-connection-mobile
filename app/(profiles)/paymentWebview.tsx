@@ -24,12 +24,11 @@ const paymentWebview = () => {
     const { url } = navState;
 
     // Kiểm tra nếu URL chứa 'vnp_ResponseCode' và 'vnp_TransactionStatus'
-    if (url.includes('vnp_ResponseCode') && url.includes('vnp_TransactionStatus')) {
+    if (url.includes('status')) {
       const params = new URLSearchParams(url.split('?')[1]);
-      const responseCode = params.get('vnp_ResponseCode');
-      const transactionStatus = params.get('vnp_TransactionStatus');
+      const transactionStatus = params.get('status');
 
-      if (responseCode === '00' && transactionStatus === '00') {
+      if (transactionStatus === 'PAID') {
         setPaymentStatus(DialogType.SUCCESS);
       } else {
         setPaymentStatus(DialogType.ERROR);

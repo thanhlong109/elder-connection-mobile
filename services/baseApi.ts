@@ -6,7 +6,7 @@ import { saveToken } from '~/utils/auth';
 //import { logout } from '../auth';
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: 'https://elderconnectionwebapp.azurewebsites.net/',
+  baseUrl: 'https://elderconnect.azurewebsites.net/',
   prepareHeaders: async (headers, { getState }) => {
     const token = await AsyncStorage.getItem(KEYS.ACCESS_TOKEN);
     if (token) {

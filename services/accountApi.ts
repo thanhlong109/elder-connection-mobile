@@ -101,7 +101,7 @@ export const accountApi = createApi({
     }),
     topUpWallet: builder.mutation<TopUpWalletResponse, TopUpWalletRequest>({
       query: (para) => ({
-        url: `api/payments/request-top-up-wallet?accountId=${para.accountId}&amount=${para.amount}`,
+        url: `api/payments/request-top-up-wallet-with-payos?accountId=${para.accountId}&amount=${para.amount}`,
         method: 'POST',
       }),
     }),

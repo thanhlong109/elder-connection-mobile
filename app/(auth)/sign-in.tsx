@@ -23,7 +23,7 @@ const SignIn = () => {
     accountPassword: '',
   });
   const [eror, seteror] = useState('');
-  const [signIn, { isError, isLoading, isSuccess, data }] = useSignInMutation();
+  const [signIn, { isError, isLoading, isSuccess, data, error }] = useSignInMutation();
 
   useEffect(() => {
     if (isSuccess && data) {
@@ -61,8 +61,8 @@ const SignIn = () => {
             Toast.LONG
           );
         }
-        dispatch(setSignInRespone(tranform));
-        router.push('/home');
+        // dispatch(setSignInRespone(tranform));
+        // router.push('/home');
       }
     }
   }, [isSuccess]);
@@ -70,6 +70,7 @@ const SignIn = () => {
   useEffect(() => {
     if (isError) {
       seteror('Tên đăng nhập hoặc mật khẩu không đúng!');
+      seteror((error as any).message);
     }
   }, [isError]);
 

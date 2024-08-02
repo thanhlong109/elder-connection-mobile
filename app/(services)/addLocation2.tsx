@@ -29,7 +29,7 @@ import colors from '~/constants/colors';
 import { setAddAddress } from '~/slices/addressSlice';
 import { router } from 'expo-router';
 
-Mapbox.setAccessToken(process.env.EXPO_PUBLIC_MAPBOX_KEY || '');
+Mapbox.setAccessToken('');
 const { width, height } = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
 const LATITUDE_DELTA = 0.005;
@@ -74,7 +74,7 @@ const addLocation2 = () => {
     if (text.length > 2) {
       try {
         const response = await axios.get(
-          `https://api.mapbox.com/geocoding/v5/mapbox.places/${text}.json?access_token=${process.env.EXPO_PUBLIC_MAPBOX_KEY}`
+          `https://api.mapbox.com/geocoding/v5/mapbox.places/${text}.json?access_token=`
         );
         setSuggestions(response.data.features);
       } catch (error) {
